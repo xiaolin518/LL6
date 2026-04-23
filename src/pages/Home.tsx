@@ -1,5 +1,6 @@
 import { BookOpen, Database, Globe, BarChart3, LineChart } from 'lucide-react';
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 interface Course {
   id: string;
@@ -7,6 +8,7 @@ interface Course {
   description: string;
   icon: React.ReactNode;
   color: string;
+  link?: string;
 }
 
 const courses: Course[] = [
@@ -22,7 +24,8 @@ const courses: Course[] = [
     title: '数据分析技术',
     description: '掌握数据分析的基本方法和工具，包括数据可视化技术',
     icon: <BarChart3 className="w-8 h-8" />,
-    color: 'from-purple-500 to-pink-500'
+    color: 'from-purple-500 to-pink-500',
+    link: '/data-analysis'
   },
   {
     id: 'data-collection',
@@ -123,25 +126,28 @@ export default function Home() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {courses.map((course) => (
-              <div
+              <Link
                 key={course.id}
-                className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer overflow-hidden"
+                to={course.link || '#'}
+                className={`group ${course.link ? 'cursor-pointer' : 'cursor-default'}`}
               >
-                <div className={`h-2 bg-gradient-to-r ${course.color}`} />
-                <div className="p-8">
-                  <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${course.color} flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform`}>
-                    {course.icon}
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-800 mb-3">{course.title}</h3>
-                  <p className="text-gray-600 leading-relaxed">{course.description}</p>
-                  <div className="mt-6 pt-4 border-t border-gray-100">
-                    <span className="inline-flex items-center gap-2 text-blue-600 font-medium group-hover:gap-3 transition-all">
-                      即将更新
-                      <BookOpen className="w-4 h-4" />
-                    </span>
+                <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 overflow-hidden">
+                  <div className={`h-2 bg-gradient-to-r ${course.color}`} />
+                  <div className="p-8">
+                    <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${course.color} flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform`}>
+                      {course.icon}
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-800 mb-3">{course.title}</h3>
+                    <p className="text-gray-600 leading-relaxed">{course.description}</p>
+                    <div className="mt-6 pt-4 border-t border-gray-100">
+                      <span className="inline-flex items-center gap-2 text-blue-600 font-medium group-hover:gap-3 transition-all">
+                        {course.link ? '进入学习' : '即将更新'}
+                        <BookOpen className="w-4 h-4" />
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

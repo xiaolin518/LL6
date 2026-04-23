@@ -1219,52 +1219,68 @@ print("5. 建议重点关注高价值客户的 retention，同时努力提升中
     title: 'Python数据分析实践项目',
     description: '10个实用的Python数据分析项目，涵盖数据清洗、分析、可视化等多个领域',
     content: `
-      <h3>7.1 销售数据读取与清洗</h3>
+      <h3>7.1 实操目录结构</h3>
+      <p>为了便于实践和管理，我们创建了以下实操目录结构：</p>
+      <ul>
+        <li><strong>data/</strong> - 存放数据集</li>
+        <li><strong>scripts/</strong> - 存放Python脚本</li>
+        <li><strong>notebooks/</strong> - 存放Jupyter Notebook</li>
+        <li><strong>reports/</strong> - 存放分析报告</li>
+      </ul>
+      
+      <h3>7.2 销售数据读取与清洗</h3>
       <p><strong>核心工具/函数:</strong> read_csv/read_excel, dropna, fillna, astype, drop_duplicates</p>
       <p><strong>业务目标:</strong> 数据完整性校验、格式统一、脏数据清理</p>
       
-      <h3>7.2 销售数据分组聚合</h3>
+      <h3>7.3 销售数据分组聚合</h3>
       <p><strong>核心工具/函数:</strong> groupby, agg, sum, mean, count</p>
       <p><strong>业务目标:</strong> 多维度销售指标统计（销售额、销量、客单价）</p>
       
-      <h3>7.3 购物篮关联规则分析</h3>
+      <h3>7.4 购物篮关联规则分析</h3>
       <p><strong>核心工具/函数:</strong> groupby + apply, itertools.combinations, mlxtend.frequent_patterns</p>
       <p><strong>业务目标:</strong> 热销搭配挖掘、强关联商品识别、支持度 / 置信度计算</p>
       
-      <h3>7.4 客户聚类分析</h3>
+      <h3>7.5 客户聚类分析</h3>
       <p><strong>核心工具/函数:</strong> StandardScaler, KMeans, silhouette_score</p>
       <p><strong>业务目标:</strong> 客户群体划分、高价值 / 流失 / 潜力客户识别、簇中心解读</p>
       
-      <h3>7.5 销售数据可视化</h3>
+      <h3>7.6 销售数据可视化</h3>
       <p><strong>核心工具/函数:</strong> plot, bar, pie, line (Pandas 内置), matplotlib, seaborn</p>
       <p><strong>业务目标:</strong> 销售趋势、地区分布、品类占比可视化，图表叙事与洞察总结</p>
       
-      <h3>7.6 A/B 测试效果分析</h3>
+      <h3>7.7 A/B 测试效果分析</h3>
       <p><strong>核心工具/函数:</strong> groupby, crosstab, scipy.stats (T-test/Chi2)</p>
       <p><strong>业务目标:</strong> 实验数据统计、转化率差异显著性检验、P 值解读与方案评估</p>
       
-      <h3>7.7 时间序列预测分析</h3>
+      <h3>7.8 时间序列预测分析</h3>
       <p><strong>核心工具/函数:</strong> resample, rolling, shift, ARIMA/Prophet</p>
       <p><strong>业务目标:</strong> 销售趋势分析、季节性识别、月度 / 季度销量预测</p>
       
-      <h3>7.8 机器学习特征工程</h3>
+      <h3>7.9 机器学习特征工程</h3>
       <p><strong>核心工具/函数:</strong> get_dummies, LabelEncoder, cut/qcut, corr, SelectKBest</p>
       <p><strong>业务目标:</strong> 衍生特征创建、分类变量编码、特征筛选与建模数据准备</p>
       
-      <h3>7.9 客户 RFM 价值分层</h3>
+      <h3>7.10 客户 RFM 价值分层</h3>
       <p><strong>核心工具/函数:</strong> qcut, map, apply, 自定义评分函数</p>
       <p><strong>业务目标:</strong> 基于 RFM 的客户价值分层、业务标签定义与分层运营策略制定</p>
       
-      <h3>7.10 自动化销售报表生成</h3>
+      <h3>7.11 自动化销售报表生成</h3>
       <p><strong>核心工具/函数:</strong> pd.ExcelWriter, openpyxl, pivot_table, plot</p>
       <p><strong>业务目标:</strong> 自动生成带图表的周报 / 月报，实现数据统计与报表自动化</p>
     `,
     practice: {
       title: '销售数据综合分析',
-      description: '结合多个实践项目的技术，完成从数据清洗到分析报告的完整流程',
+      description: '结合多个实践项目的技术，完成从数据清洗到分析报告的完整流程。按照实操目录结构组织代码和数据。',
       data: `# 销售数据
 import pandas as pd
 import numpy as np
+import os
+
+# 创建实操目录结构
+os.makedirs('data', exist_ok=True)
+os.makedirs('scripts', exist_ok=True)
+os.makedirs('notebooks', exist_ok=True)
+os.makedirs('reports', exist_ok=True)
 
 # 生成模拟销售数据
 np.random.seed(42)
@@ -1321,8 +1337,16 @@ df.loc[missing_indices, 'sales'] = np.nan
 error_indices = np.random.choice(df.index, size=500, replace=False)
 df.loc[error_indices, 'revenue'] = df.loc[error_indices, 'revenue'] * 10
 
-# 保存到CSV
-df.to_csv('sales_data.csv', index=False)`,
+# 保存到data目录
+df.to_csv('data/sales_data.csv', index=False)
+print("数据已保存到 data/sales_data.csv")
+print(f"数据形状: {df.shape}")
+print(f"缺失值数量: {df.isnull().sum().sum()}")
+print("实操目录结构创建完成：")
+print("- data/ - 存放数据集")
+print("- scripts/ - 存放Python脚本")
+print("- notebooks/ - 存放Jupyter Notebook")
+print("- reports/ - 存放分析报告")`,
       codeTemplate: `import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -1330,6 +1354,7 @@ import seaborn as sns
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 from scipy import stats
+import os
 
 # 设置中文字体
 plt.rcParams['font.sans-serif'] = ['SimHei']
@@ -1338,7 +1363,7 @@ plt.rcParams['axes.unicode_minus'] = False
 # 1. 数据读取与清洗
 print("=== 1. 数据读取与清洗 ===")
 # 读取数据
-df = pd.read_csv('sales_data.csv')
+df = pd.read_csv('data/sales_data.csv')
 print(f"原始数据形状: {df.shape}")
 
 # 检查缺失值
@@ -1388,6 +1413,8 @@ sns.barplot(x='product', y='sales', data=top_products)
 plt.title('各产品销量分布')
 plt.ylabel('销量')
 plt.tight_layout()
+plt.savefig('reports/product_sales.png')
+print("产品销量分布图表已保存到 reports/product_sales.png")
 plt.show()
 
 # 地区销售额分布
@@ -1396,6 +1423,8 @@ sns.barplot(x='region', y='revenue', data=region_stats)
 plt.title('各地区销售额分布')
 plt.ylabel('销售额')
 plt.tight_layout()
+plt.savefig('reports/region_revenue.png')
+print("地区销售额分布图表已保存到 reports/region_revenue.png")
 plt.show()
 
 # 4. 客户聚类分析
@@ -1419,12 +1448,17 @@ customer_value['cluster'] = kmeans.fit_predict(scaled_features)
 
 # 分析聚类结果
 print("客户聚类分析结果:")
-print(customer_value.groupby('cluster').agg({
+cluster_result = customer_value.groupby('cluster').agg({
     'total_revenue': 'mean',
     'total_sales': 'mean',
     'purchase_frequency': 'mean',
     'customer_id': 'count'
-}).round(2))
+}).round(2)
+print(cluster_result)
+
+# 保存聚类结果
+customer_value.to_csv('data/customer_clusters.csv', index=False)
+print("客户聚类结果已保存到 data/customer_clusters.csv")
 
 # 5. 时间序列分析
 print("\n=== 5. 时间序列分析 ===")
@@ -1443,16 +1477,57 @@ sns.lineplot(x='date', y='revenue', data=monthly_sales)
 plt.title('月度销售额趋势')
 plt.ylabel('销售额')
 plt.tight_layout()
+plt.savefig('reports/monthly_revenue_trend.png')
+print("月度销售额趋势图表已保存到 reports/monthly_revenue_trend.png")
 plt.show()
 
-# 6. 结论
-print("\n=== 6. 分析结论 ===")
-print("1. 数据清洗后，成功处理了缺失值和异常值")
-print("2. 产品销售情况分析显示不同产品的销售表现差异")
-print("3. 地区销售分布不均衡，需要针对性的营销策略")
-print("4. 客户聚类分析识别出不同价值的客户群体")
-print("5. 时间序列分析显示销售额的月度变化趋势")
-print("6. 建议根据分析结果制定差异化的销售策略，重点关注高价值客户和潜力地区")`,
+# 6. 生成分析报告
+print("\n=== 6. 生成分析报告 ===")
+with open('reports/sales_analysis_report.md', 'w', encoding='utf-8') as f:
+    f.write('# 销售数据分析报告\n\n')
+    f.write('## 1. 数据概况\n')
+    f.write(f'- 原始数据量: {df.shape[0]} 条记录\n')
+    f.write(f'- 数据清洗后: {df.shape[0]} 条记录\n')
+    f.write('\n')
+    
+    f.write('## 2. 产品销售分析\n')
+    f.write('### 销售额最高的产品\n')
+    top_product = top_products.loc[top_products['revenue'].idxmax()]
+    f.write(f'- 产品: {top_product['product']}\n')
+    f.write(f'- 销售额: {top_product['revenue']:.2f}\n')
+    f.write(f'- 销量: {top_product['sales']}\n')
+    f.write('\n')
+    
+    f.write('## 3. 地区销售分析\n')
+    f.write('### 销售额最高的地区\n')
+    top_region = region_stats.loc[region_stats['revenue'].idxmax()]
+    f.write(f'- 地区: {top_region['region']}\n')
+    f.write(f'- 销售额: {top_region['revenue']:.2f}\n')
+    f.write('\n')
+    
+    f.write('## 4. 客户分析\n')
+    f.write('### 客户聚类结果\n')
+    for cluster in cluster_result.index:
+        f.write(f'- 客户群 {cluster}:\n')
+        f.write(f'  - 平均销售额: {cluster_result.loc[cluster, 'total_revenue']:.2f}\n')
+        f.write(f'  - 客户数量: {cluster_result.loc[cluster, 'customer_id']}\n')
+    f.write('\n')
+    
+    f.write('## 5. 结论与建议\n')
+    f.write('1. 数据清洗后，成功处理了缺失值和异常值\n')
+    f.write('2. 产品销售情况分析显示不同产品的销售表现差异\n')
+    f.write('3. 地区销售分布不均衡，需要针对性的营销策略\n')
+    f.write('4. 客户聚类分析识别出不同价值的客户群体\n')
+    f.write('5. 时间序列分析显示销售额的月度变化趋势\n')
+    f.write('6. 建议根据分析结果制定差异化的销售策略，重点关注高价值客户和潜力地区\n')
+
+print("分析报告已生成到 reports/sales_analysis_report.md")
+print("\n实操完成！")
+print("所有文件已按目录结构组织:")
+print("- data/ - 存放数据集")
+print("- scripts/ - 存放Python脚本")
+print("- notebooks/ - 存放Jupyter Notebook")
+print("- reports/ - 存放分析报告")`,
       answer: `import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -1460,6 +1535,7 @@ import seaborn as sns
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 from scipy import stats
+import os
 
 # 设置中文字体
 plt.rcParams['font.sans-serif'] = ['SimHei']
@@ -1468,7 +1544,7 @@ plt.rcParams['axes.unicode_minus'] = False
 # 1. 数据读取与清洗
 print("=== 1. 数据读取与清洗 ===")
 # 读取数据
-df = pd.read_csv('sales_data.csv')
+df = pd.read_csv('data/sales_data.csv')
 print(f"原始数据形状: {df.shape}")
 
 # 检查缺失值
@@ -1527,6 +1603,8 @@ sns.barplot(x='product', y='sales', data=top_products)
 plt.title('各产品销量分布')
 plt.ylabel('销量')
 plt.tight_layout()
+plt.savefig('reports/product_sales.png')
+print("产品销量分布图表已保存到 reports/product_sales.png")
 plt.show()
 
 # 产品销售额分布
@@ -1535,6 +1613,8 @@ sns.barplot(x='product', y='revenue', data=top_products)
 plt.title('各产品销售额分布')
 plt.ylabel('销售额')
 plt.tight_layout()
+plt.savefig('reports/product_revenue.png')
+print("产品销售额分布图表已保存到 reports/product_revenue.png")
 plt.show()
 
 # 地区销售额分布
@@ -1543,6 +1623,8 @@ sns.barplot(x='region', y='revenue', data=region_stats)
 plt.title('各地区销售额分布')
 plt.ylabel('销售额')
 plt.tight_layout()
+plt.savefig('reports/region_revenue.png')
+print("地区销售额分布图表已保存到 reports/region_revenue.png")
 plt.show()
 
 # 月度销售趋势
@@ -1554,6 +1636,8 @@ plt.xlabel('月份')
 plt.xticks(range(1, 13))
 plt.grid(alpha=0.3)
 plt.tight_layout()
+plt.savefig('reports/monthly_revenue_trend.png')
+print("月度销售额趋势图表已保存到 reports/monthly_revenue_trend.png")
 plt.show()
 
 # 产品-地区销售热力图
@@ -1562,6 +1646,8 @@ plt.figure(figsize=(12, 8))
 sns.heatmap(pivot_df, annot=True, fmt='.0f', cmap='YlGnBu')
 plt.title('产品-地区销售热力图')
 plt.tight_layout()
+plt.savefig('reports/product_region_heatmap.png')
+print("产品-地区销售热力图已保存到 reports/product_region_heatmap.png")
 plt.show()
 
 # 4. 客户聚类分析
@@ -1609,7 +1695,13 @@ plt.xlabel('总销售额')
 plt.ylabel('购买频率')
 plt.grid(alpha=0.3)
 plt.tight_layout()
+plt.savefig('reports/customer_clusters.png')
+print("客户聚类分析图表已保存到 reports/customer_clusters.png")
 plt.show()
+
+# 保存聚类结果
+customer_value.to_csv('data/customer_clusters.csv', index=False)
+print("客户聚类结果已保存到 data/customer_clusters.csv")
 
 # 5. 时间序列分析
 print("\n=== 5. 时间序列分析 ===")
@@ -1634,6 +1726,8 @@ plt.ylabel('销售额')
 plt.legend()
 plt.grid(alpha=0.3)
 plt.tight_layout()
+plt.savefig('reports/monthly_revenue_ma.png')
+print("月度销售额移动平均图表已保存到 reports/monthly_revenue_ma.png")
 plt.show()
 
 # 6. 产品相关性分析
@@ -1647,30 +1741,200 @@ plt.figure(figsize=(10, 8))
 sns.heatmap(product_corr, annot=True, cmap='coolwarm', square=True, vmin=-1, vmax=1)
 plt.title('产品销售相关性分析')
 plt.tight_layout()
+plt.savefig('reports/product_correlation.png')
+print("产品相关性分析图表已保存到 reports/product_correlation.png")
 plt.show()
 
-# 7. 结论与建议
-print("\n=== 7. 结论与建议 ===")
-print("1. 数据清洗后，成功处理了1000个缺失值和500个异常值，保证了数据质量")
-print("2. 产品销售表现：")
-print(f"   - 销售额最高的产品：{top_products.loc[top_products['revenue'].idxmax(), 'product']}")
-print(f"   - 销量最高的产品：{top_products.loc[top_products['sales'].idxmax(), 'product']}")
-print(f"   - 客单价最高的产品：{top_products.loc[top_products['avg_order_value'].idxmax(), 'product']}")
-print("3. 地区销售分布：")
-print(f"   - 销售额最高的地区：{region_stats.loc[region_stats['revenue'].idxmax(), 'region']}")
-print(f"   - 销售额最低的地区：{region_stats.loc[region_stats['revenue'].idxmin(), 'region']}")
-print("4. 客户群体分析：")
-print(f"   - 高价值客户群（Cluster {customer_value.groupby('cluster')['total_revenue'].mean().idxmax()}）：平均销售额 {customer_value.groupby('cluster')['total_revenue'].mean().max():.2f}")
-print(f"   - 低价值客户群（Cluster {customer_value.groupby('cluster')['total_revenue'].mean().idxmin()}）：平均销售额 {customer_value.groupby('cluster')['total_revenue'].mean().min():.2f}")
-print("5. 时间趋势分析：")
-print(f"   - 销售额最高的月份：{monthly_stats.loc[monthly_stats['revenue'].idxmax(), 'month']}月")
-print(f"   - 销售额最低的月份：{monthly_stats.loc[monthly_stats['revenue'].idxmin(), 'month']}月")
-print("6. 建议：")
-print("   - 针对高价值客户群，提供VIP服务和个性化推荐")
-print("   - 针对销售额较低的地区，制定针对性的营销计划")
-print("   - 根据产品相关性，设计捆绑销售策略")
-print("   - 利用时间序列分析结果，提前备货和调整营销策略")
-print("   - 定期进行数据清洗和分析，持续优化销售策略")`
+# 7. 生成详细分析报告
+print("\n=== 7. 生成详细分析报告 ===")
+with open('reports/sales_analysis_report.md', 'w', encoding='utf-8') as f:
+    f.write('# 销售数据分析报告\n\n')
+    f.write('## 1. 数据概况\n')
+    f.write(f'- 原始数据量: {df.shape[0]} 条记录\n')
+    f.write(f'- 数据清洗后: {df.shape[0]} 条记录\n')
+    f.write(f'- 处理的缺失值: {1000} 个\n')
+    f.write(f'- 处理的异常值: {500} 个\n')
+    f.write('\n')
+    
+    f.write('## 2. 产品销售分析\n')
+    f.write('### 销售额最高的产品\n')
+    top_product = top_products.loc[top_products['revenue'].idxmax()]
+    f.write(f'- 产品: {top_product['product']}\n')
+    f.write(f'- 销售额: {top_product['revenue']:.2f}\n')
+    f.write(f'- 销量: {top_product['sales']}\n')
+    f.write(f'- 客单价: {top_product['avg_order_value']:.2f}\n')
+    f.write('\n')
+    
+    f.write('### 销量最高的产品\n')
+    top_sales_product = top_products.loc[top_products['sales'].idxmax()]
+    f.write(f'- 产品: {top_sales_product['product']}\n')
+    f.write(f'- 销量: {top_sales_product['sales']}\n')
+    f.write(f'- 销售额: {top_sales_product['revenue']:.2f}\n')
+    f.write('\n')
+    
+    f.write('## 3. 地区销售分析\n')
+    f.write('### 销售额最高的地区\n')
+    top_region = region_stats.loc[region_stats['revenue'].idxmax()]
+    f.write(f'- 地区: {top_region['region']}\n')
+    f.write(f'- 销售额: {top_region['revenue']:.2f}\n')
+    f.write(f'- 销量: {top_region['sales']}\n')
+    f.write('\n')
+    
+    f.write('### 销售额最低的地区\n')
+    bottom_region = region_stats.loc[region_stats['revenue'].idxmin()]
+    f.write(f'- 地区: {bottom_region['region']}\n')
+    f.write(f'- 销售额: {bottom_region['revenue']:.2f}\n')
+    f.write(f'- 销量: {bottom_region['sales']}\n')
+    f.write('\n')
+    
+    f.write('## 4. 客户分析\n')
+    f.write('### 客户聚类结果\n')
+    for cluster in cluster_analysis.index:
+        f.write(f'- 客户群 {cluster}:\n')
+        f.write(f'  - 平均销售额: {cluster_analysis.loc[cluster, ('total_revenue', 'mean')]:.2f}\n')
+        f.write(f'  - 平均销量: {cluster_analysis.loc[cluster, ('total_sales', 'mean')]:.2f}\n')
+        f.write(f'  - 平均购买频率: {cluster_analysis.loc[cluster, ('purchase_frequency', 'mean')]:.2f}\n')
+        f.write(f'  - 客户数量: {cluster_analysis.loc[cluster, ('customer_id', 'count')]}\n')
+    f.write('\n')
+    
+    f.write('## 5. 时间趋势分析\n')
+    f.write('### 销售额最高的月份\n')
+    top_month = monthly_stats.loc[monthly_stats['revenue'].idxmax()]
+    f.write(f'- 月份: {top_month['month']}月\n')
+    f.write(f'- 销售额: {top_month['revenue']:.2f}\n')
+    f.write('\n')
+    
+    f.write('### 销售额最低的月份\n')
+    bottom_month = monthly_stats.loc[monthly_stats['revenue'].idxmin()]
+    f.write(f'- 月份: {bottom_month['month']}月\n')
+    f.write(f'- 销售额: {bottom_month['revenue']:.2f}\n')
+    f.write('\n')
+    
+    f.write('## 6. 产品相关性分析\n')
+    f.write('### 相关性最高的产品组合\n')
+    # 找到相关性最高的产品组合
+    corr_matrix = product_corr.values
+    np.fill_diagonal(corr_matrix, -1)  # 排除自身相关性
+    max_corr_idx = np.unravel_index(np.argmax(corr_matrix), corr_matrix.shape)
+    max_corr_products = [product_corr.columns[max_corr_idx[0]], product_corr.columns[max_corr_idx[1]]]
+    max_corr_value = product_corr.iloc[max_corr_idx[0], max_corr_idx[1]]
+    f.write(f'- 产品组合: {max_corr_products[0]} 和 {max_corr_products[1]}\n')
+    f.write(f'- 相关系数: {max_corr_value:.3f}\n')
+    f.write('\n')
+    
+    f.write('## 7. 结论与建议\n')
+    f.write('### 结论\n')
+    f.write('1. 数据清洗后，成功处理了1000个缺失值和500个异常值，保证了数据质量\n')
+    f.write('2. 产品销售表现差异明显，需要针对不同产品制定不同的营销策略\n')
+    f.write('3. 地区销售分布不均衡，华东地区表现最佳，西北地区需要重点关注\n')
+    f.write('4. 客户群体可以分为3个不同价值的群体，需要差异化管理\n')
+    f.write('5. 销售额存在明显的季节性趋势，需要根据季节调整库存和营销策略\n')
+    f.write('6. 部分产品之间存在较强的相关性，可以考虑捆绑销售策略\n')
+    f.write('\n')
+    
+    f.write('### 建议\n')
+    f.write('1. **产品策略**:\n')
+    f.write('   - 重点推广销售额和销量表现较好的产品\n')
+    f.write('   - 针对表现较差的产品，分析原因并制定改进方案\n')
+    f.write('   - 利用产品相关性，设计捆绑销售和交叉销售策略\n')
+    f.write('\n')
+    f.write('2. **地区策略**:\n')
+    f.write('   - 对华东等表现较好的地区，保持现有策略并寻求进一步增长\n')
+    f.write('   - 对西北等表现较差的地区，制定针对性的市场开拓计划\n')
+    f.write('   - 考虑地区差异，制定本地化的营销策略\n')
+    f.write('\n')
+    f.write('3. **客户策略**:\n')
+    f.write('   - 对高价值客户，提供VIP服务和个性化推荐\n')
+    f.write('   - 对中价值客户，推出会员升级计划，鼓励增加消费\n')
+    f.write('   - 对低价值客户，设计吸引再次购买的促销活动\n')
+    f.write('\n')
+    f.write('4. **时间策略**:\n')
+    f.write('   - 根据月度销售趋势，提前备货和调整营销策略\n')
+    f.write('   - 在销售旺季加大营销力度，在淡季推出促销活动\n')
+    f.write('\n')
+    f.write('5. **数据管理**:\n')
+    f.write('   - 建立定期数据清洗和分析的流程\n')
+    f.write('   - 利用分析结果持续优化销售策略\n')
+    f.write('   - 建立销售预测模型，提高决策的科学性\n')
+
+print("详细分析报告已生成到 reports/sales_analysis_report.md")
+
+# 8. 保存分析脚本
+print("\n=== 8. 保存分析脚本 ===")
+analysis_script = '''
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+
+# 设置中文字体
+plt.rcParams['font.sans-serif'] = ['SimHei']
+plt.rcParams['axes.unicode_minus'] = False
+
+# 读取数据
+df = pd.read_csv('data/sales_data.csv')
+
+# 数据清洗
+df['sales'] = df['sales'].fillna(df['sales'].mean())
+Q1 = df['revenue'].quantile(0.25)
+Q3 = df['revenue'].quantile(0.75)
+IQR = Q3 - Q1
+df = df[(df['revenue'] >= Q1 - 1.5 * IQR) & (df['revenue'] <= Q3 + 1.5 * IQR)]
+
+# 销售分析
+top_products = df.groupby('product').agg({
+    'sales': 'sum',
+    'revenue': 'sum',
+    'customer_id': 'nunique'
+}).reset_index()
+top_products['avg_order_value'] = top_products['revenue'] / top_products['sales']
+
+region_stats = df.groupby('region').agg({
+    'sales': 'sum',
+    'revenue': 'sum'
+}).reset_index()
+
+# 客户聚类
+customer_value = df.groupby('customer_id').agg({
+    'revenue': 'sum',
+    'sales': 'sum',
+    'date': 'count'
+}).reset_index()
+customer_value.columns = ['customer_id', 'total_revenue', 'total_sales', 'purchase_frequency']
+
+scaler = StandardScaler()
+scaled_features = scaler.fit_transform(customer_value[['total_revenue', 'total_sales', 'purchase_frequency']])
+
+kmeans = KMeans(n_clusters=3, random_state=42)
+customer_value['cluster'] = kmeans.fit_predict(scaled_features)
+
+# 时间序列分析
+df['date'] = pd.to_datetime(df['date'])
+monthly_sales = df.set_index('date').resample('M').agg({
+    'sales': 'sum',
+    'revenue': 'sum'
+}).reset_index()
+
+# 产品相关性
+product_pivot = df.pivot_table(values='sales', index='customer_id', columns='product', aggfunc='sum')
+product_corr = product_pivot.corr()
+
+print("分析完成！")
+'''
+
+with open('scripts/sales_analysis.py', 'w', encoding='utf-8') as f:
+    f.write(analysis_script)
+
+print("分析脚本已保存到 scripts/sales_analysis.py")
+print("\n实操完成！")
+print("所有文件已按目录结构组织:")
+print("- data/ - 存放数据集")
+print("- scripts/ - 存放Python脚本")
+print("- notebooks/ - 存放Jupyter Notebook")
+print("- reports/ - 存放分析报告")
+print("\n报告和图表已生成，可在reports目录查看")`
     }
   }
 ];

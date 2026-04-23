@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "@/pages/Home";
-import DataAnalysisCourse from "@/pages/DataAnalysisCourse";
+import Home from "./pages/Home";
+import DataAnalysisCourse from "./pages/DataAnalysisCourse";
 
 export default function App() {
   return (

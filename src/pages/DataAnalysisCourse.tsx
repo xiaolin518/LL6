@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BookOpen, CheckCircle, AlertCircle, ChevronRight, RefreshCw, Star, ChevronLeft, Play } from 'lucide-react';
+import { BookOpen, CheckCircle, AlertCircle, ChevronRight, RefreshCw, Star, ChevronLeft, Play, Code } from 'lucide-react';
 
 // 生成400道章节练习题
 const generateChapterQuestions = () => {
@@ -2045,6 +2045,20 @@ print("\n自动化销售报表生成完成！")`
                     >
                       <BookOpen className="w-4 h-4" />
                       理论学习
+                    </button>
+                    <button
+                      onClick={() => {
+                        if (chapter.id === 'chapter7') {
+                          setActiveChapter(chapter.id);
+                          setShowPractice(false);
+                        } else {
+                          alert('实操训练仅在Python数据分析实践项目章节可用');
+                        }
+                      }}
+                      className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                    >
+                      <Code className="w-4 h-4" />
+                      实操训练
                     </button>
                     <button
                       onClick={() => startPractice(chapter.id)}

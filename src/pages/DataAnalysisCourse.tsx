@@ -224,60 +224,9 @@ const courseOutline = [
     title: 'Python数据分析实践项目',
     description: '10个实用的Python数据分析项目，涵盖数据清洗、分析、可视化等多个领域',
     content: `
-      <h3>7.1 实操目录</h3>
-      <p>点击下方项目进入实操练习：</p>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="openPractice(1)">
-          <h4 class="font-bold text-blue-600">01. 销售数据读取与清洗</h4>
-          <p class="text-sm text-gray-600 mt-1">核心工具: read_csv/read_excel, dropna, fillna, astype, drop_duplicates</p>
-          <p class="text-sm text-gray-600 mt-1">业务目标: 数据完整性校验、格式统一、脏数据清理</p>
-        </div>
-        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="openPractice(2)">
-          <h4 class="font-bold text-blue-600">02. 销售数据分组聚合</h4>
-          <p class="text-sm text-gray-600 mt-1">核心工具: groupby, agg, sum, mean, count</p>
-          <p class="text-sm text-gray-600 mt-1">业务目标: 多维度销售指标统计（销售额、销量、客单价）</p>
-        </div>
-        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="openPractice(3)">
-          <h4 class="font-bold text-blue-600">03. 购物篮关联规则分析</h4>
-          <p class="text-sm text-gray-600 mt-1">核心工具: groupby + apply, itertools.combinations, mlxtend.frequent_patterns</p>
-          <p class="text-sm text-gray-600 mt-1">业务目标: 热销搭配挖掘、强关联商品识别、支持度 / 置信度计算</p>
-        </div>
-        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="openPractice(4)">
-          <h4 class="font-bold text-blue-600">04. 客户聚类分析</h4>
-          <p class="text-sm text-gray-600 mt-1">核心工具: StandardScaler, KMeans, silhouette_score</p>
-          <p class="text-sm text-gray-600 mt-1">业务目标: 客户群体划分、高价值 / 流失 / 潜力客户识别、簇中心解读</p>
-        </div>
-        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="openPractice(5)">
-          <h4 class="font-bold text-blue-600">05. 销售数据可视化</h4>
-          <p class="text-sm text-gray-600 mt-1">核心工具: plot, bar, pie, line (Pandas内置), matplotlib, seaborn</p>
-          <p class="text-sm text-gray-600 mt-1">业务目标: 销售趋势、地区分布、品类占比可视化，图表叙事与洞察总结</p>
-        </div>
-        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="openPractice(6)">
-          <h4 class="font-bold text-blue-600">06. A/B测试效果分析</h4>
-          <p class="text-sm text-gray-600 mt-1">核心工具: groupby, crosstab, scipy.stats (T-test/Chi2)</p>
-          <p class="text-sm text-gray-600 mt-1">业务目标: 实验数据统计、转化率差异显著性检验、P值解读与方案评估</p>
-        </div>
-        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="openPractice(7)">
-          <h4 class="font-bold text-blue-600">07. 时间序列预测分析</h4>
-          <p class="text-sm text-gray-600 mt-1">核心工具: resample, rolling, shift, ARIMA/Prophet</p>
-          <p class="text-sm text-gray-600 mt-1">业务目标: 销售趋势分析、季节性识别、月度 / 季度销量预测</p>
-        </div>
-        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="openPractice(8)">
-          <h4 class="font-bold text-blue-600">08. 机器学习特征工程</h4>
-          <p class="text-sm text-gray-600 mt-1">核心工具: get_dummies, LabelEncoder, cut/qcut, corr, SelectKBest</p>
-          <p class="text-sm text-gray-600 mt-1">业务目标: 衍生特征创建、分类变量编码、特征筛选与建模数据准备</p>
-        </div>
-        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="openPractice(9)">
-          <h4 class="font-bold text-blue-600">09. 客户RFM价值分层</h4>
-          <p class="text-sm text-gray-600 mt-1">核心工具: qcut, map, apply, 自定义评分函数</p>
-          <p class="text-sm text-gray-600 mt-1">业务目标: 基于RFM的客户价值分层、业务标签定义与分层运营策略制定</p>
-        </div>
-        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="openPractice(10)">
-          <h4 class="font-bold text-blue-600">10. 自动化销售报表生成</h4>
-          <p class="text-sm text-gray-600 mt-1">核心工具: pd.ExcelWriter, openpyxl, pivot_table, plot</p>
-          <p class="text-sm text-gray-600 mt-1">业务目标: 自动生成带图表的周报 / 月报，实现数据统计与报表自动化</p>
-        </div>
-      </div>
+      <h3>7.1 项目概述</h3>
+      <p>本章节包含10个实用的Python数据分析项目，涵盖数据清洗、分析、可视化等多个领域。</p>
+      <p>点击"实操训练"按钮进入实操目录，选择具体项目进行练习。</p>
     `
   }
 ];
@@ -291,6 +240,7 @@ export default function DataAnalysisCourse() {
   const [userAnswers, setUserAnswers] = useState<Record<string, any>>({});
   const [showResult, setShowResult] = useState(false);
   const [score, setScore] = useState(0);
+  const [isPracticalMode, setIsPracticalMode] = useState<boolean>(false);
   
   // 实操练习状态
   const [showPractical, setShowPractical] = useState<boolean>(false);
@@ -2039,6 +1989,7 @@ print("\n自动化销售报表生成完成！")`
                     <button
                       onClick={() => {
                         setActiveChapter(chapter.id);
+                        setIsPracticalMode(false);
                         setShowPractice(false);
                       }}
                       className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
@@ -2050,6 +2001,7 @@ print("\n自动化销售报表生成完成！")`
                       <button
                         onClick={() => {
                           setActiveChapter(chapter.id);
+                          setIsPracticalMode(true);
                           setShowPractice(false);
                         }}
                         className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
@@ -2079,7 +2031,7 @@ print("\n自动化销售报表生成完成！")`
           <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[80vh] overflow-y-auto">
             <div className="sticky top-0 bg-white p-6 border-b flex justify-between items-center">
               <h3 className="text-2xl font-bold text-gray-800">
-                {courseOutline.find(c => c.id === activeChapter)?.title} - 理论学习
+                {courseOutline.find(c => c.id === activeChapter)?.title} - {isPracticalMode ? '实操训练' : '理论学习'}
               </h3>
               <button
                 onClick={() => setActiveChapter(null)}
@@ -2090,18 +2042,52 @@ print("\n自动化销售报表生成完成！")`
                 </svg>
               </button>
             </div>
-            <div className="p-6" dangerouslySetInnerHTML={{ __html: courseOutline.find(c => c.id === activeChapter)?.content || '' }} />
-            <div className="p-6 border-t">
-              <button
-                onClick={() => {
-                  startPractice(activeChapter);
-                }}
-                className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
-              >
-                <Star className="w-5 h-5" />
-                开始章节练习
-              </button>
-            </div>
+            {isPracticalMode && activeChapter === 'chapter7' ? (
+              <>
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-gray-800 mb-6">实操目录</h3>
+                  <p className="text-gray-600 mb-6">点击下方项目进入实操练习：</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {practicalProjects.map((project) => (
+                      <div 
+                        key={project.id}
+                        className="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer"
+                        onClick={() => openPractice(project.id)}
+                      >
+                        <h4 className="font-bold text-blue-600">{`${project.id}. ${project.title}`}</h4>
+                        <p className="text-sm text-gray-600 mt-2">{project.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="p-6 border-t">
+                  <button
+                    onClick={() => {
+                      startPractice(activeChapter);
+                    }}
+                    className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+                  >
+                    <Star className="w-5 h-5" />
+                    开始章节练习
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="p-6" dangerouslySetInnerHTML={{ __html: courseOutline.find(c => c.id === activeChapter)?.content || '' }} />
+                <div className="p-6 border-t">
+                  <button
+                    onClick={() => {
+                      startPractice(activeChapter);
+                    }}
+                    className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+                  >
+                    <Star className="w-5 h-5" />
+                    开始章节练习
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}

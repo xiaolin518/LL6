@@ -255,6 +255,7 @@ export default function DataAnalysisCourse() {
   // 实操练习数据
   // 实操练习数据
   // 实操练习数据
+  // 实操练习数据
   const practicalProjects = [
     {
       id: 1,
@@ -308,16 +309,7 @@ df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
 df.drop_duplicates(subset=['USER_ID', 'ORDER_DATE', 'AMOUNT'], inplace=True)
 
 print('=== 01 清洗结果 ===')
-print(df)
-
-# 运行结果：
-# === 01 清洗结果 ===
-#    USER_ID ORDER_DATE  AMOUNT
-# 0        1 2023-09-01     100
-# 1        1 2023-09-15     150
-# 3        2 2023-08-10      80
-# 5        3 2023-07-01     300
-# 6        3 2023-07-10     300`,
+print(df)`,
     },
     {
       id: 2,
@@ -341,14 +333,7 @@ user_stats = df.groupby('USER_ID').agg(
 
 print('
 === 02 聚合结果 ===')
-print(user_stats)
-
-# 运行结果：
-# === 02 聚合结果 ===
-#    USER_ID  总销售额  订单数   客单价
-# 0        1      250      2  125.0
-# 1        2       80      1   80.0
-# 2        3      600      2  300.0`,
+print(user_stats)`,
     },
     {
       id: 3,
@@ -398,14 +383,7 @@ rules = association_rules(frequent, metric='confidence', min_threshold=0.6)
 
 print('
 === 03 关联规则 ===')
-print(rules[['antecedents','consequents','support','confidence']])
-
-# 运行结果：
-# === 03 关联规则 ===
-#   antecedents consequents   support  confidence
-# 0      (面包)       (牛奶)  0.666667    1.000000
-# 1      (牛奶)       (面包)  0.666667    1.000000
-# 2      (鸡蛋)       (牛奶)  0.333333    0.500000（被阈值过滤）`,
+print(rules[['antecedents','consequents','support','confidence']])`,
     },
     {
       id: 4,
@@ -452,21 +430,7 @@ print('
 print(df)
 print('
 聚类均值：')
-print(df.groupby('聚类').mean())
-
-# 运行结果：
-# === 04 聚类结果 ===
-#    USER_ID  总金额  订单数  最近购买时间  聚类
-# 0        1    250      2        30     1
-# 1        2     80      1        60     2
-# 2        3    600      2         5     0
-# 
-# 聚类均值：
-#        USER_ID   总金额  订单数  最近购买时间
-# 聚类
-# 0         3.0  600.0    2.0        5.0
-# 1         1.0  250.0    2.0       30.0
-# 2         2.0   80.0    1.0       60.0`,
+print(df.groupby('聚类').mean())`,
     },
     {
       id: 5,
@@ -549,13 +513,7 @@ plt.title('各用户总销售额')
 plt.show()
 
 print('
-=== 05 可视化已展示 ===')
-
-# 运行结果：
-# 弹出3 张图表：
-# 销售趋势折线图
-# 用户销售额占比饼图
-# 用户销售额柱状图`,
+=== 05 可视化已展示 ===')`,
     },
     {
       id: 6,
@@ -597,12 +555,7 @@ print(f'P值: {p:.4f}')
 if p < 0.05:
     print('转化率差异显著')
 else:
-    print('无显著差异')
-
-# 运行结果：
-# === 06 A/B测试结果 ===
-# P值: 0.5243
-# 无显著差异`,
+    print('无显著差异')`,
     },
     {
       id: 7,
@@ -646,14 +599,7 @@ fit = model.fit()
 print('
 === 07 时间序列预测 ===')
 print('未来2个月预测值：')
-print(fit.forecast(steps=2))
-
-# 运行结果：
-# === 07 时间序列预测 ===
-# 未来2个月预测值：
-# 2023-06-30    148.678026
-# 2023-07-31    149.567892
-# Freq: M, Name: predicted_mean, dtype: float64`,
+print(fit.forecast(steps=2))`,
     },
     {
       id: 8,
@@ -697,15 +643,7 @@ df['用户编码'] = le.fit_transform(df['USER_ID'])
 
 print('
 === 08 特征工程结果 ===')
-print(df[['月份','星期几','用户编码','AMOUNT']])
-
-# 运行结果：
-# === 08 特征工程结果 ===
-#    月份  星期几  用户编码  AMOUNT
-# 0     9      4       0     100
-# 1     9      4       0     150
-# 2     8      3       1      80
-# 3     8      4       1     120`,
+print(df[['月份','星期几','用户编码','AMOUNT']])`,
     },
     {
       id: 9,
@@ -765,15 +703,7 @@ rfm['总分'] = rfm['R_score'].astype(int) + rfm['F_score'].astype(int) + rfm['M
 
 print('
 === 09 RFM分层结果 ===')
-print(rfm)
-
-# 运行结果：
-# === 09 RFM分层结果 ===
-#           R  F    M R_score F_score M_score  总分
-# USER_ID
-# 1        17  2  500       4       3       4   11
-# 2       112  1   80       1       2       1    4
-# 3        12  1  500       4       2       4   10`,
+print(rfm)`,
     },
     {
       id: 10,
@@ -854,11 +784,7 @@ plt.close()
 
 print('
 === 10 自动化报表已生成 ===')
-print('文件：销售月报.xlsx、chart.png')
-
-# 运行结果：
-# === 10 自动化报表已生成 ===
-# 文件：销售月报.xlsx、chart.png`,
+print('文件：销售月报.xlsx、chart.png')`,
     },
   ];
 
@@ -952,8 +878,21 @@ print('文件：销售月报.xlsx、chart.png')
   };
 
   const runCode = () => {
-    // 这里只是模拟代码运行，实际项目中可以使用后端API或WebAssembly
-    setCodeOutput('代码运行中...\n\n模拟运行结果:\n' + userCode.split('\n').filter(line => !line.startsWith('#')).join('\n'));
+    // 这里使用答案.docx中的运行结果
+    const runResults: { [key: number]: string } = {
+      1: `=== 01 清洗结果 ===\n   USER_ID ORDER_DATE  AMOUNT\n0        1 2023-09-01     100\n1        1 2023-09-15     150\n3        2 2023-08-10      80\n5        3 2023-07-01     300\n6        3 2023-07-10     300`,
+      2: `=== 02 聚合结果 ===\n   USER_ID  总销售额  订单数   客单价\n0        1      250      2  125.0\n1        2       80      1   80.0\n2        3      600      2  300.0`,
+      3: `=== 03 关联规则 ===\n  antecedents consequents   support  confidence\n0      (面包)       (牛奶)  0.666667    1.000000\n1      (牛奶)       (面包)  0.666667    1.000000\n2      (鸡蛋)       (牛奶)  0.333333    0.500000（被阈值过滤）`,
+      4: `=== 04 聚类结果 ===\n   USER_ID  总金额  订单数  最近购买时间  聚类\n0        1    250      2        30     1\n1        2     80      1        60     2\n2        3    600      2         5     0\n\n聚类均值：\n       USER_ID   总金额  订单数  最近购买时间\n聚类\n0         3.0  600.0    2.0        5.0\n1         1.0  250.0    2.0       30.0\n2         2.0   80.0    1.0       60.0`,
+      5: `=== 05 可视化已展示 ===\n弹出3 张图表：\n销售趋势折线图\n用户销售额占比饼图\n用户销售额柱状图`,
+      6: `=== 06 A/B测试结果 ===\nP值: 0.5243\n无显著差异`,
+      7: `=== 07 时间序列预测 ===\n未来2个月预测值：\n2023-06-30    148.678026\n2023-07-31    149.567892\nFreq: M, Name: predicted_mean, dtype: float64`,
+      8: `=== 08 特征工程结果 ===\n   月份  星期几  用户编码  AMOUNT\n0     9      4       0     100\n1     9      4       0     150\n2     8      3       1      80\n3     8      4       1     120`,
+      9: `=== 09 RFM分层结果 ===\n          R  F    M R_score F_score M_score  总分\nUSER_ID\n1        17  2  500       4       3       4   11\n2       112  1   80       1       2       1    4\n3        12  1  500       4       2       4   10`,
+      10: `=== 10 自动化报表已生成 ===\n文件：销售月报.xlsx、chart.png`
+    };
+    
+    setCodeOutput('代码运行中...\n\n' + runResults[currentPracticalId || 1]);
   };
 
   const showAnswerSolution = () => {

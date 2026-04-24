@@ -252,443 +252,447 @@ export default function DataAnalysisCourse() {
   const allQuestions = generateChapterQuestions();
 
   // 实操练习数据
+  // 实操练习数据
   const practicalProjects = [
     {
       id: 1,
       title: "销售数据读取与清洗",
-      description: "使用Pandas读取销售数据并进行清洗，处理缺失值和异常值",
-      data: `电商销售原始数据（sales_raw.csv），包含字段：订单ID、商品ID、商品类别、地区、购买日期、销量、销售额、客户ID，共10000行，存在15%缺失值、5%异常值，日期格式不统一（部分为“YYYY年MM月DD日”）。`,
-      codeTemplate: `1. 读取数据并查看基本信息（形状、数据类型、缺失值占比）；2. 处理缺失值（数值型用均值填充，字符串型用“未知”填充）；3. 处理异常值（销量/销售额为负、超出3倍标准差的值删除）；4. 统一日期格式为“YYYY-MM-DD”，删除重复行；5. 保存清洗后的数据。`,
+      description: "数据完整性校验、格式统一、脏数据清理",
+      data: `示例数据（sales_raw.csv）：
+USER_ID,ORDER_DATE,AMOUNT
+1,2023-09-01,100
+1,2023-09-15,150
+1,,200
+2,2023-08-10,80
+2,2023-08-25,-5
+3,2023-07-01,300
+3,2023-07-10,300`,
+      codeTemplate: `# 读取数据
+df = pd.read_csv('sales_raw.csv')
+
+# 删除空值行
+df.dropna(subset=['ORDER_DATE', 'AMOUNT'], inplace=True)
+
+# 金额异常值处理（金额<=0视为脏数据）
+df = df[df['AMOUNT'] > 0]
+
+# 日期格式统一
+df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
+
+# 删除重复订单（同用户同一天同金额视为重复）
+df.drop_duplicates(subset=['USER_ID', 'ORDER_DATE', 'AMOUNT'], inplace=True)
+
+print(df)`,
       answer: `import pandas as pd
-import numpy as np
 
-# 1. 读取数据并查看基本信息
-df = pd.read_csv("sales_raw.csv")
-print("原始数据形状：", df.shape)
-print("缺失值情况：\\n", df.isnull().sum())
+# 读取数据
+df = pd.read_csv('sales_raw.csv')
 
-# 2. 处理缺失值
-df["销售额"].fillna(df["销售额"].mean(), inplace=True)
-df["购买日期"].fillna(df["购买日期"].mode()[0], inplace=True)
-df["地区"].fillna("未知", inplace=True)
+# 删除空值行
+df.dropna(subset=['ORDER_DATE', 'AMOUNT'], inplace=True)
 
-# 3. 处理异常值
-std_sales = df["销售额"].std()
-mean_sales = df["销售额"].mean()
-df = df[(df["销量"] > 0) & (df["销售额"] < mean_sales + 3*std_sales)]
+# 金额异常值处理（金额<=0视为脏数据）
+df = df[df['AMOUNT'] > 0]
 
-# 4. 统一日期格式、删除重复行
-df["购买日期"] = pd.to_datetime(df["购买日期"], format="%Y年%m月%d日", errors="coerce")
-df["购买日期"] = df["购买日期"].dt.strftime("%Y-%m-%d")
-df = df.drop_duplicates()
+# 日期格式统一
+df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
 
-# 5. 输出并保存
-print("清洗后数据形状：", df.shape)
-print("清洗后数据前5行：\\n", df.head())
-df.to_csv("sales_cleaned.csv", index=False)`,
+# 删除重复订单（同用户同一天同金额视为重复）
+df.drop_duplicates(subset=['USER_ID', 'ORDER_DATE', 'AMOUNT'], inplace=True)
+
+print(df)
+
+# 输出：清洗后的干净数据，无空值、无异常金额、日期为datetime类型`,
     },
     {
       id: 2,
       title: "销售数据分组聚合",
-      description: "使用groupby和agg函数进行多维度销售指标统计",
-      data: `使用项目01清洗后的sales_cleaned.csv数据，字段完整，格式统一，共9840行有效数据。`,
-      codeTemplate: `1. 读取清洗后的销售数据；2. 按商品类别分组，计算每组的总销量、总销售额、平均客单价；3. 按地区分组，计算每组的订单数、总销售额、平均销量；4. 按月份分组，计算每月的总销量、总销售额；5. 将聚合结果整理为DataFrame，保存为聚合报表。`,
+      description: "多维度销售指标统计（销售额、销量、客单价）",
+      data: `使用清洗后的销售数据`,
+      codeTemplate: `# 按用户聚合
+user_stats = df.groupby('USER_ID').agg(
+    总销售额=('AMOUNT', 'sum'),
+    订单数=('AMOUNT', 'count'),
+    客单价=('AMOUNT', 'mean')
+).reset_index()
+
+print(user_stats)`,
       answer: `import pandas as pd
 
-# 1. 读取清洗后的数据
-df = pd.read_csv("sales_cleaned.csv")
-df["购买日期"] = pd.to_datetime(df["购买日期"])
-df["月份"] = df["购买日期"].dt.month
+# 按用户聚合
+user_stats = df.groupby('USER_ID').agg(
+    总销售额=('AMOUNT', 'sum'),
+    订单数=('AMOUNT', 'count'),
+    客单价=('AMOUNT', 'mean')
+).reset_index()
 
-# 2. 按商品类别聚合
-category_agg = df.groupby("商品类别").agg({
-    "销量": "sum",
-    "销售额": "sum",
-    "订单ID": "count"
-}).rename(columns={"订单ID": "订单数"})
-category_agg["客单价"] = category_agg["销售额"] / category_agg["销量"]
+print(user_stats)
 
-# 3. 按地区聚合
-area_agg = df.groupby("地区").agg({
-    "订单ID": "count",
-    "销售额": "sum",
- "销量": "mean"
-}).rename(columns={"订单ID": "订单数", "销量": "平均销量"})
-
-# 4. 按月份聚合
-month_agg = df.groupby("月份").agg({
-    "销量": "sum",
-    "销售额": "sum"
-})
-
-# 5. 保存聚合结果
-with pd.ExcelWriter("sales_aggregation.xlsx") as writer:
-    category_agg.to_excel(writer, sheet_name="商品类别聚合")
-    area_agg.to_excel(writer, sheet_name="地区聚合")
-    month_agg.to_excel(writer, sheet_name="月度聚合")
-print("聚合报表生成完成")`,
+# 输出：
+# USER_ID  总销售额  订单数   客单价
+# 1        250      2    125
+# 2         80      1     80
+# 3        600      2    300`,
     },
     {
       id: 3,
       title: "购物篮关联规则分析",
-      description: "使用Apriori算法挖掘商品间的关联规则",
-      data: `使用sales_cleaned.csv数据，筛选出包含“订单ID”和“商品名称”的字段，共9840行，涉及80个商品、7200个唯一订单（部分订单包含多个商品）。`,
-      codeTemplate: `1. 读取清洗后的销售数据，按订单ID分组，获取每个订单的商品组合；2. 转换数据为one-hot编码格式（商品为列，订单为行，购买记1，未购买记0）；3. 使用Apriori算法挖掘频繁项集（最小支持度0.05）；4. 计算关联规则，筛选置信度≥0.5的强关联规则；5. 可视化关联规则（展示前10条强关联规则）。`,
-      answer: `import pandas as pd
+      description: "热销搭配挖掘、强关联商品识别",
+      data: `交易数据：
+TRANSACTION_ID,PRODUCT
+101,牛奶
+101,面包
+101,鸡蛋
+102,牛奶
+102,面包
+103,鸡蛋
+103,黄油`,
+      codeTemplate: `import pandas as pd
 from mlxtend.frequent_patterns import apriori, association_rules
-import matplotlib.pyplot as plt
 
-# 1. 读取数据并处理商品组合
-df = pd.read_csv("sales_cleaned.csv")[["订单ID", "商品名称"]]
-basket = df.groupby(["订单ID", "商品名称"])["商品名称"].count().unstack().fillna(0)
+# 创建购物篮矩阵
+basket = df.groupby(['TRANSACTION_ID', 'PRODUCT'])['PRODUCT'].count().unstack().fillna(0)
 basket = basket.applymap(lambda x: 1 if x > 0 else 0)
 
-# 2. 挖掘频繁项集
-frequent_itemsets = apriori(basket, min_support=0.05, use_colnames=True)
+# 频繁项集
+frequent = apriori(basket, min_support=0.4, use_colnames=True)
 
-# 3. 计算关联规则
-rules = association_rules(frequent_itemsets, metric="confidence", min_threshold=0.5)
-rules = rules.sort_values("confidence", ascending=False).head(10)
+# 关联规则
+rules = association_rules(frequent, metric='confidence', min_threshold=0.6)
+print(rules[['antecedents', 'consequents', 'support', 'confidence']])`,
+      answer: `import pandas as pd
+from mlxtend.frequent_patterns import apriori, association_rules
 
-# 4. 可视化关联规则
-plt.figure(figsize=(12, 6))
-plt.bar(range(len(rules)), rules["confidence"], tick_label=[f"{list(x)[0]}→{list(y)[0]}" for x,y in zip(rules["antecedents"], rules["consequents"])])
-plt.xticks(rotation=45, ha="right")
-plt.xlabel("关联规则")
-plt.ylabel("置信度")
-plt.title("置信度Top10关联规则")
-plt.tight_layout()
-plt.savefig("association_rules.png")
+# 创建购物篮矩阵
+basket = df.groupby(['TRANSACTION_ID', 'PRODUCT'])['PRODUCT'].count().unstack().fillna(0)
+basket = basket.applymap(lambda x: 1 if x > 0 else 0)
 
-# 5. 输出结果
-print("频繁项集：\\n", frequent_itemsets.head())
-print("强关联规则：\\n", rules[["antecedents", "consequents", "support", "confidence"]])`,
+# 频繁项集
+frequent = apriori(basket, min_support=0.4, use_colnames=True)
+
+# 关联规则
+rules = association_rules(frequent, metric='confidence', min_threshold=0.6)
+print(rules[['antecedents', 'consequents', 'support', 'confidence']])
+
+# 输出关联规则`,
     },
     {
       id: 4,
       title: "客户聚类分析",
-      description: "使用KMeans算法对客户进行聚类，识别客户群体",
-      data: `使用sales_cleaned.csv数据，按客户ID聚合，得到1500个唯一客户的特征数据，包含字段：客户ID、总消费金额、消费频次、平均客单价。`,
-      codeTemplate: `1. 读取清洗后的销售数据，按客户ID分组，计算客户的核心特征（消费金额、消费频次、平均客单价）；2. 对特征进行标准化处理（消除量纲影响）；3. 使用K-Means算法聚类（k值通过轮廓系数确定，范围2-5）；4. 分析每个簇的特征，定义客户标签（高价值、潜力、普通、流失）；5. 可视化聚类结果（散点图），输出客户聚类报告。`,
-      answer: `import pandas as pd
+      description: "客户群体划分、高价值/流失/潜力客户识别",
+      data: `客户特征表：
+USER_ID,总金额,订单数,最近购买时间（天）
+1,250,2,30
+2,80,1,60
+3,600,2,5`,
+      codeTemplate: `from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
-from sklearn.cluster import KMeans
-from sklearn.metrics import silhouette_score
-import matplotlib.pyplot as plt
 
-# 1. 计算客户核心特征
-df = pd.read_csv("sales_cleaned.csv")
-customer_features = df.groupby("客户ID").agg({
-    "销售额": "sum",
-    "订单ID": "count",
-    "销量": "mean"
-}).rename(columns={"订单ID": "消费频次", "销量": "平均客单价"})
-
-# 2. 特征标准化
+features = df[['总金额', '订单数', '最近购买时间']]
 scaler = StandardScaler()
-features_scaled = scaler.fit_transform(customer_features)
+scaled = scaler.fit_transform(features)
 
-# 3. 确定k值并聚类
-sil_scores = []
-for k in range(2,6):
-    kmeans = KMeans(n_clusters=k, random_state=42)
-    labels = kmeans.fit_predict(features_scaled)
-    sil_scores.append(silhouette_score(features_scaled, labels))
-k_optimal = sil_scores.index(max(sil_scores)) + 2
-kmeans = KMeans(n_clusters=k_optimal, random_state=42)
-customer_features["簇标签"] = kmeans.fit_predict(features_scaled)
+kmeans = KMeans(n_clusters=3, random_state=42)
+df['聚类'] = kmeans.fit_predict(scaled)
 
-# 4. 定义客户标签并可视化
-cluster_labels = {0:"高价值", 1:"潜力", 2:"普通", 3:"流失"}
-customer_features["客户标签"] = customer_features["簇标签"].map(cluster_labels)
-plt.scatter(customer_features["销售额"], customer_features["消费频次"], c=customer_features["簇标签"], cmap="viridis")
-plt.xlabel("总消费金额")
-plt.ylabel("消费频次")
-plt.title("客户聚类结果")
-plt.savefig("customer_clustering.png")
+print(df.groupby('聚类').mean())`,
+      answer: `from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
 
-# 5. 输出并保存
-print(f"最优k值：{k_optimal}，轮廓系数：{max(sil_scores):.2f}")
-print("簇中心特征：\\n", scaler.inverse_transform(kmeans.cluster_centers_))
-customer_features.to_csv("customer_clustering.csv")`,
+features = df[['总金额', '订单数', '最近购买时间']]
+scaler = StandardScaler()
+scaled = scaler.fit_transform(features)
+
+kmeans = KMeans(n_clusters=3, random_state=42)
+df['聚类'] = kmeans.fit_predict(scaled)
+
+print(df.groupby('聚类').mean())
+
+# 输出各聚类的均值特征`,
     },
     {
       id: 5,
       title: "销售数据可视化",
-      description: "使用Matplotlib和Seaborn创建销售数据可视化图表",
-      data: `使用sales_cleaned.csv和项目02的聚合数据，包含月度销售额、地区销售额、品类销量等统计数据。`,
-      codeTemplate: `1. 读取清洗后的数据及分组聚合数据；2. 绘制月度销售趋势图（折线图，x轴月份，y轴总销售额）；3. 绘制地区销售额分布（柱状图，x轴地区，y轴总销售额）；4. 绘制商品品类销量占比（饼图，标注占比）；5. 绘制销量与销售额的相关性散点图；6. 整合所有图表，添加标题、坐标轴标签，保存为可视化报告（图片格式）。`,
-      answer: `import pandas as pd
-import matplotlib.pyplot as plt
+      description: "销售趋势分析、数据可视化",
+      data: `使用销售数据`,
+      codeTemplate: `import matplotlib.pyplot as plt
 import seaborn as sns
 
-# 1. 读取数据
-df = pd.read_csv("sales_cleaned.csv")
-df["购买日期"] = pd.to_datetime(df["购买日期"])
-df["月份"] = df["购买日期"].dt.month
-month_agg = df.groupby("月份")["销售额"].sum()
-area_agg = df.groupby("地区")["销售额"].sum()
-category_agg = df.groupby("商品类别")["销量"].sum()
+# 月度销售额趋势
+df['月份'] = df['ORDER_DATE'].dt.to_period('M')
+monthly = df.groupby('月份')['AMOUNT'].sum()
 
-# 2. 绘制综合图表
-plt.figure(figsize=(16, 12))
+plt.figure(figsize=(10,4))
+monthly.plot(kind='line', marker='o')
+plt.title('月度销售趋势')
+plt.show()`,
+      answer: `import matplotlib.pyplot as plt
+import seaborn as sns
 
-# 月度趋势图
-plt.subplot(2,2,1)
-month_agg.plot(kind="line", marker="o")
-plt.title("月度销售额趋势")
-plt.xlabel("月份")
-plt.ylabel("总销售额")
+# 月度销售额趋势
+df['月份'] = df['ORDER_DATE'].dt.to_period('M')
+monthly = df.groupby('月份')['AMOUNT'].sum()
 
-# 地区柱状图
-plt.subplot(2,2,2)
-area_agg.plot(kind="bar")
-plt.title("各地区销售额分布")
-plt.xlabel("地区")
-plt.ylabel("总销售额")
-plt.xticks(rotation=45)
+plt.figure(figsize=(10,4))
+monthly.plot(kind='line', marker='o')
+plt.title('月度销售趋势')
+plt.show()
 
-# 品类饼图
-plt.subplot(2,2,3)
-plt.pie(category_agg, labels=category_agg.index, autopct="%1.1f%%")
-plt.title("商品品类销量占比")
-
-# 相关性散点图
-plt.subplot(2,2,4)
-sns.scatterplot(x="销量", y="销售额", data=df)
-plt.title("销量与销售额相关性")
-
-plt.tight_layout()
-plt.savefig("sales_visualization.png")
-print("可视化图表生成完成")
-print(f"销量与销售额相关系数：{df[['销量', '销售额']].corr().iloc[0,1]:.2f}")`,
+# 输出月度销售趋势图`,
     },
     {
       id: 6,
-      title: "A/B 测试效果分析",
-      description: "使用统计方法分析A/B测试的效果",
-      data: `A/B测试数据（ab_test.csv），包含字段：用户ID、分组（对照组/实验组）、是否曝光、是否下单，共8000条数据，对照组4000条，实验组4000条。`,
-      codeTemplate: `1. 读取A/B测试数据，区分对照组（原有运营方案）和实验组（新运营方案）；2. 计算两组的转化率（下单人数/曝光人数）；3. 进行显著性检验（样本量>30用T检验，分类数据用卡方检验）；4. 解读P值（P<0.05则两组差异显著，新方案有效）；5. 计算置信区间，评估方案提升效果，输出测试报告。`,
+      title: "A/B测试效果分析",
+      description: "实验数据统计、转化率差异显著性检验",
+      data: `A/B测试数据：
+USER_ID,GROUP,CONVERTED
+1,A,1
+2,A,0
+3,B,1
+...,...,...`,
+      codeTemplate: `from scipy.stats import chi2_contingency
+
+contingency = pd.crosstab(df['GROUP'], df['CONVERTED'])
+chi2, p, dof, expected = chi2_contingency(contingency)
+
+print(f'P值: {p:.4f}')
+if p < 0.05:
+    print('转化率差异显著')
+else:
+    print('无显著差异')`,
       answer: `import pandas as pd
-from scipy.stats import ttest_ind, norm
+from scipy.stats import chi2_contingency
 
-# 1. 读取A/B测试数据
-df = pd.read_csv("ab_test.csv")
+contingency = pd.crosstab(df['GROUP'], df['CONVERTED'])
+chi2, p, dof, expected = chi2_contingency(contingency)
 
-# 2. 计算两组转化率
-group_stats = df.groupby("分组").agg({
-    "是否曝光": "count",
-    "是否下单": "sum"
-})
-group_stats["转化率"] = group_stats["是否下单"] / group_stats["是否曝光"]
-control_conv = group_stats.loc["对照组", "转化率"]
-test_conv = group_stats.loc["实验组", "转化率"]
+print(f'P值: {p:.4f}')
+if p < 0.05:
+    print('转化率差异显著')
+else:
+    print('无显著差异')
 
-# 3. 显著性检验（T检验）
-control_data = df[df["分组"]=="对照组"]["是否下单"]
-test_data = df[df["分组"]=="实验组"]["是否下单"]
-t_stat, p_value = ttest_ind(test_data, control_conv, equal_var=False)
-
-# 4. 计算置信区间（95%）
-lift = test_conv - control_conv
-se = ((test_conv*(1-test_conv)/len(test_data)) + (control_conv*(1-control_conv)/len(control_data)))**0.5
-ci_low = lift - 1.96*se
-ci_high = lift + 1.96*se
-
-# 5. 输出并保存报告
-report = pd.DataFrame({
-    "分组": ["对照组", "实验组"],
-    "样本量": group_stats["是否曝光"],
-    "下单人数": group_stats["是否下单"],
-    "转化率": group_stats["转化率"]
-})
-report["P值"] = [p_value, p_value]
-report["转化率提升区间"] = [f"{ci_low:.3f}-{ci_high:.3f}", f"{ci_low:.3f}-{ci_high:.3f}"]
-print("A/B测试报告：\\n", report)
-print(f"结论：{'新方案有效' if p_value<0.05 else '新方案无效'}，转化率提升{lift:.3f}")
-report.to_csv("ab_test_report.csv", index=False)`,
+# 输出A/B测试结果`,
     },
     {
       id: 7,
       title: "时间序列预测分析",
-      description: "使用ARIMA模型进行销售预测",
-      data: `使用sales_cleaned.csv数据，按“购买日期”聚合，得到365天的每日销量数据，形成时间序列（索引为日期，值为每日销量）。`,
-      codeTemplate: `1. 读取清洗后的销售数据，按日期分组，计算每日销量，转换为时间序列数据；2. 分析时间序列的趋势（长期趋势、季节性），绘制时序图、滚动平均图；3. 拆分训练集（80%）和测试集（20%）；4. 使用ARIMA模型（调参p=2, d=1, q=1）或Prophet模型进行预测；5. 计算预测误差（MAE、RMSE），可视化预测结果（实际值vs预测值），预测未来3个月销量。`,
-      answer: `import pandas as pd
-import matplotlib.pyplot as plt
+      description: "销售趋势分析、月度销量预测",
+      data: `时间序列数据：
+USER_ID,ORDER_DATE,AMOUNT
+1,2023-01-15,100
+1,2023-02-18,120
+1,2023-03-20,140
+1,2023-04-12,130
+1,2023-05-10,150`,
+      codeTemplate: `import pandas as pd
 from statsmodels.tsa.arima.model import ARIMA
-from sklearn.metrics import mean_absolute_error, mean_squared_error
-import numpy as np
 
-# 1. 构建时间序列
-df = pd.read_csv("sales_cleaned.csv")
-df["购买日期"] = pd.to_datetime(df["购买日期"])
-ts = df.groupby("购买日期")["销量"].sum().asfreq("D").fillna(0)
+data = {'USER_ID': [1,1,1,1,1],
+        'ORDER_DATE': ['2023-01-15','2023-02-18','2023-03-20','2023-04-12','2023-05-10'],
+        'AMOUNT': [100,120,140,130,150]}
+df = pd.DataFrame(data)
+df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
 
-# 2. 时序分析与可视化
-plt.figure(figsize=(12, 6))
-plt.plot(ts, label="每日销量")
-plt.plot(ts.rolling(window=7).mean(), label="7日滚动平均")
-plt.title("销量时间序列趋势")
-plt.xlabel("日期")
-plt.ylabel("销量")
-plt.legend()
-plt.savefig("time_series_trend.png")
+ts = df.set_index('ORDER_DATE')['AMOUNT'].resample('M').sum()
+model = ARIMA(ts, order=(1,1,1))
+fit = model.fit()
+print(fit.forecast(steps=2))`,
+      answer: `import pandas as pd
+from statsmodels.tsa.arima.model import ARIMA
 
-# 3. 拆分训练集与测试集
-train_size = int(len(ts)*0.8)
-train, test = ts[:train_size], ts[train_size:]
+data = {'USER_ID': [1,1,1,1,1],
+        'ORDER_DATE': ['2023-01-15','2023-02-18','2023-03-20','2023-04-12','2023-05-10'],
+        'AMOUNT': [100,120,140,130,150]}
+df = pd.DataFrame(data)
+df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
 
-# 4. ARIMA模型预测
-model = ARIMA(train, order=(2,1,1))
-model_fit = model.fit()
-predictions = model_fit.predict(start=len(train), end=len(ts)-1, typ="levels")
+ts = df.set_index('ORDER_DATE')['AMOUNT'].resample('M').sum()
+model = ARIMA(ts, order=(1,1,1))
+fit = model.fit()
+print(fit.forecast(steps=2))
 
-# 5. 模型评估与未来预测
-mae = mean_absolute_error(test, predictions)
-rmse = np.sqrt(mean_squared_error(test, predictions))
-future_predict = model_fit.get_forecast(steps=90) # 未来3个月
-future_销量 = future_predict.predicted_mean.resample("M").sum()
-
-# 输出与保存
-forecast_df = pd.DataFrame({"实际值": test, "预测值": predictions})
-forecast_df["误差"] = forecast_df["实际值"] - forecast_df["预测值"]
-print(f"MAE: {mae:.0f}, RMSE: {rmse:.0f}")
-print("未来3个月销量预测：\\n", future_销量)
-forecast_df.to_csv("sales_forecast.csv")`,
+# 输出未来2个月的销售预测`,
     },
     {
       id: 8,
       title: "机器学习特征工程",
-      description: "进行特征工程，为机器学习模型做准备",
-      data: `使用sales_cleaned.csv和项目04的客户聚类数据，包含原始特征（销量、销售额、地区等）和客户特征（消费频次、平均客单价等），共9840行数据。`,
-      codeTemplate: `1. 读取清洗后的销售数据及客户特征数据；2. 创建衍生特征（消费时长、购买频率、客单价等级）；3. 对分类变量编码（地区、商品类别用独热编码，客户标签用标签编码）；4. 对数值特征分箱（销售额用qcut分为5个等级）；5. 计算特征相关性，筛选与销售额相关系数≥0.3的特征；6. 输出处理后的特征数据集，用于后续建模。`,
+      description: "衍生特征创建、分类变量编码",
+      data: `特征工程数据：
+USER_ID,ORDER_DATE,AMOUNT
+1,2023-09-01,100
+1,2023-09-15,150
+2,2023-08-10,80
+2,2023-08-25,120`,
+      codeTemplate: `import pandas as pd
+from sklearn.preprocessing import LabelEncoder
+
+data = {'USER_ID': [1,1,2,2],
+        'ORDER_DATE': ['2023-09-01','2023-09-15','2023-08-10','2023-08-25'],
+        'AMOUNT': [100,150,80,120]}
+df = pd.DataFrame(data)
+df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
+
+df['月份'] = df['ORDER_DATE'].dt.month
+df['星期几'] = df['ORDER_DATE'].dt.dayofweek
+le = LabelEncoder()
+df['用户编码'] = le.fit_transform(df['USER_ID'])
+print(df[['月份','星期几','用户编码','AMOUNT']])`,
       answer: `import pandas as pd
 from sklearn.preprocessing import LabelEncoder
-from sklearn.feature_selection import SelectKBest, f_regression
 
-# 1. 读取数据
-df = pd.read_csv("sales_cleaned.csv")
-customer_df = pd.read_csv("customer_clustering.csv", index_col="客户ID")
-df = df.merge(customer_df[["消费频次", "平均客单价", "客户标签"]], on="客户ID")
+data = {'USER_ID': [1,1,2,2],
+        'ORDER_DATE': ['2023-09-01','2023-09-15','2023-08-10','2023-08-25'],
+        'AMOUNT': [100,150,80,120]}
+df = pd.DataFrame(data)
+df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
 
-# 2. 创建衍生特征
-df["购买日期"] = pd.to_datetime(df["购买日期"])
-first_purchase = df.groupby("客户ID")["购买日期"].min()
-df["消费时长"] = (df["购买日期"] - df["客户ID"].map(first_purchase)).dt.days
-df["购买频率"] = df["消费频次"] / (df["消费时长"] + 1) # 避免除以0
-df["客单价等级"] = pd.qcut(df["平均客单价"], 3, labels=["低", "中", "高"])
-
-# 3. 分类变量编码
-df = pd.get_dummies(df, columns=["地区", "商品类别", "客单价等级"], drop_first=True)
+df['月份'] = df['ORDER_DATE'].dt.month
+df['星期几'] = df['ORDER_DATE'].dt.dayofweek
 le = LabelEncoder()
-df["客户标签编码"] = le.fit_transform(df["客户标签"])
+df['用户编码'] = le.fit_transform(df['USER_ID'])
+print(df[['月份','星期几','用户编码','AMOUNT']])
 
-# 4. 数值特征分箱
-df["销售额等级"] = pd.qcut(df["销售额"], 5, labels=[1,2,3,4,5])
-
-# 5. 特征筛选
-X = df.drop(["销售额", "订单ID", "商品ID", "购买日期", "客户标签"], axis=1)
-y = df["销售额"]
-selector = SelectKBest(score_func=f_regression, k=6)
-X_selected = selector.fit_transform(X, y)
-selected_cols = X.columns[selector.get_support()]
-feature_df = df[selected_cols.tolist() + ["销售额"]]
-
-# 输出与保存
-print("筛选后特征：", selected_cols.tolist())
-print("处理后数据集形状：", feature_df.shape)
-feature_df.to_csv("feature_engineered_data.csv", index=False)`,
+# 输出特征工程后的数据集`,
     },
     {
       id: 9,
-      title: "客户 RFM 价值分层",
-      description: "使用RFM模型进行客户价值分层",
-      data: `使用sales_cleaned.csv数据，按客户ID聚合，得到1500个唯一客户的RFM指标数据，包含字段：客户ID、最近消费天数（R）、消费频次（F）、消费总金额（M）。`,
-      codeTemplate: `1. 读取清洗后的销售数据，按客户ID计算RFM指标（R：最近一次消费距离当前的天数，F：消费频次，M：消费总金额）；2. 对R、F、M分别进行评分（1-5分，R越小分越高，F、M越大分越高）；3. 计算RFM总得分，按得分分4层（高价值、高潜力、普通、低价值）；4. 定义各分层客户的运营策略；5. 输出客户RFM分层结果，保存为分层报告。`,
+      title: "客户RFM价值分层",
+      description: "客户价值分层、高价值/流失客户识别",
+      data: `RFM数据：
+USER_ID,ORDER_DATE,AMOUNT
+1,2024-02-01,300
+1,2024-03-15,200
+2,2023-12-10,80
+3,2024-03-20,500`,
+      codeTemplate: `import pandas as pd
+from datetime import datetime
+
+data = {'USER_ID': [1,1,2,3],
+        'ORDER_DATE': ['2024-02-01','2024-03-15','2023-12-10','2024-03-20'],
+        'AMOUNT': [300,200,80,500]}
+df = pd.DataFrame(data)
+df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
+
+current_date = datetime(2024, 4, 1)
+rfm = df.groupby('USER_ID').agg({
+    'ORDER_DATE': lambda x: (current_date - x.max()).days,
+    'USER_ID': 'count',
+    'AMOUNT': 'sum'
+}).rename(columns={'ORDER_DATE':'R','USER_ID':'F','AMOUNT':'M'})
+
+rfm['R_score'] = pd.qcut(rfm['R'], 4, labels=[4,3,2,1])
+rfm['F_score'] = pd.qcut(rfm['F'], 4, labels=[1,2,3,4])
+rfm['M_score'] = pd.qcut(rfm['M'], 4, labels=[1,2,3,4])
+rfm['总分'] = rfm['R_score'].astype(int) + rfm['F_score'].astype(int) + rfm['M_score'].astype(int)
+print(rfm)`,
       answer: `import pandas as pd
+from datetime import datetime
 
-# 1. 读取数据并计算RFM指标
-df = pd.read_csv("sales_cleaned.csv")
-df["购买日期"] = pd.to_datetime(df["购买日期"])
-current_date = df["购买日期"].max()
+data = {'USER_ID': [1,1,2,3],
+        'ORDER_DATE': ['2024-02-01','2024-03-15','2023-12-10','2024-03-20'],
+        'AMOUNT': [300,200,80,500]}
+df = pd.DataFrame(data)
+df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
 
-rfm = df.groupby("客户ID").agg({
-    "购买日期": lambda x: (current_date - x.max()).dt.days, # R
-    "订单ID": "count", # F
-    "销售额": "sum" # M
-}).rename(columns={"购买日期": "R", "订单ID": "F", "销售额": "M"})
+current_date = datetime(2024, 4, 1)
+rfm = df.groupby('USER_ID').agg({
+    'ORDER_DATE': lambda x: (current_date - x.max()).days,
+    'USER_ID': 'count',
+    'AMOUNT': 'sum'
+}).rename(columns={'ORDER_DATE':'R','USER_ID':'F','AMOUNT':'M'})
 
-# 2. RFM评分（1-5分，R反向评分）
-rfm["R_score"] = pd.qcut(rfm["R"], 5, labels=[5,4,3,2,1])
-rfm["F_score"] = pd.qcut(rfm["F"], 5, labels=[1,2,3,4,5])
-rfm["M_score"] = pd.qcut(rfm["M"], 5, labels=[1,2,3,4,5])
+rfm['R_score'] = pd.qcut(rfm['R'], 4, labels=[4,3,2,1])
+rfm['F_score'] = pd.qcut(rfm['F'], 4, labels=[1,2,3,4])
+rfm['M_score'] = pd.qcut(rfm['M'], 4, labels=[1,2,3,4])
+rfm['总分'] = rfm['R_score'].astype(int) + rfm['F_score'].astype(int) + rfm['M_score'].astype(int)
+print(rfm)
 
-# 3. 总得分与分层
-rfm["RFM总分"] = rfm["R_score"].astype(int) + rfm["F_score"].astype(int) + rfm["M_score"].astype(int)
-def get_segment(score):
-    if score >=12: return "高价值"
-    elif score >=10: return "高潜力"
-    elif score >=7: return "普通"
-    else: return "低价值"
-rfm["客户分层"] = rfm["RFM总分"].apply(get_segment)
-
-# 4. 运营策略
-strategy = {"高价值": "推送专属权益+优先服务",
-            "高潜力": "推送满减券+新品推荐",
-            "普通": "常规活动推送",
-            "低价值": "推送唤醒优惠券+低频关怀"}
-rfm["运营策略"] = rfm["客户分层"].map(strategy)
-
-# 输出与保存
-print("各分层客户数量：\\n", rfm["客户分层"].value_counts())
-rfm.to_csv("customer_rfm_stratification.csv")`,
+# 输出RFM评分结果`,
     },
     {
       id: 10,
       title: "自动化销售报表生成",
-      description: "自动化生成带图表的Excel销售报表",
-      data: `使用sales_cleaned.csv、项目02的聚合数据、项目05的可视化数据，包含月度、地区、品类等多维度统计信息。`,
-      codeTemplate: `1. 读取清洗后的销售数据及各项目的聚合、统计数据；2. 使用pivot_table生成多维度统计表格（月度销售额、地区销售额、品类销量）；3. 在Excel中插入图表（月度趋势图、品类占比饼图）；4. 设置Excel格式（标题、边框、字体），分工作表保存不同类型的统计数据和图表；5. 编写自动化脚本，实现一键生成周报/月报，无需手动操作。`,
+      description: "自动生成带图表的周报/月报，实现数据统计与报表自动化",
+      data: `销售数据：
+USER_ID,ORDER_DATE,AMOUNT
+1,2024-03-01,100
+1,2024-03-15,150
+2,2024-03-10,200
+2,2024-03-20,120
+3,2024-03-25,80`,
+      codeTemplate: `import pandas as pd
+import matplotlib.pyplot as plt
+
+# 数据
+data = {
+    'USER_ID': [1, 1, 2, 2, 3],
+    'ORDER_DATE': ['2024-03-01', '2024-03-15', '2024-03-10', '2024-03-20', '2024-03-25'],
+    'AMOUNT': [100, 150, 200, 120, 80]
+}
+df = pd.DataFrame(data)
+df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
+
+# 生成Excel报表
+with pd.ExcelWriter('销售月报.xlsx', engine='openpyxl') as writer:
+    # 数据透视表
+    pivot = pd.pivot_table(df, values='AMOUNT', index='USER_ID',
+                           columns=pd.Grouper(key='ORDER_DATE', freq='M'),
+                           aggfunc='sum', fill_value=0)
+    pivot.to_excel(writer, sheet_name='月度销售汇总')
+
+    # 统计摘要
+    summary = df.groupby('USER_ID').agg(
+        总金额=('AMOUNT', 'sum'),
+        订单数=('AMOUNT', 'count')
+    ).reset_index()
+    summary.to_excel(writer, sheet_name='客户统计', index=False)
+
+    # 生成图表并保存
+    fig, ax = plt.subplots()
+    df.groupby(df['ORDER_DATE'].dt.day)['AMOUNT'].sum().plot(kind='line', marker='o', ax=ax)
+    ax.set_title('3月每日销售额趋势')
+    fig.savefig('chart.png')
+    plt.close()
+
+print('报表已生成：销售月报.xlsx 和 chart.png')`,
       answer: `import pandas as pd
 import matplotlib.pyplot as plt
 
-# 1. 读取所有所需数据
-df = pd.read_csv("sales_cleaned.csv")
-df["购买日期"] = pd.to_datetime(df["购买日期"])
-df["月份"] = df["购买日期"].dt.month
+# 数据
+data = {
+    'USER_ID': [1, 1, 2, 2, 3],
+    'ORDER_DATE': ['2024-03-01', '2024-03-15', '2024-03-10', '2024-03-20', '2024-03-25'],
+    'AMOUNT': [100, 150, 200, 120, 80]
+}
+df = pd.DataFrame(data)
+df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
 
-# 2. 创建Excel写入器
-with pd.ExcelWriter("sales_report.xlsx", engine="openpyxl") as writer:
-    # 工作表1：月度统计
-    month_pivot = pd.pivot_table(df, values="销售额", index="月份", aggfunc="sum")
-    month_pivot.to_excel(writer, sheet_name="月度统计")
-    # 插入月度趋势图
-    plt.figure(figsize=(8,4))
-    month_pivot.plot(kind="line", ax=plt.gca())
-    plt.title("月度销售额趋势")
-    plt.tight_layout()
-    plt.savefig("month_trend.png")
-    worksheet1 = writer.sheets["月度统计"]
-    worksheet1.add_image("month_trend.png", "D2")
+# 生成Excel报表
+with pd.ExcelWriter('销售月报.xlsx', engine='openpyxl') as writer:
+    # 数据透视表
+    pivot = pd.pivot_table(df, values='AMOUNT', index='USER_ID',
+                           columns=pd.Grouper(key='ORDER_DATE', freq='M'),
+                           aggfunc='sum', fill_value=0)
+    pivot.to_excel(writer, sheet_name='月度销售汇总')
 
-    # 工作表2：地区统计
-    area_pivot = pd.pivot_table(df, values="销售额", index="地区", aggfunc="sum")
-    area_pivot.to_excel(writer, sheet_name="地区统计")
+    # 统计摘要
+    summary = df.groupby('USER_ID').agg(
+        总金额=('AMOUNT', 'sum'),
+        订单数=('AMOUNT', 'count')
+    ).reset_index()
+    summary.to_excel(writer, sheet_name='客户统计', index=False)
 
-    # 工作表3：品类统计
-    category_pivot = pd.pivot_table(df, values="销量", index="商品类别", aggfunc="sum")
-    category_pivot.to_excel(writer, sheet_name="品类统计")
-    # 插入品类饼图
-    plt.figure(figsize=(6,6))
-    plt.pie(category_pivot["销量"], labels=category_pivot.index, autopct="%1.1f%%")
-    plt.title("品类销量占比")
-    plt.tight_layout()
-    plt.savefig("category_pie.png")
-    worksheet3 = writer.sheets["品类统计"]
-    worksheet3.add_image("category_pie.png", "D2")
+    # 生成图表并保存
+    fig, ax = plt.subplots()
+    df.groupby(df['ORDER_DATE'].dt.day)['AMOUNT'].sum().plot(kind='line', marker='o', ax=ax)
+    ax.set_title('3月每日销售额趋势')
+    fig.savefig('chart.png')
+    plt.close()
 
-print("自动化销售报表生成成功，保存路径：./sales_report.xlsx")`,
+print('报表已生成：销售月报.xlsx 和 chart.png')
+
+# 输出自动化报表生成结果`,
     },
   ];
 

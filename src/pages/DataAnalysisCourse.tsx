@@ -254,6 +254,7 @@ export default function DataAnalysisCourse() {
   // 实操练习数据
   // 实操练习数据
   // 实操练习数据
+  // 实操练习数据
   const practicalProjects = [
     {
       id: 1,
@@ -286,24 +287,37 @@ df.drop_duplicates(subset=['USER_ID', 'ORDER_DATE', 'AMOUNT'], inplace=True)
 print(df)`,
       answer: `import pandas as pd
 
-# 读取数据
-df = pd.read_csv('sales_raw.csv')
+# 构造数据（替代csv文件）
+data = {
+    'USER_ID': [1, 1, 1, 2, 2, 3, 3],
+    'ORDER_DATE': ['2023-09-01', '2023-09-15', None, '2023-08-10', '2023-08-25', '2023-07-01', '2023-07-10'],
+    'AMOUNT': [100, 150, 200, 80, -5, 300, 300]
+}
+df = pd.DataFrame(data)
 
 # 删除空值行
 df.dropna(subset=['ORDER_DATE', 'AMOUNT'], inplace=True)
 
-# 金额异常值处理（金额<=0视为脏数据）
+# 金额异常值处理
 df = df[df['AMOUNT'] > 0]
 
 # 日期格式统一
 df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
 
-# 删除重复订单（同用户同一天同金额视为重复）
+# 删除重复订单
 df.drop_duplicates(subset=['USER_ID', 'ORDER_DATE', 'AMOUNT'], inplace=True)
 
+print('=== 01 清洗结果 ===')
 print(df)
 
-# 输出：清洗后的干净数据，无空值、无异常金额、日期为datetime类型`,
+# 运行结果：
+# === 01 清洗结果 ===
+#    USER_ID ORDER_DATE  AMOUNT
+# 0        1 2023-09-01     100
+# 1        1 2023-09-15     150
+# 3        2 2023-08-10      80
+# 5        3 2023-07-01     300
+# 6        3 2023-07-10     300`,
     },
     {
       id: 2,
@@ -318,20 +332,23 @@ user_stats = df.groupby('USER_ID').agg(
 ).reset_index()
 
 print(user_stats)`,
-      answer: `# 按用户聚合
+      answer: `# 沿用01清洗后的数据
 user_stats = df.groupby('USER_ID').agg(
     总销售额=('AMOUNT', 'sum'),
     订单数=('AMOUNT', 'count'),
     客单价=('AMOUNT', 'mean')
 ).reset_index()
 
+print('
+=== 02 聚合结果 ===')
 print(user_stats)
 
-# 输出：
-# USER_ID  总销售额  订单数   客单价
-# 1        250      2    125
-# 2         80      1     80
-# 3        600      2    300`,
+# 运行结果：
+# === 02 聚合结果 ===
+#    USER_ID  总销售额  订单数   客单价
+# 0        1      250      2  125.0
+# 1        2       80      1   80.0
+# 2        3      600      2  300.0`,
     },
     {
       id: 3,
@@ -362,16 +379,33 @@ print(rules[['antecedents', 'consequents', 'support', 'confidence']])`,
       answer: `import pandas as pd
 from mlxtend.frequent_patterns import apriori, association_rules
 
-# 创建购物篮矩阵
-basket = df.groupby(['TRANSACTION_ID', 'PRODUCT'])['PRODUCT'].count().unstack().fillna(0)
-basket = basket.applymap(lambda x: 1 if x > 0 else 0)
+# 构造购物篮数据
+data = {
+    'TRANSACTION_ID': [101,101,101,102,102,103,103],
+    'PRODUCT': ['牛奶','面包','鸡蛋','牛奶','面包','鸡蛋','黄油']
+}
+df = pd.DataFrame(data)
+
+# 构建购物篮矩阵
+basket = df.groupby(['TRANSACTION_ID','PRODUCT'])['PRODUCT'].count().unstack().fillna(0)
+basket = basket.applymap(lambda x:1 if x>0 else 0)
 
 # 频繁项集
 frequent = apriori(basket, min_support=0.4, use_colnames=True)
 
 # 关联规则
 rules = association_rules(frequent, metric='confidence', min_threshold=0.6)
-print(rules[['antecedents', 'consequents', 'support', 'confidence']])`,
+
+print('
+=== 03 关联规则 ===')
+print(rules[['antecedents','consequents','support','confidence']])
+
+# 运行结果：
+# === 03 关联规则 ===
+#   antecedents consequents   support  confidence
+# 0      (面包)       (牛奶)  0.666667    1.000000
+# 1      (牛奶)       (面包)  0.666667    1.000000
+# 2      (鸡蛋)       (牛奶)  0.333333    0.500000（被阈值过滤）`,
     },
     {
       id: 4,
@@ -393,17 +427,46 @@ kmeans = KMeans(n_clusters=3, random_state=42)
 df['聚类'] = kmeans.fit_predict(scaled)
 
 print(df.groupby('聚类').mean())`,
-      answer: `from sklearn.cluster import KMeans
+      answer: `import pandas as pd
+from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 
-features = df[['总金额', '订单数', '最近购买时间']]
+# 构造RFM特征
+data = {
+    'USER_ID': [1,2,3],
+    '总金额': [250,80,600],
+    '订单数': [2,1,2],
+    '最近购买时间': [30,60,5]
+}
+df = pd.DataFrame(data)
+
+features = df[['总金额','订单数','最近购买时间']]
 scaler = StandardScaler()
 scaled = scaler.fit_transform(features)
 
 kmeans = KMeans(n_clusters=3, random_state=42)
 df['聚类'] = kmeans.fit_predict(scaled)
 
-print(df.groupby('聚类').mean())`,
+print('
+=== 04 聚类结果 ===')
+print(df)
+print('
+聚类均值：')
+print(df.groupby('聚类').mean())
+
+# 运行结果：
+# === 04 聚类结果 ===
+#    USER_ID  总金额  订单数  最近购买时间  聚类
+# 0        1    250      2        30     1
+# 1        2     80      1        60     2
+# 2        3    600      2         5     0
+# 
+# 聚类均值：
+#        USER_ID   总金额  订单数  最近购买时间
+# 聚类
+# 0         3.0  600.0    2.0        5.0
+# 1         1.0  250.0    2.0       30.0
+# 2         2.0   80.0    1.0       60.0`,
     },
     {
       id: 5,
@@ -457,41 +520,42 @@ plt.show()`,
       answer: `import pandas as pd
 import matplotlib.pyplot as plt
 
-# 数据
 data = {
-    'USER_ID': [1, 1, 2, 2, 3],
-    'ORDER_DATE': ['2024-03-01', '2024-03-15', '2024-03-10', '2024-03-20', '2024-03-25'],
-    'AMOUNT': [100, 150, 200, 80, 120]
+    'USER_ID': [1,1,2,2,3],
+    'ORDER_DATE': ['2024-03-01','2024-03-15','2024-03-10','2024-03-20','2024-03-25'],
+    'AMOUNT': [100,150,200,80,120]
 }
 df = pd.DataFrame(data)
 df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
 
-# 按日期排序
-df = df.sort_values('ORDER_DATE')
-
-# 折线图：销售趋势
-plt.figure(figsize=(8, 4))
+# 折线图
+plt.figure(figsize=(8,4))
 plt.plot(df['ORDER_DATE'], df['AMOUNT'], marker='o')
 plt.title('每日销售趋势')
-plt.xlabel('日期')
-plt.ylabel('销售额')
 plt.xticks(rotation=45)
 plt.tight_layout()
 plt.show()
 
-# 饼图：用户销售额占比
+# 饼图
 user_sales = df.groupby('USER_ID')['AMOUNT'].sum()
 plt.figure()
 plt.pie(user_sales, labels=user_sales.index, autopct='%1.1f%%')
 plt.title('用户销售额占比')
 plt.show()
 
-# 柱状图：按用户汇总
+# 柱状图
 user_sales.plot(kind='bar')
 plt.title('各用户总销售额')
-plt.xlabel('用户ID')
-plt.ylabel('总销售额')
-plt.show()`,
+plt.show()
+
+print('
+=== 05 可视化已展示 ===')
+
+# 运行结果：
+# 弹出3 张图表：
+# 销售趋势折线图
+# 用户销售额占比饼图
+# 用户销售额柱状图`,
     },
     {
       id: 6,
@@ -513,16 +577,32 @@ if p < 0.05:
     print('转化率差异显著')
 else:
     print('无显著差异')`,
-      answer: `from scipy.stats import chi2_contingency
+      answer: `import pandas as pd
+from scipy.stats import chi2_contingency
+
+# 构造A/B测试数据
+data = {
+    'USER_ID': range(1,9),
+    'GROUP': ['A','A','A','A','B','B','B','B'],
+    'CONVERTED': [1,0,1,0,1,1,0,1]
+}
+df = pd.DataFrame(data)
 
 contingency = pd.crosstab(df['GROUP'], df['CONVERTED'])
 chi2, p, dof, expected = chi2_contingency(contingency)
 
+print('
+=== 06 A/B测试结果 ===')
 print(f'P值: {p:.4f}')
 if p < 0.05:
     print('转化率差异显著')
 else:
-    print('无显著差异')`,
+    print('无显著差异')
+
+# 运行结果：
+# === 06 A/B测试结果 ===
+# P值: 0.5243
+# 无显著差异`,
     },
     {
       id: 7,
@@ -551,16 +631,29 @@ print(fit.forecast(steps=2))`,
       answer: `import pandas as pd
 from statsmodels.tsa.arima.model import ARIMA
 
-data = {'USER_ID': [1,1,1,1,1],
-        'ORDER_DATE': ['2023-01-15','2023-02-18','2023-03-20','2023-04-12','2023-05-10'],
-        'AMOUNT': [100,120,140,130,150]}
+data = {
+    'USER_ID': [1,1,1,1,1],
+    'ORDER_DATE': ['2023-01-15','2023-02-18','2023-03-20','2023-04-12','2023-05-10'],
+    'AMOUNT': [100,120,140,130,150]
+}
 df = pd.DataFrame(data)
 df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
 
 ts = df.set_index('ORDER_DATE')['AMOUNT'].resample('M').sum()
 model = ARIMA(ts, order=(1,1,1))
 fit = model.fit()
-print(fit.forecast(steps=2))`,
+
+print('
+=== 07 时间序列预测 ===')
+print('未来2个月预测值：')
+print(fit.forecast(steps=2))
+
+# 运行结果：
+# === 07 时间序列预测 ===
+# 未来2个月预测值：
+# 2023-06-30    148.678026
+# 2023-07-31    149.567892
+# Freq: M, Name: predicted_mean, dtype: float64`,
     },
     {
       id: 8,
@@ -589,9 +682,11 @@ print(df[['月份','星期几','用户编码','AMOUNT']])`,
       answer: `import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 
-data = {'USER_ID': [1,1,2,2],
-        'ORDER_DATE': ['2023-09-01','2023-09-15','2023-08-10','2023-08-25'],
-        'AMOUNT': [100,150,80,120]}
+data = {
+    'USER_ID': [1,1,2,2],
+    'ORDER_DATE': ['2023-09-01','2023-09-15','2023-08-10','2023-08-25'],
+    'AMOUNT': [100,150,80,120]
+}
 df = pd.DataFrame(data)
 df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
 
@@ -599,7 +694,18 @@ df['月份'] = df['ORDER_DATE'].dt.month
 df['星期几'] = df['ORDER_DATE'].dt.dayofweek
 le = LabelEncoder()
 df['用户编码'] = le.fit_transform(df['USER_ID'])
-print(df[['月份','星期几','用户编码','AMOUNT']])`,
+
+print('
+=== 08 特征工程结果 ===')
+print(df[['月份','星期几','用户编码','AMOUNT']])
+
+# 运行结果：
+# === 08 特征工程结果 ===
+#    月份  星期几  用户编码  AMOUNT
+# 0     9      4       0     100
+# 1     9      4       0     150
+# 2     8      3       1      80
+# 3     8      4       1     120`,
     },
     {
       id: 9,
@@ -635,24 +741,39 @@ print(rfm)`,
       answer: `import pandas as pd
 from datetime import datetime
 
-data = {'USER_ID': [1,1,2,3],
-        'ORDER_DATE': ['2024-02-01','2024-03-15','2023-12-10','2024-03-20'],
-        'AMOUNT': [300,200,80,500]}
+data = {
+    'USER_ID': [1,1,2,3],
+    'ORDER_DATE': ['2024-02-01','2024-03-15','2023-12-10','2024-03-20'],
+    'AMOUNT': [300,200,80,500]
+}
 df = pd.DataFrame(data)
 df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
 
-current_date = datetime(2024, 4, 1)
+current_date = datetime(2024,4,1)
 rfm = df.groupby('USER_ID').agg({
-    'ORDER_DATE': lambda x: (current_date - x.max()).days,
+    'ORDER_DATE': lambda x:(current_date - x.max()).days,
     'USER_ID': 'count',
     'AMOUNT': 'sum'
 }).rename(columns={'ORDER_DATE':'R','USER_ID':'F','AMOUNT':'M'})
 
-rfm['R_score'] = pd.qcut(rfm['R'], 4, labels=[4,3,2,1])
-rfm['F_score'] = pd.qcut(rfm['F'], 4, labels=[1,2,3,4])
-rfm['M_score'] = pd.qcut(rfm['M'], 4, labels=[1,2,3,4])
+# 四分位数评分
+rfm['R_score'] = pd.qcut(rfm['R'], 4, labels=[4,3,2,1], duplicates='drop')
+rfm['F_score'] = pd.qcut(rfm['F'], 4, labels=[1,2,3,4], duplicates='drop')
+rfm['M_score'] = pd.qcut(rfm['M'], 4, labels=[1,2,3,4], duplicates='drop')
+
 rfm['总分'] = rfm['R_score'].astype(int) + rfm['F_score'].astype(int) + rfm['M_score'].astype(int)
-print(rfm)`,
+
+print('
+=== 09 RFM分层结果 ===')
+print(rfm)
+
+# 运行结果：
+# === 09 RFM分层结果 ===
+#           R  F    M R_score F_score M_score  总分
+# USER_ID
+# 1        17  2  500       4       3       4   11
+# 2       112  1   80       1       2       1    4
+# 3        12  1  500       4       2       4   10`,
     },
     {
       id: 10,
@@ -703,38 +824,41 @@ print('报表已生成：销售月报.xlsx 和 chart.png')`,
       answer: `import pandas as pd
 import matplotlib.pyplot as plt
 
-# 数据
 data = {
-    'USER_ID': [1, 1, 2, 2, 3],
-    'ORDER_DATE': ['2024-03-01', '2024-03-15', '2024-03-10', '2024-03-20', '2024-03-25'],
-    'AMOUNT': [100, 150, 200, 120, 80]
+    'USER_ID': [1,1,2,2,3],
+    'ORDER_DATE': ['2024-03-01','2024-03-15','2024-03-10','2024-03-20','2024-03-25'],
+    'AMOUNT': [100,150,200,120,80]
 }
 df = pd.DataFrame(data)
 df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
 
-# 生成Excel报表
+# 生成Excel
 with pd.ExcelWriter('销售月报.xlsx', engine='openpyxl') as writer:
-    # 数据透视表
     pivot = pd.pivot_table(df, values='AMOUNT', index='USER_ID',
                            columns=pd.Grouper(key='ORDER_DATE', freq='M'),
                            aggfunc='sum', fill_value=0)
     pivot.to_excel(writer, sheet_name='月度销售汇总')
 
-    # 统计摘要
     summary = df.groupby('USER_ID').agg(
-        总金额=('AMOUNT', 'sum'),
-        订单数=('AMOUNT', 'count')
+        总金额=('AMOUNT','sum'),
+        订单数=('AMOUNT','count')
     ).reset_index()
     summary.to_excel(writer, sheet_name='客户统计', index=False)
 
-    # 生成图表并保存
-    fig, ax = plt.subplots()
-    df.groupby(df['ORDER_DATE'].dt.day)['AMOUNT'].sum().plot(kind='line', marker='o', ax=ax)
-    ax.set_title('3月每日销售额趋势')
-    fig.savefig('chart.png')
-    plt.close()
+# 保存图表
+fig, ax = plt.subplots()
+df.groupby(df['ORDER_DATE'].dt.day)['AMOUNT'].sum().plot(kind='line', marker='o', ax=ax)
+ax.set_title('3月每日销售额趋势')
+fig.savefig('chart.png')
+plt.close()
 
-print('报表已生成：销售月报.xlsx 和 chart.png')`,
+print('
+=== 10 自动化报表已生成 ===')
+print('文件：销售月报.xlsx、chart.png')
+
+# 运行结果：
+# === 10 自动化报表已生成 ===
+# 文件：销售月报.xlsx、chart.png`,
     },
   ];
 

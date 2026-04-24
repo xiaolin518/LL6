@@ -819,7 +819,8 @@ print('报表已生成：销售月报.xlsx 和 chart.png')`,
     setCurrentPracticalId(id);
     const project = practicalProjects.find(p => p.id === id);
     if (project) {
-      setUserCode(project.codeTemplate);
+      // 初始为空，让训练者手动输入代码
+      setUserCode('');
     }
     setCodeOutput('');
     setShowAnswer(false);

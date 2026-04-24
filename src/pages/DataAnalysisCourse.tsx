@@ -253,6 +253,7 @@ export default function DataAnalysisCourse() {
 
   // 实操练习数据
   // 实操练习数据
+  // 实操练习数据
   const practicalProjects = [
     {
       id: 1,
@@ -317,9 +318,7 @@ user_stats = df.groupby('USER_ID').agg(
 ).reset_index()
 
 print(user_stats)`,
-      answer: `import pandas as pd
-
-# 按用户聚合
+      answer: `# 按用户聚合
 user_stats = df.groupby('USER_ID').agg(
     总销售额=('AMOUNT', 'sum'),
     订单数=('AMOUNT', 'count'),
@@ -372,9 +371,7 @@ frequent = apriori(basket, min_support=0.4, use_colnames=True)
 
 # 关联规则
 rules = association_rules(frequent, metric='confidence', min_threshold=0.6)
-print(rules[['antecedents', 'consequents', 'support', 'confidence']])
-
-# 输出关联规则`,
+print(rules[['antecedents', 'consequents', 'support', 'confidence']])`,
     },
     {
       id: 4,
@@ -406,39 +403,95 @@ scaled = scaler.fit_transform(features)
 kmeans = KMeans(n_clusters=3, random_state=42)
 df['聚类'] = kmeans.fit_predict(scaled)
 
-print(df.groupby('聚类').mean())
-
-# 输出各聚类的均值特征`,
+print(df.groupby('聚类').mean())`,
     },
     {
       id: 5,
       title: "销售数据可视化",
-      description: "销售趋势分析、数据可视化",
-      data: `使用销售数据`,
-      codeTemplate: `import matplotlib.pyplot as plt
-import seaborn as sns
+      description: "销售趋势、地区分布、品类占比可视化，图表叙事与洞察总结",
+      data: `销售数据：
+USER_ID,ORDER_DATE,AMOUNT
+1,2024-03-01,100
+1,2024-03-15,150
+2,2024-03-10,200
+2,2024-03-20,80
+3,2024-03-25,120`,
+      codeTemplate: `import pandas as pd
+import matplotlib.pyplot as plt
 
-# 月度销售额趋势
-df['月份'] = df['ORDER_DATE'].dt.to_period('M')
-monthly = df.groupby('月份')['AMOUNT'].sum()
+# 数据
+data = {
+    'USER_ID': [1, 1, 2, 2, 3],
+    'ORDER_DATE': ['2024-03-01', '2024-03-15', '2024-03-10', '2024-03-20', '2024-03-25'],
+    'AMOUNT': [100, 150, 200, 80, 120]
+}
+df = pd.DataFrame(data)
+df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
 
-plt.figure(figsize=(10,4))
-monthly.plot(kind='line', marker='o')
-plt.title('月度销售趋势')
-plt.show()`,
-      answer: `import matplotlib.pyplot as plt
-import seaborn as sns
+# 按日期排序
+df = df.sort_values('ORDER_DATE')
 
-# 月度销售额趋势
-df['月份'] = df['ORDER_DATE'].dt.to_period('M')
-monthly = df.groupby('月份')['AMOUNT'].sum()
-
-plt.figure(figsize=(10,4))
-monthly.plot(kind='line', marker='o')
-plt.title('月度销售趋势')
+# 折线图：销售趋势
+plt.figure(figsize=(8, 4))
+plt.plot(df['ORDER_DATE'], df['AMOUNT'], marker='o')
+plt.title('每日销售趋势')
+plt.xlabel('日期')
+plt.ylabel('销售额')
+plt.xticks(rotation=45)
+plt.tight_layout()
 plt.show()
 
-# 输出月度销售趋势图`,
+# 饼图：用户销售额占比
+user_sales = df.groupby('USER_ID')['AMOUNT'].sum()
+plt.figure()
+plt.pie(user_sales, labels=user_sales.index, autopct='%1.1f%%')
+plt.title('用户销售额占比')
+plt.show()
+
+# 柱状图：按用户汇总
+user_sales.plot(kind='bar')
+plt.title('各用户总销售额')
+plt.xlabel('用户ID')
+plt.ylabel('总销售额')
+plt.show()`,
+      answer: `import pandas as pd
+import matplotlib.pyplot as plt
+
+# 数据
+data = {
+    'USER_ID': [1, 1, 2, 2, 3],
+    'ORDER_DATE': ['2024-03-01', '2024-03-15', '2024-03-10', '2024-03-20', '2024-03-25'],
+    'AMOUNT': [100, 150, 200, 80, 120]
+}
+df = pd.DataFrame(data)
+df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
+
+# 按日期排序
+df = df.sort_values('ORDER_DATE')
+
+# 折线图：销售趋势
+plt.figure(figsize=(8, 4))
+plt.plot(df['ORDER_DATE'], df['AMOUNT'], marker='o')
+plt.title('每日销售趋势')
+plt.xlabel('日期')
+plt.ylabel('销售额')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+# 饼图：用户销售额占比
+user_sales = df.groupby('USER_ID')['AMOUNT'].sum()
+plt.figure()
+plt.pie(user_sales, labels=user_sales.index, autopct='%1.1f%%')
+plt.title('用户销售额占比')
+plt.show()
+
+# 柱状图：按用户汇总
+user_sales.plot(kind='bar')
+plt.title('各用户总销售额')
+plt.xlabel('用户ID')
+plt.ylabel('总销售额')
+plt.show()`,
     },
     {
       id: 6,
@@ -460,8 +513,7 @@ if p < 0.05:
     print('转化率差异显著')
 else:
     print('无显著差异')`,
-      answer: `import pandas as pd
-from scipy.stats import chi2_contingency
+      answer: `from scipy.stats import chi2_contingency
 
 contingency = pd.crosstab(df['GROUP'], df['CONVERTED'])
 chi2, p, dof, expected = chi2_contingency(contingency)
@@ -470,9 +522,7 @@ print(f'P值: {p:.4f}')
 if p < 0.05:
     print('转化率差异显著')
 else:
-    print('无显著差异')
-
-# 输出A/B测试结果`,
+    print('无显著差异')`,
     },
     {
       id: 7,
@@ -510,9 +560,7 @@ df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
 ts = df.set_index('ORDER_DATE')['AMOUNT'].resample('M').sum()
 model = ARIMA(ts, order=(1,1,1))
 fit = model.fit()
-print(fit.forecast(steps=2))
-
-# 输出未来2个月的销售预测`,
+print(fit.forecast(steps=2))`,
     },
     {
       id: 8,
@@ -551,9 +599,7 @@ df['月份'] = df['ORDER_DATE'].dt.month
 df['星期几'] = df['ORDER_DATE'].dt.dayofweek
 le = LabelEncoder()
 df['用户编码'] = le.fit_transform(df['USER_ID'])
-print(df[['月份','星期几','用户编码','AMOUNT']])
-
-# 输出特征工程后的数据集`,
+print(df[['月份','星期几','用户编码','AMOUNT']])`,
     },
     {
       id: 9,
@@ -606,9 +652,7 @@ rfm['R_score'] = pd.qcut(rfm['R'], 4, labels=[4,3,2,1])
 rfm['F_score'] = pd.qcut(rfm['F'], 4, labels=[1,2,3,4])
 rfm['M_score'] = pd.qcut(rfm['M'], 4, labels=[1,2,3,4])
 rfm['总分'] = rfm['R_score'].astype(int) + rfm['F_score'].astype(int) + rfm['M_score'].astype(int)
-print(rfm)
-
-# 输出RFM评分结果`,
+print(rfm)`,
     },
     {
       id: 10,
@@ -690,9 +734,7 @@ with pd.ExcelWriter('销售月报.xlsx', engine='openpyxl') as writer:
     fig.savefig('chart.png')
     plt.close()
 
-print('报表已生成：销售月报.xlsx 和 chart.png')
-
-# 输出自动化报表生成结果`,
+print('报表已生成：销售月报.xlsx 和 chart.png')`,
     },
   ];
 

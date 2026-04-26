@@ -869,8 +869,8 @@ print('文件：销售月报.xlsx、chart.png')`,
     setCurrentPracticalId(id);
     const project = practicalProjects.find(p => p.id === id);
     if (project) {
-      // 初始为空，让训练者手动输入代码
-      setUserCode('');
+      // 默认显示 print("hello")
+      setUserCode('print("hello")');
     }
     setCodeOutput('');
     setShowAnswer(false);
@@ -879,7 +879,7 @@ print('文件：销售月报.xlsx、chart.png')`,
 
   const runCode = () => {
     if (!userCode.trim()) {
-      setCodeOutput('请输入Python代码后再运行');
+      setCodeOutput('请输入C语言代码后再运行');
       return;
     }
     
@@ -1002,6 +1002,25 @@ print('文件：销售月报.xlsx、chart.png')`,
   };
 
   const showAnswerSolution = () => {
+    // 将编辑区内容替换成斐波那契数列的实现
+    setUserCode(`# 斐波那契数列实现
+def fibonacci(n):
+    if n <= 0:
+        return []
+    elif n == 1:
+        return [0]
+    elif n == 2:
+        return [0, 1]
+    else:
+        fib = [0, 1]
+        for i in range(2, n):
+            fib.append(fib[i-1] + fib[i-2])
+        return fib
+
+# 测试
+n = 10
+print(f"前{n}个斐波那契数：")
+print(fibonacci(n))`);
     setShowAnswer(true);
   };
 
@@ -1461,20 +1480,20 @@ print('文件：销售月报.xlsx、chart.png')`,
                 <div className="lg:col-span-1">
                   <div className="bg-gray-50 p-4 rounded-lg h-full">
                     <div className="flex justify-between items-center mb-3">
-                      <h4 className="font-bold text-lg">代码编辑器</h4>
+                      <h4 className="font-bold text-lg">C语言运行环境</h4>
                       <button
                         onClick={runCode}
                         className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
                       >
                         <Play className="w-4 h-4" />
-                        运行
+                        运行 C 语言
                       </button>
                     </div>
                     <textarea
                       value={userCode}
                       onChange={(e) => setUserCode(e.target.value)}
                       className="w-full h-[400px] p-4 bg-gray-800 text-gray-100 rounded font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder="请输入Python代码..."
+                      placeholder="请输入C语言代码..."
                     />
                   </div>
                 </div>

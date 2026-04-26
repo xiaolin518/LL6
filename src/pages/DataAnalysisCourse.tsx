@@ -891,6 +891,13 @@ print('文件：销售月报.xlsx、chart.png')`,
       // 为不同项目提供模拟数据
       const projectId = currentPracticalId || 1;
       
+      // 通用错误检测
+      if (userCode.includes('1111') || userCode.includes('2222') || userCode.includes('3333')) {
+        output += '代码执行错误：\n语法错误 - 代码末尾有多余的数字';
+        setCodeOutput(output);
+        return;
+      }
+      
       if (projectId === 1) {
         // 项目1：销售数据读取与清洗
         if (userCode.includes('read_csv') || userCode.includes('dropna') || userCode.includes('to_datetime')) {
@@ -904,6 +911,8 @@ print('文件：销售月报.xlsx、chart.png')`,
           if (userCode.includes('agg')) {
             if (userCode.includes('sam')) {
               output += '代码执行错误：\n参数错误 - 应该使用 sum() 而不是 sam()';
+            } else if (userCode.includes('1111') || userCode.includes('2222') || userCode.includes('3333')) {
+              output += '代码执行错误：\n语法错误 - 代码末尾有多余的数字';
             } else {
               output += `=== 02 聚合结果 ===\n   USER_ID  总销售额  订单数   客单价\n0        1      250      2  125.0\n1        2       80      1   80.0\n2        3      600      2  300.0`;
             }

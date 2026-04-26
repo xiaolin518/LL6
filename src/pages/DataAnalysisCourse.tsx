@@ -1421,113 +1421,135 @@ print(fibonacci(n))`);
             </div>
 
             <div className="p-6">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* 左边：题目要求和实操数据 */}
-                <div className="lg:col-span-1 space-y-6">
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <h4 className="font-bold text-lg mb-3">题目要求</h4>
-                    <p className="text-gray-700">{currentPractical.description}</p>
+              <div className="space-y-6">
+                {/* 题目要求和数据预览 */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  {/* 左边：题目要求 */}
+                  <div className="lg:col-span-1">
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <h4 className="font-bold text-lg mb-3">题目要求</h4>
+                      <p className="text-gray-700">{currentPractical.description}</p>
+                    </div>
                   </div>
                   
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <h4 className="font-bold text-lg mb-3">实操数据</h4>
-                    <div className="overflow-x-auto">
-                      {(() => {
-                        const data = currentPractical.data;
-                        const lines = data.split('\n').filter(line => line.trim());
-                        if (lines.length < 2) {
+                  {/* 右边：数据预览 */}
+                  <div className="lg:col-span-2">
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <h4 className="font-bold text-lg mb-3">实操数据</h4>
+                      <div className="overflow-x-auto">
+                        {(() => {
+                          const data = currentPractical.data;
+                          const lines = data.split('\n').filter(line => line.trim());
+                          if (lines.length < 2) {
+                            return (
+                              <div className="bg-gray-800 text-gray-100 p-3 rounded font-mono text-sm">
+                                <pre>{data}</pre>
+                              </div>
+                            );
+                          }
+                          const headers = lines[0].split(',');
+                          const rows = lines.slice(1);
                           return (
-                            <div className="bg-gray-800 text-gray-100 p-3 rounded font-mono text-sm">
-                              <pre>{data}</pre>
-                            </div>
+                            <table className="min-w-full border border-gray-300">
+                              <thead className="bg-gray-100">
+                                <tr>
+                                  {headers.map((header, index) => (
+                                    <th key={index} className="px-4 py-2 border border-gray-300 text-left">
+                                      {header.trim()}
+                                    </th>
+                                  ))}
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {rows.map((row, rowIndex) => {
+                                  const cells = row.split(',');
+                                  return (
+                                    <tr key={rowIndex} className={rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                                      {cells.map((cell, cellIndex) => (
+                                        <td key={cellIndex} className="px-4 py-2 border border-gray-300">
+                                          {cell.trim()}
+                                        </td>
+                                      ))}
+                                    </tr>
+                                  );
+                                })}
+                              </tbody>
+                            </table>
                           );
-                        }
-                        const headers = lines[0].split(',');
-                        const rows = lines.slice(1);
-                        return (
-                          <table className="min-w-full border border-gray-300">
-                            <thead className="bg-gray-100">
-                              <tr>
-                                {headers.map((header, index) => (
-                                  <th key={index} className="px-4 py-2 border border-gray-300 text-left">
-                                    {header.trim()}
-                                  </th>
-                                ))}
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {rows.map((row, rowIndex) => {
-                                const cells = row.split(',');
-                                return (
-                                  <tr key={rowIndex} className={rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                                    {cells.map((cell, cellIndex) => (
-                                      <td key={cellIndex} className="px-4 py-2 border border-gray-300">
-                                        {cell.trim()}
-                                      </td>
-                                    ))}
-                                  </tr>
-                                );
-                              })}
-                            </tbody>
-                          </table>
-                        );
-                      })()}
+                        })()}
+                      </div>
                     </div>
                   </div>
                 </div>
-
-                {/* 中间：Python代码编辑器 */}
-                <div className="lg:col-span-1">
-                  <div className="bg-gray-50 p-4 rounded-lg h-full">
-                    <div className="flex justify-between items-center mb-3">
-                      <h4 className="font-bold text-lg">Python运行环境</h4>
+                
+                {/* 代码编辑器 */}
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  {/* 终端头部 */}
+                  <div className="bg-gray-800 flex items-center justify-between p-3 rounded-t-lg">
+                    <div className="flex gap-2">
+                      <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                      <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                    </div>
+                    <div className="text-gray-400 text-sm">main.py</div>
+                    <div className="flex gap-2">
                       <button
-                        onClick={runCode}
-                        className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+                        onClick={() => {
+                          const project = practicalProjects.find(p => p.id === currentPracticalId);
+                          if (project) {
+                            setUserCode('');
+                          }
+                          setCodeOutput('');
+                          setShowAnswer(false);
+                        }}
+                        className="text-gray-400 hover:text-white text-sm px-2 py-1 rounded hover:bg-gray-700 transition-colors"
                       >
-                        <Play className="w-4 h-4" />
-                        运行 Python
+                        重置
                       </button>
-                    </div>
-                    <textarea
-                      value={userCode}
-                      onChange={(e) => setUserCode(e.target.value)}
-                      className="w-full h-[400px] p-4 bg-gray-800 text-gray-100 rounded font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder="请输入Python代码..."
-                    />
-                  </div>
-                </div>
-
-                {/* 右边：运行结果和答案 */}
-                <div className="lg:col-span-1 space-y-6">
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <h4 className="font-bold text-lg mb-3">运行结果</h4>
-                    <div className="bg-gray-800 text-gray-100 p-3 rounded font-mono text-sm min-h-[200px] overflow-auto">
-                      <pre>{codeOutput || '请点击运行按钮查看结果'}</pre>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <div className="flex justify-between items-center mb-3">
-                      <h4 className="font-bold text-lg">参考答案</h4>
                       <button
                         onClick={showAnswerSolution}
-                        className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition-colors"
+                        className="text-gray-400 hover:text-white text-sm px-2 py-1 rounded hover:bg-gray-700 transition-colors"
                       >
                         查看答案
                       </button>
                     </div>
-                    {showAnswer ? (
-                      <div className="bg-gray-800 text-gray-100 p-3 rounded font-mono text-sm max-h-[200px] overflow-auto">
-                        <pre>{currentPractical.answer}</pre>
-                      </div>
-                    ) : (
-                      <div className="bg-gray-200 p-8 rounded text-center text-gray-500">
-                        点击上方按钮查看参考答案
-                      </div>
-                    )}
+                  </div>
+                  {/* 代码编辑区 */}
+                  <textarea
+                    value={userCode}
+                    onChange={(e) => setUserCode(e.target.value)}
+                    className="w-full h-[300px] p-4 bg-white text-gray-800 border border-gray-300 rounded-b-lg font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="请输入Python代码..."
+                  />
+                  {/* 运行按钮 */}
+                  <div className="mt-4 flex justify-end">
+                    <button
+                      onClick={runCode}
+                      className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+                    >
+                      <Play className="w-4 h-4" />
+                      运行代码
+                    </button>
                   </div>
                 </div>
+                
+                {/* 运行结果 */}
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <h4 className="font-bold text-lg mb-3">输出结果</h4>
+                  <div className="bg-gray-900 text-green-400 p-4 rounded font-mono text-sm min-h-[200px] overflow-auto">
+                    {codeOutput || '运行代码后将显示输出结果'}
+                  </div>
+                </div>
+                
+                {/* 参考答案 */}
+                {showAnswer && (
+                  <div className="bg-gray-50 p-4 rounded-lg">
+                    <h4 className="font-bold text-lg mb-3">参考答案</h4>
+                    <div className="bg-gray-900 text-green-400 p-4 rounded font-mono text-sm overflow-auto max-h-[300px]">
+                      {currentPractical.answer}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

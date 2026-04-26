@@ -1422,63 +1422,56 @@ print(fibonacci(n))`);
 
             <div className="p-6">
               <div className="space-y-6">
-                {/* 题目要求和数据预览 */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                  {/* 左边：题目要求 */}
-                  <div className="lg:col-span-1">
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <h4 className="font-bold text-lg mb-3">题目要求</h4>
-                      <p className="text-gray-700">{currentPractical.description}</p>
-                    </div>
-                  </div>
-                  
-                  {/* 右边：数据预览 */}
-                  <div className="lg:col-span-2">
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <h4 className="font-bold text-lg mb-3">实操数据</h4>
-                      <div className="overflow-x-auto">
-                        {(() => {
-                          const data = currentPractical.data;
-                          const lines = data.split('\n').filter(line => line.trim());
-                          if (lines.length < 2) {
-                            return (
-                              <div className="bg-gray-800 text-gray-100 p-3 rounded font-mono text-sm">
-                                <pre>{data}</pre>
-                              </div>
-                            );
-                          }
-                          const headers = lines[0].split(',');
-                          const rows = lines.slice(1);
-                          return (
-                            <table className="min-w-full border border-gray-300">
-                              <thead className="bg-gray-100">
-                                <tr>
-                                  {headers.map((header, index) => (
-                                    <th key={index} className="px-4 py-2 border border-gray-300 text-left">
-                                      {header.trim()}
-                                    </th>
+                {/* 题目要求 */}
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <h4 className="font-bold text-lg mb-3">题目要求</h4>
+                  <p className="text-gray-700">{currentPractical.description}</p>
+                </div>
+                
+                {/* 数据预览 */}
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <h4 className="font-bold text-lg mb-3">实操数据</h4>
+                  <div className="overflow-x-auto">
+                    {(() => {
+                      const data = currentPractical.data;
+                      const lines = data.split('\n').filter(line => line.trim());
+                      if (lines.length < 2) {
+                        return (
+                          <div className="bg-gray-800 text-gray-100 p-3 rounded font-mono text-sm">
+                            <pre>{data}</pre>
+                          </div>
+                        );
+                      }
+                      const headers = lines[0].split(',');
+                      const rows = lines.slice(1);
+                      return (
+                        <table className="min-w-full border border-gray-300">
+                          <thead className="bg-gray-100">
+                            <tr>
+                              {headers.map((header, index) => (
+                                <th key={index} className="px-4 py-2 border border-gray-300 text-left">
+                                  {header.trim()}
+                                </th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {rows.map((row, rowIndex) => {
+                              const cells = row.split(',');
+                              return (
+                                <tr key={rowIndex} className={rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                                  {cells.map((cell, cellIndex) => (
+                                    <td key={cellIndex} className="px-4 py-2 border border-gray-300">
+                                      {cell.trim()}
+                                    </td>
                                   ))}
                                 </tr>
-                              </thead>
-                              <tbody>
-                                {rows.map((row, rowIndex) => {
-                                  const cells = row.split(',');
-                                  return (
-                                    <tr key={rowIndex} className={rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                                      {cells.map((cell, cellIndex) => (
-                                        <td key={cellIndex} className="px-4 py-2 border border-gray-300">
-                                          {cell.trim()}
-                                        </td>
-                                      ))}
-                                    </tr>
-                                  );
-                                })}
-                              </tbody>
-                            </table>
-                          );
-                        })()}
-                      </div>
-                    </div>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      );
+                    })()}
                   </div>
                 </div>
                 

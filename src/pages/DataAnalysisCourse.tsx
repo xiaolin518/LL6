@@ -1035,12 +1035,13 @@ print('文件：销售月报.xlsx、chart.png')`,
                 <div className="p-6 border-t">
                   <button
                     onClick={() => {
-                      startPractice(activeChapter);
+                      // 默认打开第一个实操项目
+                      openPractice(1);
                     }}
                     className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
                   >
-                    <Star className="w-5 h-5" />
-                    开始章节练习
+                    <Code className="w-5 h-5" />
+                    开始实操训练
                   </button>
                 </div>
               </>
@@ -1050,12 +1051,13 @@ print('文件：销售月报.xlsx、chart.png')`,
                 <div className="p-6 border-t">
                   <button
                     onClick={() => {
-                      startPractice(activeChapter);
+                      // 默认打开第一个实操项目
+                      openPractice(1);
                     }}
                     className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
                   >
-                    <Star className="w-5 h-5" />
-                    开始章节练习
+                    <Code className="w-5 h-5" />
+                    开始实操训练
                   </button>
                 </div>
               </>

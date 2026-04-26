@@ -879,7 +879,7 @@ print('文件：销售月报.xlsx、chart.png')`,
 
   const runCode = () => {
     if (!userCode.trim()) {
-      setCodeOutput('请输入C语言代码后再运行');
+      setCodeOutput('请输入Python代码后再运行');
       return;
     }
     
@@ -1480,20 +1480,20 @@ print(fibonacci(n))`);
                 <div className="lg:col-span-1">
                   <div className="bg-gray-50 p-4 rounded-lg h-full">
                     <div className="flex justify-between items-center mb-3">
-                      <h4 className="font-bold text-lg">C语言运行环境</h4>
+                      <h4 className="font-bold text-lg">Python运行环境</h4>
                       <button
                         onClick={runCode}
                         className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
                       >
                         <Play className="w-4 h-4" />
-                        运行 C 语言
+                        运行 Python
                       </button>
                     </div>
                     <textarea
                       value={userCode}
                       onChange={(e) => setUserCode(e.target.value)}
                       className="w-full h-[400px] p-4 bg-gray-800 text-gray-100 rounded font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder="请输入C语言代码..."
+                      placeholder="请输入Python代码..."
                     />
                   </div>
                 </div>

@@ -1355,7 +1355,7 @@ print('文件：销售月报.xlsx、chart.png')`,
                 <div className="lg:col-span-1">
                   <div className="bg-gray-50 p-4 rounded-lg h-full">
                     <div className="flex justify-between items-center mb-3">
-                      <h4 className="font-bold text-lg">Python代码</h4>
+                      <h4 className="font-bold text-lg">代码编辑器</h4>
                       <button
                         onClick={runCode}
                         className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"

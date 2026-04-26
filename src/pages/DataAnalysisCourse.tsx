@@ -878,21 +878,108 @@ print('文件：销售月报.xlsx、chart.png')`,
   };
 
   const runCode = () => {
-    // 这里使用答案.docx中的运行结果
-    const runResults: { [key: number]: string } = {
-      1: `=== 01 清洗结果 ===\n   USER_ID ORDER_DATE  AMOUNT\n0        1 2023-09-01     100\n1        1 2023-09-15     150\n3        2 2023-08-10      80\n5        3 2023-07-01     300\n6        3 2023-07-10     300`,
-      2: `=== 02 聚合结果 ===\n   USER_ID  总销售额  订单数   客单价\n0        1      250      2  125.0\n1        2       80      1   80.0\n2        3      600      2  300.0`,
-      3: `=== 03 关联规则 ===\n  antecedents consequents   support  confidence\n0      (面包)       (牛奶)  0.666667    1.000000\n1      (牛奶)       (面包)  0.666667    1.000000\n2      (鸡蛋)       (牛奶)  0.333333    0.500000（被阈值过滤）`,
-      4: `=== 04 聚类结果 ===\n   USER_ID  总金额  订单数  最近购买时间  聚类\n0        1    250      2        30     1\n1        2     80      1        60     2\n2        3    600      2         5     0\n\n聚类均值：\n       USER_ID   总金额  订单数  最近购买时间\n聚类\n0         3.0  600.0    2.0        5.0\n1         1.0  250.0    2.0       30.0\n2         2.0   80.0    1.0       60.0`,
-      5: `=== 05 可视化已展示 ===\n弹出3 张图表：\n销售趋势折线图\n用户销售额占比饼图\n用户销售额柱状图`,
-      6: `=== 06 A/B测试结果 ===\nP值: 0.5243\n无显著差异`,
-      7: `=== 07 时间序列预测 ===\n未来2个月预测值：\n2023-06-30    148.678026\n2023-07-31    149.567892\nFreq: M, Name: predicted_mean, dtype: float64`,
-      8: `=== 08 特征工程结果 ===\n   月份  星期几  用户编码  AMOUNT\n0     9      4       0     100\n1     9      4       0     150\n2     8      3       1      80\n3     8      4       1     120`,
-      9: `=== 09 RFM分层结果 ===\n          R  F    M R_score F_score M_score  总分\nUSER_ID\n1        17  2  500       4       3       4   11\n2       112  1   80       1       2       1    4\n3        12  1  500       4       2       4   10`,
-      10: `=== 10 自动化报表已生成 ===\n文件：销售月报.xlsx、chart.png`
-    };
+    if (!userCode.trim()) {
+      setCodeOutput('请输入Python代码后再运行');
+      return;
+    }
     
-    setCodeOutput('代码运行中...\n\n' + runResults[currentPracticalId || 1]);
+    try {
+      // 模拟Python代码执行
+      // 在实际项目中，这里可以使用Python解释器或API
+      let output = '代码运行结果：\n\n';
+      
+      // 为不同项目提供模拟数据
+      const projectId = currentPracticalId || 1;
+      
+      if (projectId === 1) {
+        // 项目1：销售数据读取与清洗
+        if (userCode.includes('read_csv') || userCode.includes('dropna') || userCode.includes('to_datetime')) {
+          output += `=== 01 清洗结果 ===\n   USER_ID ORDER_DATE  AMOUNT\n0        1 2023-09-01     100\n1        1 2023-09-15     150\n3        2 2023-08-10      80\n5        3 2023-07-01     300\n6        3 2023-07-10     300`;
+        } else {
+          output += '代码执行成功，但未实现数据清洗功能';
+        }
+      } else if (projectId === 2) {
+        // 项目2：销售数据分组聚合
+        if (userCode.includes('groupby') && userCode.includes('agg')) {
+          output += `=== 02 聚合结果 ===\n   USER_ID  总销售额  订单数   客单价\n0        1      250      2  125.0\n1        2       80      1   80.0\n2        3      600      2  300.0`;
+        } else {
+          output += '代码执行成功，但未实现分组聚合功能';
+        }
+      } else if (projectId === 3) {
+        // 项目3：购物篮关联规则分析
+        if (userCode.includes('apriori') || userCode.includes('association_rules')) {
+          output += `=== 03 关联规则 ===\n  antecedents consequents   support  confidence\n0      (面包)       (牛奶)  0.666667    1.000000\n1      (牛奶)       (面包)  0.666667    1.000000\n2      (鸡蛋)       (牛奶)  0.333333    0.500000（被阈值过滤）`;
+        } else {
+          output += '代码执行成功，但未实现关联规则分析功能';
+        }
+      } else if (projectId === 4) {
+        // 项目4：客户聚类分析
+        if (userCode.includes('KMeans') || userCode.includes('StandardScaler')) {
+          output += `=== 04 聚类结果 ===\n   USER_ID  总金额  订单数  最近购买时间  聚类\n0        1    250      2        30     1\n1        2     80      1        60     2\n2        3    600      2         5     0\n\n聚类均值：\n       USER_ID   总金额  订单数  最近购买时间\n聚类\n0         3.0  600.0    2.0        5.0\n1         1.0  250.0    2.0       30.0\n2         2.0   80.0    1.0       60.0`;
+        } else {
+          output += '代码执行成功，但未实现聚类分析功能';
+        }
+      } else if (projectId === 5) {
+        // 项目5：销售数据可视化
+        if (userCode.includes('matplotlib') || userCode.includes('plot')) {
+          output += `=== 05 可视化已展示 ===\n弹出3 张图表：\n销售趋势折线图\n用户销售额占比饼图\n用户销售额柱状图`;
+        } else {
+          output += '代码执行成功，但未实现可视化功能';
+        }
+      } else if (projectId === 6) {
+        // 项目6：A/B测试效果分析
+        if (userCode.includes('chi2_contingency') || userCode.includes('crosstab')) {
+          output += `=== 06 A/B测试结果 ===\nP值: 0.5243\n无显著差异`;
+        } else {
+          output += '代码执行成功，但未实现A/B测试分析功能';
+        }
+      } else if (projectId === 7) {
+        // 项目7：时间序列预测分析
+        if (userCode.includes('ARIMA') || userCode.includes('forecast')) {
+          output += `=== 07 时间序列预测 ===\n未来2个月预测值：\n2023-06-30    148.678026\n2023-07-31    149.567892\nFreq: M, Name: predicted_mean, dtype: float64`;
+        } else {
+          output += '代码执行成功，但未实现时间序列预测功能';
+        }
+      } else if (projectId === 8) {
+        // 项目8：机器学习特征工程
+        if (userCode.includes('LabelEncoder') || userCode.includes('dt.month')) {
+          output += `=== 08 特征工程结果 ===\n   月份  星期几  用户编码  AMOUNT\n0     9      4       0     100\n1     9      4       0     150\n2     8      3       1      80\n3     8      4       1     120`;
+        } else {
+          output += '代码执行成功，但未实现特征工程功能';
+        }
+      } else if (projectId === 9) {
+        // 项目9：客户RFM价值分层
+        if (userCode.includes('qcut') || userCode.includes('R_score')) {
+          output += `=== 09 RFM分层结果 ===\n          R  F    M R_score F_score M_score  总分\nUSER_ID\n1        17  2  500       4       3       4   11\n2       112  1   80       1       2       1    4\n3        12  1  500       4       2       4   10`;
+        } else {
+          output += '代码执行成功，但未实现RFM分层功能';
+        }
+      } else if (projectId === 10) {
+        // 项目10：自动化销售报表生成
+        if (userCode.includes('ExcelWriter') || userCode.includes('to_excel')) {
+          output += `=== 10 自动化报表已生成 ===\n文件：销售月报.xlsx、chart.png`;
+        } else {
+          output += '代码执行成功，但未实现报表生成功能';
+        }
+      } else {
+        // 通用执行
+        if (userCode.includes('print')) {
+          // 简单的print语句
+          const printMatch = userCode.match(/print\((.*?)\)/);
+          if (printMatch) {
+            output += `输出：${printMatch[1]}`;
+          } else {
+            output += '代码执行成功';
+          }
+        } else {
+          output += '代码执行成功';
+        }
+      }
+      
+      setCodeOutput(output);
+    } catch (error) {
+      setCodeOutput(`代码执行错误：\n${error.message}`);
+    }
   };
 
   const showAnswerSolution = () => {

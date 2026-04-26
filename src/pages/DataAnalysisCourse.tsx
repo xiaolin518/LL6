@@ -1442,7 +1442,7 @@ print(fibonacci(n))`);
                           </div>
                         );
                       }
-                      const headers = lines[0].split(',');
+                      const headers = lines[0].split(',').map(h => h.trim());
                       const rows = lines.slice(1);
                       return (
                         <table className="min-w-full border border-gray-300">
@@ -1450,19 +1450,19 @@ print(fibonacci(n))`);
                             <tr>
                               {headers.map((header, index) => (
                                 <th key={index} className="px-4 py-2 border border-gray-300 text-left">
-                                  {header.trim()}
+                                  {header}
                                 </th>
                               ))}
                             </tr>
                           </thead>
                           <tbody>
                             {rows.map((row, rowIndex) => {
-                              const cells = row.split(',');
+                              const cells = row.split(',').map(c => c.trim());
                               return (
                                 <tr key={rowIndex} className={rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                                   {cells.map((cell, cellIndex) => (
                                     <td key={cellIndex} className="px-4 py-2 border border-gray-300">
-                                      {cell.trim()}
+                                      {cell}
                                     </td>
                                   ))}
                                 </tr>

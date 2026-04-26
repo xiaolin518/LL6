@@ -900,8 +900,18 @@ print('文件：销售月报.xlsx、chart.png')`,
         }
       } else if (projectId === 2) {
         // 项目2：销售数据分组聚合
-        if (userCode.includes('groupby') && userCode.includes('agg')) {
-          output += `=== 02 聚合结果 ===\n   USER_ID  总销售额  订单数   客单价\n0        1      250      2  125.0\n1        2       80      1   80.0\n2        3      600      2  300.0`;
+        if (userCode.includes('groupby')) {
+          if (userCode.includes('agg')) {
+            if (userCode.includes('sam')) {
+              output += '代码执行错误：\n参数错误 - 应该使用 sum() 而不是 sam()';
+            } else {
+              output += `=== 02 聚合结果 ===\n   USER_ID  总销售额  订单数   客单价\n0        1      250      2  125.0\n1        2       80      1   80.0\n2        3      600      2  300.0`;
+            }
+          } else if (userCode.includes('ugg')) {
+            output += '代码执行错误：\n方法名错误 - 应该使用 agg() 而不是 ugg()';
+          } else {
+            output += '代码执行成功，但未实现分组聚合功能';
+          }
         } else {
           output += '代码执行成功，但未实现分组聚合功能';
         }

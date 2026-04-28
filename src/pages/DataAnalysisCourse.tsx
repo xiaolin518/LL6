@@ -839,8 +839,42 @@ export default function DataAnalysisCourse() {
                 </div>
                 <div className="bg-blue-50 rounded-xl p-4">
                   <h3 className="font-bold text-blue-800 mb-2">实操数据</h3>
-                  <div className="bg-white p-3 rounded-lg shadow-sm">
-                    <pre className="text-sm text-gray-700 whitespace-pre-wrap">{currentPractical?.data}</pre>
+                  <div className="bg-white p-3 rounded-lg shadow-sm overflow-x-auto">
+                    {currentPractical?.data && (() => {
+                      const lines = currentPractical.data.split('\n').filter(line => line.trim());
+                      if (lines.length < 2) {
+                        return <pre className="text-sm text-gray-700 whitespace-pre-wrap">{currentPractical.data}</pre>;
+                      }
+                      const headers = lines[0].split(',').map(h => h.trim());
+                      const rows = lines.slice(1);
+                      return (
+                        <table className="min-w-full text-sm">
+                          <thead>
+                            <tr className="bg-blue-100">
+                              {headers.map((header, index) => (
+                                <th key={index} className="px-3 py-2 text-left text-blue-800 font-medium border-b border-blue-200">
+                                  {header}
+                                </th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {rows.map((row, rowIndex) => {
+                              const cells = row.split(',').map(c => c.trim());
+                              return (
+                                <tr key={rowIndex} className={rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                                  {cells.map((cell, cellIndex) => (
+                                    <td key={cellIndex} className="px-3 py-2 border-b border-gray-100 text-gray-700">
+                                      {cell || '-'}
+                                    </td>
+                                  ))}
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      );
+                    })()}
                   </div>
                 </div>
               </div>

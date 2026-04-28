@@ -232,6 +232,7 @@ const courseOutline = [
 ];
 
 export default function DataAnalysisCourse() {
+  // 数据分析课程组件
   const [activeChapter, setActiveChapter] = useState<string | null>(null);
   const [showPractice, setShowPractice] = useState<boolean>(false);
   const [currentChapterId, setCurrentChapterId] = useState<number | null>(null);

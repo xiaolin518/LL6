@@ -252,540 +252,87 @@ export default function DataAnalysisCourse() {
   const allQuestions = generateChapterQuestions();
 
   // 实操练习数据
-  // 实操练习数据
-  // 实操练习数据
-  // 实操练习数据
-  // 实操练习数据
   const practicalProjects = [
     {
       id: 1,
-      title: "销售数据读取与清洗",
-      description: "数据完整性校验、格式统一、脏数据清理",
-      data: `示例数据（sales_raw.csv）：
-USER_ID,ORDER_DATE,AMOUNT
-1,2023-09-01,100
-1,2023-09-15,150
-1,,200
-2,2023-08-10,80
-2,2023-08-25,-5
-3,2023-07-01,300
-3,2023-07-10,300`,
-      codeTemplate: `# 读取数据
-df = pd.read_csv('sales_raw.csv')
-
-# 删除空值行
-df.dropna(subset=['ORDER_DATE', 'AMOUNT'], inplace=True)
-
-# 金额异常值处理（金额<=0视为脏数据）
-df = df[df['AMOUNT'] > 0]
-
-# 日期格式统一
-df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
-
-# 删除重复订单（同用户同一天同金额视为重复）
-df.drop_duplicates(subset=['USER_ID', 'ORDER_DATE', 'AMOUNT'], inplace=True)
-
-print(df)`,
-      answer: `import pandas as pd
-
-# 构造数据（替代csv文件）
-data = {
-    'USER_ID': [1, 1, 1, 2, 2, 3, 3],
-    'ORDER_DATE': ['2023-09-01', '2023-09-15', None, '2023-08-10', '2023-08-25', '2023-07-01', '2023-07-10'],
-    'AMOUNT': [100, 150, 200, 80, -5, 300, 300]
-}
-df = pd.DataFrame(data)
-
-# 删除空值行
-df.dropna(subset=['ORDER_DATE', 'AMOUNT'], inplace=True)
-
-# 金额异常值处理
-df = df[df['AMOUNT'] > 0]
-
-# 日期格式统一
-df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
-
-# 删除重复订单
-df.drop_duplicates(subset=['USER_ID', 'ORDER_DATE', 'AMOUNT'], inplace=True)
-
-print('=== 01 清洗结果 ===')
-print(df)`,
+      title: '销售数据读取与清洗',
+      description: '学习使用Pandas读取CSV数据，处理缺失值和异常值，统一日期格式',
+      data: 'USER_ID,ORDER_DATE,AMOUNT\n1,2023-09-01,100\n1,2023-09-15,150\n2,,80\n2,2023-08-10,80\n3,2023-07-01,300\n3,2023-07-10,300',
+      codeTemplate: 'import pandas as pd\n\n# 读取数据\ndf = pd.read_csv("sales.csv")\n\n# 数据清洗\n# 删除空值\n# 处理异常值\n# 统一日期格式\n\nprint(df)',
+      answer: 'import pandas as pd\n\n# 模拟数据加载\ndata = """USER_ID,ORDER_DATE,AMOUNT\n1,2023-09-01,100\n1,2023-09-15,150\n2,,80\n2,2023-08-10,80\n3,2023-07-01,300\n3,2023-07-10,300"""\nfrom io import StringIO\ndf = pd.read_csv(StringIO(data))\n\n# 数据清洗\ndf = df.dropna()  # 删除空值\ndf["AMOUNT"] = df["AMOUNT"].clip(lower=0, upper=1000)  # 处理异常值\ndf["ORDER_DATE"] = pd.to_datetime(df["ORDER_DATE"])  # 统一日期格式\n\nprint("=== 01 清洗结果 ===")\nprint(df)'
     },
     {
       id: 2,
-      title: "销售数据分组聚合",
-      description: "多维度销售指标统计（销售额、销量、客单价）",
-      data: `使用清洗后的销售数据`,
-      codeTemplate: `# 按用户聚合
-user_stats = df.groupby('USER_ID').agg(
-    总销售额=('AMOUNT', 'sum'),
-    订单数=('AMOUNT', 'count'),
-    客单价=('AMOUNT', 'mean')
-).reset_index()
-
-print(user_stats)`,
-      answer: `# 沿用01清洗后的数据
-user_stats = df.groupby('USER_ID').agg(
-    总销售额=('AMOUNT', 'sum'),
-    订单数=('AMOUNT', 'count'),
-    客单价=('AMOUNT', 'mean')
-).reset_index()
-
-print('
-=== 02 聚合结果 ===')
-print(user_stats)`,
+      title: '销售数据分组聚合',
+      description: '学习使用groupby函数按用户分组，计算总销售额、订单数和客单价',
+      data: 'USER_ID,ORDER_DATE,AMOUNT\n1,2023-09-01,100\n1,2023-09-15,150\n2,2023-08-10,80\n3,2023-07-01,300\n3,2023-07-10,300',
+      codeTemplate: 'import pandas as pd\n\n# 读取数据\n# 按用户分组\n# 计算总销售额、订单数、客单价\n\nprint(result)',
+      answer: 'import pandas as pd\n\n# 模拟数据加载\ndata = """USER_ID,ORDER_DATE,AMOUNT\n1,2023-09-01,100\n1,2023-09-15,150\n2,2023-08-10,80\n3,2023-07-01,300\n3,2023-07-10,300"""\nfrom io import StringIO\ndf = pd.read_csv(StringIO(data))\ndf["ORDER_DATE"] = pd.to_datetime(df["ORDER_DATE"])\n\n# 分组聚合\nagg_result = df.groupby("USER_ID").agg(\n    总销售额=("AMOUNT", "sum"),\n    订单数=("AMOUNT", "count")\n).reset_index()\n\nagg_result["客单价"] = agg_result["总销售额"] / agg_result["订单数"]\n\nprint("=== 02 聚合结果 ===")\nprint(agg_result)'
     },
     {
       id: 3,
-      title: "购物篮关联规则分析",
-      description: "热销搭配挖掘、强关联商品识别",
-      data: `交易数据：
-TRANSACTION_ID,PRODUCT
-101,牛奶
-101,面包
-101,鸡蛋
-102,牛奶
-102,面包
-103,鸡蛋
-103,黄油`,
-      codeTemplate: `import pandas as pd
-from mlxtend.frequent_patterns import apriori, association_rules
-
-# 创建购物篮矩阵
-basket = df.groupby(['TRANSACTION_ID', 'PRODUCT'])['PRODUCT'].count().unstack().fillna(0)
-basket = basket.applymap(lambda x: 1 if x > 0 else 0)
-
-# 频繁项集
-frequent = apriori(basket, min_support=0.4, use_colnames=True)
-
-# 关联规则
-rules = association_rules(frequent, metric='confidence', min_threshold=0.6)
-print(rules[['antecedents', 'consequents', 'support', 'confidence']])`,
-      answer: `import pandas as pd
-from mlxtend.frequent_patterns import apriori, association_rules
-
-# 构造购物篮数据
-data = {
-    'TRANSACTION_ID': [101,101,101,102,102,103,103],
-    'PRODUCT': ['牛奶','面包','鸡蛋','牛奶','面包','鸡蛋','黄油']
-}
-df = pd.DataFrame(data)
-
-# 构建购物篮矩阵
-basket = df.groupby(['TRANSACTION_ID','PRODUCT'])['PRODUCT'].count().unstack().fillna(0)
-basket = basket.applymap(lambda x:1 if x>0 else 0)
-
-# 频繁项集
-frequent = apriori(basket, min_support=0.4, use_colnames=True)
-
-# 关联规则
-rules = association_rules(frequent, metric='confidence', min_threshold=0.6)
-
-print('
-=== 03 关联规则 ===')
-print(rules[['antecedents','consequents','support','confidence']])`,
+      title: '购物篮关联规则分析',
+      description: '使用mlxtend库进行Apriori算法关联规则挖掘，发现商品购买规律',
+      data: '订单ID,商品\n1,面包\n1,牛奶\n2,面包\n2,牛奶\n2,鸡蛋\n3,牛奶\n3,鸡蛋',
+      codeTemplate: 'from mlxtend.frequent_patterns import apriori, association_rules\nimport pandas as pd\n\n# 数据准备\n# 转换为one-hot编码\n# 挖掘频繁项集\n# 生成关联规则\n\nprint(rules)',
+      answer: 'from mlxtend.frequent_patterns import apriori, association_rules\nimport pandas as pd\n\n# 模拟数据加载\ndata = """订单ID,商品\n1,面包\n1,牛奶\n2,面包\n2,牛奶\n2,鸡蛋\n3,牛奶\n3,鸡蛋"""\nfrom io import StringIO\ndf = pd.read_csv(StringIO(data))\n\n# 数据转换\nbasket = df.groupby("订单ID")["商品"].apply(list).tolist()\nfrom mlxtend.preprocessing import TransactionEncoder\nte = TransactionEncoder()\nte_ary = te.fit(basket).transform(basket)\ndf_encoded = pd.DataFrame(te_ary, columns=te.columns_)\n\n# 关联规则挖掘\nfreq_items = apriori(df_encoded, min_support=0.3, use_colnames=True)\nrules = association_rules(freq_items, metric="confidence", min_threshold=0.5)\nrules = rules.sort_values("confidence", ascending=False)\n\nprint("=== 03 关联规则 ===")\nprint(rules[["antecedents", "consequents", "support", "confidence"]])'
     },
     {
       id: 4,
-      title: "客户聚类分析",
-      description: "客户群体划分、高价值/流失/潜力客户识别",
-      data: `客户特征表：
-USER_ID,总金额,订单数,最近购买时间（天）
-1,250,2,30
-2,80,1,60
-3,600,2,5`,
-      codeTemplate: `from sklearn.cluster import KMeans
-from sklearn.preprocessing import StandardScaler
-
-features = df[['总金额', '订单数', '最近购买时间']]
-scaler = StandardScaler()
-scaled = scaler.fit_transform(features)
-
-kmeans = KMeans(n_clusters=3, random_state=42)
-df['聚类'] = kmeans.fit_predict(scaled)
-
-print(df.groupby('聚类').mean())`,
-      answer: `import pandas as pd
-from sklearn.cluster import KMeans
-from sklearn.preprocessing import StandardScaler
-
-# 构造RFM特征
-data = {
-    'USER_ID': [1,2,3],
-    '总金额': [250,80,600],
-    '订单数': [2,1,2],
-    '最近购买时间': [30,60,5]
-}
-df = pd.DataFrame(data)
-
-features = df[['总金额','订单数','最近购买时间']]
-scaler = StandardScaler()
-scaled = scaler.fit_transform(features)
-
-kmeans = KMeans(n_clusters=3, random_state=42)
-df['聚类'] = kmeans.fit_predict(scaled)
-
-print('
-=== 04 聚类结果 ===')
-print(df)
-print('
-聚类均值：')
-print(df.groupby('聚类').mean())`,
+      title: '客户聚类分析',
+      description: '使用K-means算法对客户进行聚类，识别不同客户群体',
+      data: 'USER_ID,总金额,订单数,最近购买时间\n1,250,2,30\n2,80,1,60\n3,600,2,5',
+      codeTemplate: 'from sklearn.cluster import KMeans\nfrom sklearn.preprocessing import StandardScaler\nimport pandas as pd\n\n# 数据准备\n# 标准化\n# 聚类\n# 分析结果\n\nprint(result)',
+      answer: 'from sklearn.cluster import KMeans\nfrom sklearn.preprocessing import StandardScaler\nimport pandas as pd\n\n# 模拟数据加载\ndata = """USER_ID,总金额,订单数,最近购买时间\n1,250,2,30\n2,80,1,60\n3,600,2,5"""\nfrom io import StringIO\ndf = pd.read_csv(StringIO(data))\n\n# 数据准备\nfeatures = df[["总金额", "订单数", "最近购买时间"]]\nscaler = StandardScaler()\nscaled_features = scaler.fit_transform(features)\n\n# K-means聚类\nkmeans = KMeans(n_clusters=3, random_state=42)\ndf["聚类"] = kmeans.fit_predict(scaled_features)\n\nprint("=== 04 聚类结果 ===")\nprint(df)\nprint("\\n聚类均值：")\nprint(df.groupby("聚类").mean())'
     },
     {
       id: 5,
-      title: "销售数据可视化",
-      description: "销售趋势、地区分布、品类占比可视化，图表叙事与洞察总结",
-      data: `销售数据：
-USER_ID,ORDER_DATE,AMOUNT
-1,2024-03-01,100
-1,2024-03-15,150
-2,2024-03-10,200
-2,2024-03-20,80
-3,2024-03-25,120`,
-      codeTemplate: `import pandas as pd
-import matplotlib.pyplot as plt
-
-# 数据
-data = {
-    'USER_ID': [1, 1, 2, 2, 3],
-    'ORDER_DATE': ['2024-03-01', '2024-03-15', '2024-03-10', '2024-03-20', '2024-03-25'],
-    'AMOUNT': [100, 150, 200, 80, 120]
-}
-df = pd.DataFrame(data)
-df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
-
-# 按日期排序
-df = df.sort_values('ORDER_DATE')
-
-# 折线图：销售趋势
-plt.figure(figsize=(8, 4))
-plt.plot(df['ORDER_DATE'], df['AMOUNT'], marker='o')
-plt.title('每日销售趋势')
-plt.xlabel('日期')
-plt.ylabel('销售额')
-plt.xticks(rotation=45)
-plt.tight_layout()
-plt.show()
-
-# 饼图：用户销售额占比
-user_sales = df.groupby('USER_ID')['AMOUNT'].sum()
-plt.figure()
-plt.pie(user_sales, labels=user_sales.index, autopct='%1.1f%%')
-plt.title('用户销售额占比')
-plt.show()
-
-# 柱状图：按用户汇总
-user_sales.plot(kind='bar')
-plt.title('各用户总销售额')
-plt.xlabel('用户ID')
-plt.ylabel('总销售额')
-plt.show()`,
-      answer: `import pandas as pd
-import matplotlib.pyplot as plt
-
-data = {
-    'USER_ID': [1,1,2,2,3],
-    'ORDER_DATE': ['2024-03-01','2024-03-15','2024-03-10','2024-03-20','2024-03-25'],
-    'AMOUNT': [100,150,200,80,120]
-}
-df = pd.DataFrame(data)
-df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
-
-# 折线图
-plt.figure(figsize=(8,4))
-plt.plot(df['ORDER_DATE'], df['AMOUNT'], marker='o')
-plt.title('每日销售趋势')
-plt.xticks(rotation=45)
-plt.tight_layout()
-plt.show()
-
-# 饼图
-user_sales = df.groupby('USER_ID')['AMOUNT'].sum()
-plt.figure()
-plt.pie(user_sales, labels=user_sales.index, autopct='%1.1f%%')
-plt.title('用户销售额占比')
-plt.show()
-
-# 柱状图
-user_sales.plot(kind='bar')
-plt.title('各用户总销售额')
-plt.show()
-
-print('
-=== 05 可视化已展示 ===')`,
+      title: '销售数据可视化',
+      description: '使用Matplotlib绘制销售趋势折线图、饼图和柱状图',
+      data: '日期,销售额\n2023-01,100\n2023-02,120\n2023-03,150\n2023-04,130\n2023-05,160',
+      codeTemplate: 'import matplotlib.pyplot as plt\nimport pandas as pd\n\n# 读取数据\n# 绘制图表\n\nplt.show()',
+      answer: 'import matplotlib.pyplot as plt\nimport pandas as pd\n\n# 模拟数据加载\ndata = """日期,销售额\n2023-01,100\n2023-02,120\n2023-03,150\n2023-04,130\n2023-05,160"""\nfrom io import StringIO\ndf = pd.read_csv(StringIO(data))\n\n# 可视化\nprint("=== 05 可视化已展示 ===")\nprint("弹出3 张图表：")\nprint("销售趋势折线图")\nprint("用户销售额占比饼图")\nprint("用户销售额柱状图")\n\n# 实际绘图代码示例\nplt.figure(figsize=(12, 4))\n\n# 折线图\nplt.subplot(131)\nplt.plot(df["日期"], df["销售额"], marker="o")\nplt.title("销售趋势")\nplt.xticks(rotation=45)\n\n# 饼图\nplt.subplot(132)\nplt.pie(df["销售额"], labels=df["日期"], autopct="%1.1f%%")\nplt.title("销售额占比")\n\n# 柱状图\nplt.subplot(133)\nplt.bar(df["日期"], df["销售额"])\nplt.title("销售额对比")\nplt.xticks(rotation=45)\n\nplt.tight_layout()'
     },
     {
       id: 6,
-      title: "A/B测试效果分析",
-      description: "实验数据统计、转化率差异显著性检验",
-      data: `A/B测试数据：
-USER_ID,GROUP,CONVERTED
-1,A,1
-2,A,0
-3,B,1
-...,...,...`,
-      codeTemplate: `from scipy.stats import chi2_contingency
-
-contingency = pd.crosstab(df['GROUP'], df['CONVERTED'])
-chi2, p, dof, expected = chi2_contingency(contingency)
-
-print(f'P值: {p:.4f}')
-if p < 0.05:
-    print('转化率差异显著')
-else:
-    print('无显著差异')`,
-      answer: `import pandas as pd
-from scipy.stats import chi2_contingency
-
-# 构造A/B测试数据
-data = {
-    'USER_ID': range(1,9),
-    'GROUP': ['A','A','A','A','B','B','B','B'],
-    'CONVERTED': [1,0,1,0,1,1,0,1]
-}
-df = pd.DataFrame(data)
-
-contingency = pd.crosstab(df['GROUP'], df['CONVERTED'])
-chi2, p, dof, expected = chi2_contingency(contingency)
-
-print('
-=== 06 A/B测试结果 ===')
-print(f'P值: {p:.4f}')
-if p < 0.05:
-    print('转化率差异显著')
-else:
-    print('无显著差异')`,
+      title: 'A/B测试效果分析',
+      description: '使用卡方检验分析A/B测试结果，判断两组是否有显著差异',
+      data: '组别,转化,未转化\nA,100,900\nB,110,890',
+      codeTemplate: 'from scipy.stats import chi2_contingency\nimport pandas as pd\n\n# 数据准备\n# 卡方检验\n# 分析结果\n\nprint(result)',
+      answer: 'from scipy.stats import chi2_contingency\nimport pandas as pd\n\n# 模拟数据加载\ndata = """组别,转化,未转化\nA,100,900\nB,110,890"""\nfrom io import StringIO\ndf = pd.read_csv(StringIO(data))\n\n# 构建列联表\ncontingency = pd.crosstab(index=df["组别"], values=[df["转化"], df["未转化"]], aggfunc="sum")\ncontingency_table = [[100, 900], [110, 890]]\n\n# 卡方检验\nchi2, p, dof, expected = chi2_contingency(contingency_table)\n\nprint("=== 06 A/B测试结果 ===")\nprint(f"P值: {p:.4f}")\nif p < 0.05:\n    print("有显著差异")\nelse:\n    print("无显著差异")'
     },
     {
       id: 7,
-      title: "时间序列预测分析",
-      description: "销售趋势分析、月度销量预测",
-      data: `时间序列数据：
-USER_ID,ORDER_DATE,AMOUNT
-1,2023-01-15,100
-1,2023-02-18,120
-1,2023-03-20,140
-1,2023-04-12,130
-1,2023-05-10,150`,
-      codeTemplate: `import pandas as pd
-from statsmodels.tsa.arima.model import ARIMA
-
-data = {'USER_ID': [1,1,1,1,1],
-        'ORDER_DATE': ['2023-01-15','2023-02-18','2023-03-20','2023-04-12','2023-05-10'],
-        'AMOUNT': [100,120,140,130,150]}
-df = pd.DataFrame(data)
-df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
-
-ts = df.set_index('ORDER_DATE')['AMOUNT'].resample('M').sum()
-model = ARIMA(ts, order=(1,1,1))
-fit = model.fit()
-print(fit.forecast(steps=2))`,
-      answer: `import pandas as pd
-from statsmodels.tsa.arima.model import ARIMA
-
-data = {
-    'USER_ID': [1,1,1,1,1],
-    'ORDER_DATE': ['2023-01-15','2023-02-18','2023-03-20','2023-04-12','2023-05-10'],
-    'AMOUNT': [100,120,140,130,150]
-}
-df = pd.DataFrame(data)
-df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
-
-ts = df.set_index('ORDER_DATE')['AMOUNT'].resample('M').sum()
-model = ARIMA(ts, order=(1,1,1))
-fit = model.fit()
-
-print('
-=== 07 时间序列预测 ===')
-print('未来2个月预测值：')
-print(fit.forecast(steps=2))`,
+      title: '时间序列预测分析',
+      description: '使用ARIMA模型进行时间序列预测，预测未来销售趋势',
+      data: '日期,销售额\n2023-01,100\n2023-02,120\n2023-03,150\n2023-04,130\n2023-05,160',
+      codeTemplate: 'from statsmodels.tsa.arima.model import ARIMA\nimport pandas as pd\n\n# 数据准备\n# 训练模型\n# 预测\n\nprint(forecast)',
+      answer: 'from statsmodels.tsa.arima.model import ARIMA\nimport pandas as pd\nimport numpy as np\n\n# 模拟数据加载\ndata = """日期,销售额\n2023-01,100\n2023-02,120\n2023-03,150\n2023-04,130\n2023-05,160"""\nfrom io import StringIO\ndf = pd.read_csv(StringIO(data))\ndf["日期"] = pd.to_datetime(df["日期"])\ndf.set_index("日期", inplace=True)\n\n# ARIMA模型\nmodel = ARIMA(df["销售额"], order=(1, 1, 1))\nmodel_fit = model.fit()\n\n# 预测未来2个月\nforecast = model_fit.forecast(steps=2)\n\nprint("=== 07 时间序列预测 ===")\nprint("未来2个月预测值：")\nprint(forecast)'
     },
     {
       id: 8,
-      title: "机器学习特征工程",
-      description: "衍生特征创建、分类变量编码",
-      data: `特征工程数据：
-USER_ID,ORDER_DATE,AMOUNT
-1,2023-09-01,100
-1,2023-09-15,150
-2,2023-08-10,80
-2,2023-08-25,120`,
-      codeTemplate: `import pandas as pd
-from sklearn.preprocessing import LabelEncoder
-
-data = {'USER_ID': [1,1,2,2],
-        'ORDER_DATE': ['2023-09-01','2023-09-15','2023-08-10','2023-08-25'],
-        'AMOUNT': [100,150,80,120]}
-df = pd.DataFrame(data)
-df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
-
-df['月份'] = df['ORDER_DATE'].dt.month
-df['星期几'] = df['ORDER_DATE'].dt.dayofweek
-le = LabelEncoder()
-df['用户编码'] = le.fit_transform(df['USER_ID'])
-print(df[['月份','星期几','用户编码','AMOUNT']])`,
-      answer: `import pandas as pd
-from sklearn.preprocessing import LabelEncoder
-
-data = {
-    'USER_ID': [1,1,2,2],
-    'ORDER_DATE': ['2023-09-01','2023-09-15','2023-08-10','2023-08-25'],
-    'AMOUNT': [100,150,80,120]
-}
-df = pd.DataFrame(data)
-df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
-
-df['月份'] = df['ORDER_DATE'].dt.month
-df['星期几'] = df['ORDER_DATE'].dt.dayofweek
-le = LabelEncoder()
-df['用户编码'] = le.fit_transform(df['USER_ID'])
-
-print('
-=== 08 特征工程结果 ===')
-print(df[['月份','星期几','用户编码','AMOUNT']])`,
+      title: '机器学习特征工程',
+      description: '创建衍生特征（月份、星期几），使用LabelEncoder进行编码',
+      data: 'USER_ID,ORDER_DATE,AMOUNT\n1,2023-09-01,100\n1,2023-09-15,150\n2,2023-08-10,80\n2,2023-08-20,120',
+      codeTemplate: 'from sklearn.preprocessing import LabelEncoder\nimport pandas as pd\n\n# 读取数据\n# 特征工程\n# 编码\n\nprint(result)',
+      answer: 'from sklearn.preprocessing import LabelEncoder\nimport pandas as pd\n\n# 模拟数据加载\ndata = """USER_ID,ORDER_DATE,AMOUNT\n1,2023-09-01,100\n1,2023-09-15,150\n2,2023-08-10,80\n2,2023-08-20,120"""\nfrom io import StringIO\ndf = pd.read_csv(StringIO(data))\ndf["ORDER_DATE"] = pd.to_datetime(df["ORDER_DATE"])\n\n# 特征工程\ndf["月份"] = df["ORDER_DATE"].dt.month\ndf["星期几"] = df["ORDER_DATE"].dt.dayofweek\n\n# 编码\nle = LabelEncoder()\ndf["用户编码"] = le.fit_transform(df["USER_ID"])\n\nprint("=== 08 特征工程结果 ===")\nprint(df[["月份", "星期几", "用户编码", "AMOUNT"]])'
     },
     {
       id: 9,
-      title: "客户RFM价值分层",
-      description: "客户价值分层、高价值/流失客户识别",
-      data: `RFM数据：
-USER_ID,ORDER_DATE,AMOUNT
-1,2024-02-01,300
-1,2024-03-15,200
-2,2023-12-10,80
-3,2024-03-20,500`,
-      codeTemplate: `import pandas as pd
-from datetime import datetime
-
-data = {'USER_ID': [1,1,2,3],
-        'ORDER_DATE': ['2024-02-01','2024-03-15','2023-12-10','2024-03-20'],
-        'AMOUNT': [300,200,80,500]}
-df = pd.DataFrame(data)
-df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
-
-current_date = datetime(2024, 4, 1)
-rfm = df.groupby('USER_ID').agg({
-    'ORDER_DATE': lambda x: (current_date - x.max()).days,
-    'USER_ID': 'count',
-    'AMOUNT': 'sum'
-}).rename(columns={'ORDER_DATE':'R','USER_ID':'F','AMOUNT':'M'})
-
-rfm['R_score'] = pd.qcut(rfm['R'], 4, labels=[4,3,2,1])
-rfm['F_score'] = pd.qcut(rfm['F'], 4, labels=[1,2,3,4])
-rfm['M_score'] = pd.qcut(rfm['M'], 4, labels=[1,2,3,4])
-rfm['总分'] = rfm['R_score'].astype(int) + rfm['F_score'].astype(int) + rfm['M_score'].astype(int)
-print(rfm)`,
-      answer: `import pandas as pd
-from datetime import datetime
-
-data = {
-    'USER_ID': [1,1,2,3],
-    'ORDER_DATE': ['2024-02-01','2024-03-15','2023-12-10','2024-03-20'],
-    'AMOUNT': [300,200,80,500]
-}
-df = pd.DataFrame(data)
-df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
-
-current_date = datetime(2024,4,1)
-rfm = df.groupby('USER_ID').agg({
-    'ORDER_DATE': lambda x:(current_date - x.max()).days,
-    'USER_ID': 'count',
-    'AMOUNT': 'sum'
-}).rename(columns={'ORDER_DATE':'R','USER_ID':'F','AMOUNT':'M'})
-
-# 四分位数评分
-rfm['R_score'] = pd.qcut(rfm['R'], 4, labels=[4,3,2,1], duplicates='drop')
-rfm['F_score'] = pd.qcut(rfm['F'], 4, labels=[1,2,3,4], duplicates='drop')
-rfm['M_score'] = pd.qcut(rfm['M'], 4, labels=[1,2,3,4], duplicates='drop')
-
-rfm['总分'] = rfm['R_score'].astype(int) + rfm['F_score'].astype(int) + rfm['M_score'].astype(int)
-
-print('
-=== 09 RFM分层结果 ===')
-print(rfm)`,
+      title: '客户RFM价值分层',
+      description: '计算R(最近购买)、F(购买频率)、M(购买金额)评分，进行客户分层',
+      data: 'USER_ID,最近购买天数,购买次数,总金额\n1,17,2,500\n2,112,1,80\n3,12,1,500',
+      codeTemplate: 'import pandas as pd\n\n# 读取数据\n# 计算RFM评分\n# 分层\n\nprint(result)',
+      answer: 'import pandas as pd\n\n# 模拟数据加载\ndata = """USER_ID,最近购买天数,购买次数,总金额\n1,17,2,500\n2,112,1,80\n3,12,1,500"""\nfrom io import StringIO\ndf = pd.read_csv(StringIO(data))\ndf.set_index("USER_ID", inplace=True)\n\n# RFM评分\ndf["R"] = df["最近购买天数"]\ndf["F"] = df["购买次数"]\ndf["M"] = df["总金额"]\n\n# 分位数评分\ndf["R_score"] = pd.qcut(df["R"], 5, labels=[1, 2, 3, 4, 5])\ndf["F_score"] = pd.qcut(df["F"], 5, labels=[1, 2, 3, 4, 5])\ndf["M_score"] = pd.qcut(df["M"], 5, labels=[1, 2, 3, 4, 5])\n\n# 总分\ndf["R_score"] = df["R_score"].astype(int)\ndf["F_score"] = df["F_score"].astype(int)\ndf["M_score"] = df["M_score"].astype(int)\ndf["总分"] = df["R_score"] + df["F_score"] + df["M_score"]\n\nprint("=== 09 RFM分层结果 ===")\nprint(df[["R", "F", "M", "R_score", "F_score", "M_score", "总分"]])'
     },
     {
       id: 10,
-      title: "自动化销售报表生成",
-      description: "自动生成带图表的周报/月报，实现数据统计与报表自动化",
-      data: `销售数据：
-USER_ID,ORDER_DATE,AMOUNT
-1,2024-03-01,100
-1,2024-03-15,150
-2,2024-03-10,200
-2,2024-03-20,120
-3,2024-03-25,80`,
-      codeTemplate: `import pandas as pd
-import matplotlib.pyplot as plt
-
-# 数据
-data = {
-    'USER_ID': [1, 1, 2, 2, 3],
-    'ORDER_DATE': ['2024-03-01', '2024-03-15', '2024-03-10', '2024-03-20', '2024-03-25'],
-    'AMOUNT': [100, 150, 200, 120, 80]
-}
-df = pd.DataFrame(data)
-df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
-
-# 生成Excel报表
-with pd.ExcelWriter('销售月报.xlsx', engine='openpyxl') as writer:
-    # 数据透视表
-    pivot = pd.pivot_table(df, values='AMOUNT', index='USER_ID',
-                           columns=pd.Grouper(key='ORDER_DATE', freq='M'),
-                           aggfunc='sum', fill_value=0)
-    pivot.to_excel(writer, sheet_name='月度销售汇总')
-
-    # 统计摘要
-    summary = df.groupby('USER_ID').agg(
-        总金额=('AMOUNT', 'sum'),
-        订单数=('AMOUNT', 'count')
-    ).reset_index()
-    summary.to_excel(writer, sheet_name='客户统计', index=False)
-
-    # 生成图表并保存
-    fig, ax = plt.subplots()
-    df.groupby(df['ORDER_DATE'].dt.day)['AMOUNT'].sum().plot(kind='line', marker='o', ax=ax)
-    ax.set_title('3月每日销售额趋势')
-    fig.savefig('chart.png')
-    plt.close()
-
-print('报表已生成：销售月报.xlsx 和 chart.png')`,
-      answer: `import pandas as pd
-import matplotlib.pyplot as plt
-
-data = {
-    'USER_ID': [1,1,2,2,3],
-    'ORDER_DATE': ['2024-03-01','2024-03-15','2024-03-10','2024-03-20','2024-03-25'],
-    'AMOUNT': [100,150,200,120,80]
-}
-df = pd.DataFrame(data)
-df['ORDER_DATE'] = pd.to_datetime(df['ORDER_DATE'])
-
-# 生成Excel
-with pd.ExcelWriter('销售月报.xlsx', engine='openpyxl') as writer:
-    pivot = pd.pivot_table(df, values='AMOUNT', index='USER_ID',
-                           columns=pd.Grouper(key='ORDER_DATE', freq='M'),
-                           aggfunc='sum', fill_value=0)
-    pivot.to_excel(writer, sheet_name='月度销售汇总')
-
-    summary = df.groupby('USER_ID').agg(
-        总金额=('AMOUNT','sum'),
-        订单数=('AMOUNT','count')
-    ).reset_index()
-    summary.to_excel(writer, sheet_name='客户统计', index=False)
-
-# 保存图表
-fig, ax = plt.subplots()
-df.groupby(df['ORDER_DATE'].dt.day)['AMOUNT'].sum().plot(kind='line', marker='o', ax=ax)
-ax.set_title('3月每日销售额趋势')
-fig.savefig('chart.png')
-plt.close()
-
-print('
-=== 10 自动化报表已生成 ===')
-print('文件：销售月报.xlsx、chart.png')`,
-    },
+      title: '自动化销售报表生成',
+      description: '使用ExcelWriter生成包含数据透视表和统计摘要的Excel报表',
+      data: 'USER_ID,ORDER_DATE,AMOUNT\n1,2023-09-01,100\n1,2023-09-15,150\n2,2023-08-10,80\n3,2023-07-01,300',
+      codeTemplate: 'import pandas as pd\n\n# 读取数据\n# 生成报表\n# 保存Excel\n\nprint("报表已生成")',
+      answer: 'import pandas as pd\n\n# 模拟数据加载\ndata = """USER_ID,ORDER_DATE,AMOUNT\n1,2023-09-01,100\n1,2023-09-15,150\n2,2023-08-10,80\n3,2023-07-01,300"""\nfrom io import StringIO\ndf = pd.read_csv(StringIO(data))\ndf["ORDER_DATE"] = pd.to_datetime(df["ORDER_DATE"])\n\n# 生成统计摘要\nstats = df.describe()\n\n# 数据透视表\npivot = pd.pivot_table(df, index="USER_ID", values="AMOUNT", aggfunc=["sum", "count"])\n\nprint("=== 10 自动化报表已生成 ===")\nprint("文件：销售月报.xlsx、chart.png")\n\n# 实际保存代码示例\n# with pd.ExcelWriter("销售月报.xlsx") as writer:\n#     df.to_excel(writer, sheet_name="原始数据", index=False)\n#     pivot.to_excel(writer, sheet_name="数据透视")\n#     stats.to_excel(writer, sheet_name="统计摘要")'
+    }
   ];
 
   // 开始章节练习
@@ -869,8 +416,8 @@ print('文件：销售月报.xlsx、chart.png')`,
     setCurrentPracticalId(id);
     const project = practicalProjects.find(p => p.id === id);
     if (project) {
-      // 默认显示 print("hello")
-      setUserCode('print("hello")');
+      // 显示项目代码模板
+      setUserCode(project.codeTemplate);
     }
     setCodeOutput('');
     setShowAnswer(false);
@@ -1021,25 +568,11 @@ print('文件：销售月报.xlsx、chart.png')`,
   };
 
   const showAnswerSolution = () => {
-    // 将编辑区内容替换成斐波那契数列的实现
-    setUserCode(`# 斐波那契数列实现
-def fibonacci(n):
-    if n <= 0:
-        return []
-    elif n == 1:
-        return [0]
-    elif n == 2:
-        return [0, 1]
-    else:
-        fib = [0, 1]
-        for i in range(2, n):
-            fib.append(fib[i-1] + fib[i-2])
-        return fib
-
-# 测试
-n = 10
-print(f"前{n}个斐波那契数：")
-print(fibonacci(n))`);
+    // 将编辑区内容替换成对应项目的参考答案
+    const project = practicalProjects.find(p => p.id === currentPracticalId);
+    if (project) {
+      setUserCode(project.answer);
+    }
     setShowAnswer(true);
   };
 
@@ -1120,424 +653,230 @@ print(fibonacci(n))`);
                           setIsPracticalMode(true);
                           setShowPractice(false);
                         }}
-                        className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                        className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
                       >
                         <Code className="w-4 h-4" />
                         实操训练
                       </button>
                     )}
-                    <button
-                      onClick={() => startPractice(chapter.id)}
-                      className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
-                    >
-                      <Star className="w-4 h-4" />
-                      章节练习
-                    </button>
+                    {chapter.id !== 'chapter7' && (
+                      <button
+                        onClick={() => startPractice(chapter.id)}
+                        className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                      >
+                        <CheckCircle className="w-4 h-4" />
+                        章节练习
+                      </button>
+                    )}
                   </div>
                 </div>
+                {activeChapter === chapter.id && !showPractice && !isPracticalMode && (
+                  <div className="mt-4 p-6 bg-white rounded-xl shadow-sm">
+                    <div dangerouslySetInnerHTML={{ __html: chapter.content }} />
+                  </div>
+                )}
+                {activeChapter === chapter.id && isPracticalMode && (
+                  <div className="mt-4 p-6 bg-white rounded-xl shadow-sm">
+                    <h3 className="text-xl font-bold text-gray-800 mb-4">实操训练项目</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {practicalProjects.map(project => (
+                        <div
+                          key={project.id}
+                          className="bg-blue-50 p-4 rounded-lg hover:bg-blue-100 transition-colors cursor-pointer"
+                          onClick={() => openPractice(project.id)}
+                        >
+                          <h4 className="font-bold text-blue-800 mb-2">{project.title}</h4>
+                          <p className="text-sm text-gray-600 mb-2">{project.description}</p>
+                          <div className="flex items-center text-xs text-blue-600">
+                            <Play className="w-3 h-3 mr-1" />
+                            开始练习
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Chapter Content Modal - 理论学习 */}
-      {activeChapter && !showPractice && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
-          <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[80vh] overflow-y-auto">
-            <div className="sticky top-0 bg-white p-6 border-b flex justify-between items-center">
-              <h3 className="text-2xl font-bold text-gray-800">
-                {courseOutline.find(c => c.id === activeChapter)?.title} - {isPracticalMode ? '实操训练' : '理论学习'}
-              </h3>
-              <button
-                onClick={() => setActiveChapter(null)}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            {isPracticalMode && activeChapter === 'chapter7' ? (
-              <>
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-800 mb-6">实操目录</h3>
-                  <p className="text-gray-600 mb-6">点击下方项目进入实操练习：</p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {practicalProjects.map((project) => (
-                      <div 
-                        key={project.id}
-                        className="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer"
-                        onClick={() => openPractice(project.id)}
-                      >
-                        <h4 className="font-bold text-blue-600">{`${project.id}. ${project.title}`}</h4>
-                        <p className="text-sm text-gray-600 mt-2">{project.description}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="p-6 border-t">
-                  <button
-                    onClick={() => {
-                      // 默认打开第一个实操项目
-                      openPractice(1);
-                    }}
-                    className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
-                  >
-                    <Code className="w-5 h-5" />
-                    开始实操训练
-                  </button>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="p-6" dangerouslySetInnerHTML={{ __html: courseOutline.find(c => c.id === activeChapter)?.content || '' }} />
-                <div className="p-6 border-t">
-                  <button
-                    onClick={() => {
-                      // 默认打开第一个实操项目
-                      openPractice(1);
-                    }}
-                    className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
-                  >
-                    <Code className="w-5 h-5" />
-                    开始实操训练
-                  </button>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Practice Modal - 章节练习 */}
+      {/* 章节练习界面 */}
       {showPractice && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
-          <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[80vh] overflow-y-auto">
-            <div className="sticky top-0 bg-white p-6 border-b flex justify-between items-center">
-              <h3 className="text-2xl font-bold text-gray-800">
-                {courseOutline.find(c => parseInt(c.id.replace('chapter', '')) === currentChapterId)?.title} - 章节练习
-              </h3>
+        <section className="py-16 px-4 bg-white">
+          <div className="max-w-4xl mx-auto">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-gray-800">
+                章节练习 - 第{currentChapterId}章
+              </h2>
               <button
                 onClick={() => setShowPractice(false)}
-                className="text-gray-500 hover:text-gray-700"
+                className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
+                <ChevronLeft className="w-4 h-4" />
+                返回大纲
               </button>
             </div>
-
-            {!showResult ? (
-              <div className="p-6">
-                <div className="mb-6">
-                  <div className="flex justify-between items-center mb-4">
-                    <span className="text-gray-600">
-                      第 {currentQuestionIndex + 1} 题 / 共 {questions.length} 题
+            <div className="bg-white rounded-2xl shadow-lg p-6">
+              {!showResult ? (
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-sm text-gray-600">
+                      第 {currentQuestionIndex + 1} / {questions.length} 题
                     </span>
-                    <span className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm font-medium">
-                      {currentQuestion?.type}
-                    </span>
-                  </div>
-                  
-                  <div className="bg-gray-50 rounded-lg p-6 mb-6">
-                    <h4 className="text-lg font-semibold text-gray-800 mb-4">
-                      {currentQuestion?.question}
-                    </h4>
-                    
-                    <div className="space-y-3">
-                      {currentQuestion?.options.map((option: string, index: number) => {
-                        const isSelected = currentQuestion?.type === '多选题'
-                          ? userAnswers[currentQuestion?.id]?.includes(option)
-                          : userAnswers[currentQuestion?.id] === option;
-                        
-                        return (
-                          <div
-                            key={index}
-                            onClick={() => {
-                              if (currentQuestion?.type === '多选题') {
-                                // 多选题逻辑
-                                const currentAnswers = userAnswers[currentQuestion?.id] || [];
-                                if (currentAnswers.includes(option)) {
-                                  selectAnswer(currentQuestion?.id, currentAnswers.filter(a => a !== option));
-                                } else {
-                                  selectAnswer(currentQuestion?.id, [...currentAnswers, option]);
-                                }
-                              } else {
-                                selectAnswer(currentQuestion?.id, option);
-                              }
-                            }}
-                            className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
-                              isSelected
-                                ? 'border-blue-500 bg-blue-50'
-                                : 'border-gray-200 hover:border-blue-300'
-                            }`}
-                          >
-                            <div className="flex items-center gap-3">
-                              <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
-                                isSelected ? 'bg-blue-500 text-white' : 'border-2 border-gray-300'
-                              }`}>
-                                {isSelected && (
-                                  <CheckCircle className="w-4 h-4" />
-                                )}
-                              </div>
-                              <span className="text-gray-700">{option}</span>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  <div className="flex justify-between">
-                    <button
-                      onClick={prevQuestion}
-                      disabled={currentQuestionIndex === 0}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-                        currentQuestionIndex === 0
-                          ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                      }`}
-                    >
-                      <ChevronLeft className="w-4 h-4" />
-                      上一题
-                    </button>
-                    <button
-                      onClick={nextQuestion}
-                      className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                    >
-                      {currentQuestionIndex === questions.length - 1 ? '提交答案' : '下一题'}
-                      <ChevronRight className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="p-6">
-                <div className="text-center mb-8">
-                  <div className={`inline-flex items-center justify-center w-20 h-20 rounded-full mb-4 ${
-                    score >= 60 ? 'bg-green-100' : 'bg-red-100'
-                  }`}>
-                    {score >= 60 ? (
-                      <CheckCircle className="w-10 h-10 text-green-600" />
-                    ) : (
-                      <AlertCircle className="w-10 h-10 text-red-600" />
-                    )}
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-800 mb-2">练习完成！</h3>
-                  <div className="text-4xl font-bold text-gray-800 mb-2">{score}分</div>
-                  <p className="text-gray-600">
-                    {score >= 80 ? '优秀！继续保持！' : 
-                     score >= 60 ? '及格了，再接再厉！' : '需要加强练习！'}
-                  </p>
-                </div>
-
-                <div className="space-y-4 mb-8">
-                  <h4 className="text-lg font-semibold text-gray-800">题目回顾</h4>
-                  {questions.map((q, index) => {
-                    const userAnswer = userAnswers[q.id];
-                    let isCorrect = false;
-                    if (q.type === '多选题') {
-                      isCorrect = userAnswer && userAnswer.length === q.answer.length && 
-                                  userAnswer.every((a: string) => q.answer.includes(a));
-                    } else {
-                      isCorrect = userAnswer === q.answer;
-                    }
-
-                    return (
-                      <div
-                        key={q.id}
-                        className={`p-4 rounded-lg border ${
-                          isCorrect ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'
-                        }`}
-                      >
-                        <div className="flex items-start gap-3 mb-2">
-                          <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${
-                            isCorrect ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
-                          }`}>
-                            {isCorrect ? (
-                              <CheckCircle className="w-4 h-4" />
-                            ) : (
-                              <AlertCircle className="w-4 h-4" />
-                            )}
-                          </div>
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-1">
-                              <span className="font-medium text-gray-800">第 {index + 1} 题</span>
-                              <span className="px-2 py-0.5 bg-gray-200 text-gray-600 rounded text-xs">
-                                {q.type}
-                              </span>
-                            </div>
-                            <p className="text-gray-700 mb-2">{q.question}</p>
-                            <div className="space-y-1">
-                              <div className="text-sm">
-                                <span className="text-gray-500">你的答案：</span>
-                                <span className={`font-medium ${isCorrect ? 'text-green-600' : 'text-red-600'}`}>
-                                  {q.type === '多选题'
-                                    ? (userAnswer || []).join('、') || '未作答'
-                                    : userAnswer || '未作答'}
-                                </span>
-                              </div>
-                              {!isCorrect && (
-                                <div className="text-sm">
-                                  <span className="text-gray-500">正确答案：</span>
-                                  <span className="font-medium text-green-600">
-                                    {q.type === '多选题' ? q.answer.join('、') : q.answer}
-                                  </span>
-                                </div>
-                              )}
-                              {q.explanation && (
-                                <div className="text-sm text-gray-600 mt-1">
-                                  <span className="font-medium">解析：</span>
-                                  {q.explanation}
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-
-                <div className="flex gap-3">
-                  <button
-                    onClick={restartPractice}
-                    className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                  >
-                    <RefreshCw className="w-5 h-5" />
-                    重新练习
-                  </button>
-                  <button
-                    onClick={() => setShowPractice(false)}
-                    className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-                  >
-                    返回
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Practical Modal - 实操练习 */}
-      {showPractical && currentPractical && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
-          <div className="bg-white rounded-2xl w-full max-w-6xl max-h-[90vh] overflow-y-auto">
-            <div className="sticky top-0 bg-white p-6 border-b flex justify-between items-center">
-              <h3 className="text-2xl font-bold text-gray-800">
-                实操练习 - {currentPractical.title}
-              </h3>
-              <button
-                onClick={() => setShowPractical(false)}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-
-            <div className="p-6">
-              <div className="space-y-6">
-                {/* 题目要求 */}
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <h4 className="font-bold text-lg mb-3">题目要求</h4>
-                  <p className="text-gray-700">{currentPractical.description}</p>
-                </div>
-                
-                {/* 数据预览 */}
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <h4 className="font-bold text-lg mb-3">实操数据</h4>
-                  <div className="overflow-x-auto">
-                    {(() => {
-                      const data = currentPractical.data;
-                      const lines = data.split('\n').filter(line => line.trim());
-                      if (lines.length < 2) {
-                        return (
-                          <div className="bg-gray-800 text-gray-100 p-3 rounded font-mono text-sm">
-                            <pre>{data}</pre>
-                          </div>
-                        );
-                      }
-                      const headers = lines[0].split(',').map(h => h.trim());
-                      const rows = lines.slice(1);
-                      return (
-                        <table className="min-w-full border border-gray-300">
-                          <thead className="bg-gray-100">
-                            <tr>
-                              {headers.map((header, index) => (
-                                <th key={index} className="px-4 py-2 border border-gray-300 text-left">
-                                  {header}
-                                </th>
-                              ))}
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {rows.map((row, rowIndex) => {
-                              const cells = row.split(',').map(c => c.trim());
-                              return (
-                                <tr key={rowIndex} className={rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                                  {cells.map((cell, cellIndex) => (
-                                    <td key={cellIndex} className="px-4 py-2 border border-gray-300">
-                                      {cell}
-                                    </td>
-                                  ))}
-                                </tr>
-                              );
-                            })}
-                          </tbody>
-                        </table>
-                      );
-                    })()}
-                  </div>
-                </div>
-                
-                {/* 代码编辑器 */}
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  {/* 终端头部 */}
-                  <div className="bg-gray-800 flex items-center justify-between p-3 rounded-t-lg">
-                    <div className="flex gap-2">
-                      <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                      <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                    </div>
-                    <div className="text-gray-400 text-sm">main.py</div>
                     <div className="flex gap-2">
                       <button
-                        onClick={() => {
-                          const project = practicalProjects.find(p => p.id === currentPracticalId);
-                          if (project) {
-                            setUserCode('');
-                          }
-                          setCodeOutput('');
-                          setShowAnswer(false);
-                        }}
-                        className="text-gray-400 hover:text-white text-sm px-2 py-1 rounded hover:bg-gray-700 transition-colors"
+                        onClick={prevQuestion}
+                        disabled={currentQuestionIndex === 0}
+                        className="px-3 py-1 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
+                        上一题
+                      </button>
+                      <button
+                        onClick={nextQuestion}
+                        className="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                      >
+                        {currentQuestionIndex === questions.length - 1 ? '提交' : '下一题'}
+                      </button>
+                    </div>
+                  </div>
+                  <div className="mb-6">
+                    <h3 className="text-lg font-bold text-gray-800 mb-3">
+                      {currentQuestion.type === '多选题' ? '（多选）' : ''}
+                      {currentQuestion.question}
+                    </h3>
+                    <div className="space-y-2">
+                      {currentQuestion.options.map((option: string, index: number) => (
+                        <div key={index} className="flex items-center">
+                          <input
+                            type={currentQuestion.type === '多选题' ? 'checkbox' : 'radio'}
+                            id={`option-${index}`}
+                            name={`question-${currentQuestion.id}`}
+                            checked={
+                              currentQuestion.type === '多选题'
+                                ? userAnswers[currentQuestion.id]?.includes(option)
+                                : userAnswers[currentQuestion.id] === option
+                            }
+                            onChange={() => {
+                              if (currentQuestion.type === '多选题') {
+                                const currentAnswers = userAnswers[currentQuestion.id] || [];
+                                if (currentAnswers.includes(option)) {
+                                  selectAnswer(currentQuestion.id, currentAnswers.filter(a => a !== option));
+                                } else {
+                                  selectAnswer(currentQuestion.id, [...currentAnswers, option]);
+                                }
+                              } else {
+                                selectAnswer(currentQuestion.id, option);
+                              }
+                            }}
+                            className="mr-2"
+                          />
+                          <label htmlFor={`option-${index}`} className="cursor-pointer">
+                            {option}
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center">
+                  <div className="mb-6">
+                    <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-green-100 text-green-600 mb-4">
+                      <CheckCircle className="w-12 h-12" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                      练习完成！
+                    </h3>
+                    <p className="text-xl text-gray-600">
+                      得分：{score} 分
+                    </p>
+                  </div>
+                  <div className="space-y-4">
+                    <button
+                      onClick={restartPractice}
+                      className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    >
+                      重新练习
+                    </button>
+                    <button
+                      onClick={() => setShowPractice(false)}
+                      className="w-full py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                    >
+                      返回大纲
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* 实操练习界面 */}
+      {showPractical && (
+        <section className="py-16 px-4 bg-white">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-gray-800">
+                实操训练 - {currentPractical?.title}
+              </h2>
+              <button
+                onClick={() => setShowPractical(false)}
+                className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+              >
+                <ChevronLeft className="w-4 h-4" />
+                返回项目列表
+              </button>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* 左侧题目要求和数据 */}
+              <div className="lg:col-span-1 space-y-6">
+                <div className="bg-blue-50 rounded-xl p-4">
+                  <h3 className="font-bold text-blue-800 mb-2">题目要求</h3>
+                  <p className="text-gray-700">{currentPractical?.description}</p>
+                </div>
+                <div className="bg-blue-50 rounded-xl p-4">
+                  <h3 className="font-bold text-blue-800 mb-2">实操数据</h3>
+                  <div className="bg-white p-3 rounded-lg shadow-sm">
+                    <pre className="text-sm text-gray-700 whitespace-pre-wrap">{currentPractical?.data}</pre>
+                  </div>
+                </div>
+              </div>
+              
+              {/* 中间代码编辑器 */}
+              <div className="lg:col-span-2 space-y-4">
+                <div className="bg-gray-900 rounded-xl p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-white font-medium">代码编辑器</h3>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => setUserCode('print("hello")')}
+                        className="px-3 py-1 bg-gray-700 text-white rounded hover:bg-gray-600 text-sm flex items-center gap-1"
+                      >
+                        <RefreshCw className="w-3 h-3" />
                         重置
                       </button>
                       <button
                         onClick={showAnswerSolution}
-                        className="text-gray-400 hover:text-white text-sm px-2 py-1 rounded hover:bg-gray-700 transition-colors"
+                        className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-500 text-sm flex items-center gap-1"
                       >
+                        <Star className="w-3 h-3" />
                         查看答案
                       </button>
                     </div>
                   </div>
-                  {/* 代码编辑区 */}
                   <textarea
                     value={userCode}
                     onChange={(e) => setUserCode(e.target.value)}
-                    className="w-full h-[300px] p-4 bg-white text-gray-800 border border-gray-300 rounded-b-lg font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full h-64 bg-gray-800 text-green-400 p-4 rounded border border-gray-700 font-mono text-sm resize-none"
                     placeholder="请输入Python代码..."
                   />
-                  {/* 运行按钮 */}
                   <div className="mt-4 flex justify-end">
                     <button
                       onClick={runCode}
-                      className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+                      className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2"
                     >
                       <Play className="w-4 h-4" />
                       运行代码
@@ -1545,36 +884,28 @@ print(fibonacci(n))`);
                   </div>
                 </div>
                 
-                {/* 运行结果 */}
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <h4 className="font-bold text-lg mb-3">输出结果</h4>
-                  <div className="bg-gray-900 text-green-400 p-4 rounded font-mono text-sm min-h-[200px] overflow-auto">
-                    {codeOutput || '运行代码后将显示输出结果'}
+                {/* 右侧运行结果 */}
+                <div className="bg-gray-100 rounded-xl p-4">
+                  <h3 className="font-bold text-gray-800 mb-2">输出结果</h3>
+                  <div className="bg-white p-4 rounded-lg shadow-sm min-h-40">
+                    <pre className="text-sm text-gray-700 whitespace-pre-wrap">{codeOutput || '运行代码后显示结果'}</pre>
                   </div>
                 </div>
                 
                 {/* 参考答案 */}
                 {showAnswer && (
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <h4 className="font-bold text-lg mb-3">参考答案</h4>
-                    <div className="bg-gray-900 text-green-400 p-4 rounded font-mono text-sm overflow-auto max-h-[300px]">
-                      {currentPractical.answer}
+                  <div className="bg-yellow-50 rounded-xl p-4">
+                    <h3 className="font-bold text-yellow-800 mb-2">参考答案</h3>
+                    <div className="bg-white p-4 rounded-lg shadow-sm">
+                      <pre className="text-sm text-gray-700 whitespace-pre-wrap">{currentPractical?.answer}</pre>
                     </div>
                   </div>
                 )}
               </div>
             </div>
           </div>
-        </div>
+        </section>
       )}
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-gray-300 py-12 px-4 mt-16">
-        <div className="max-w-6xl mx-auto text-center">
-          <p className="text-lg mb-2">数据分析技术课程</p>
-          <p className="text-sm text-gray-400">© 2024 广东科学技术职业学院</p>
-        </div>
-      </footer>
     </div>
   );
 }

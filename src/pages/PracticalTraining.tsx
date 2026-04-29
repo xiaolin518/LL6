@@ -773,6 +773,18 @@ export default function PracticalTraining() {
 
               {/* 中间代码编辑器 */}
               <div className="lg:col-span-2 space-y-4">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-4">
+                    <button
+                      onClick={() => setCurrentPracticalId(null)}
+                      className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                    >
+                      <ChevronLeft className="w-4 h-4" />
+                      返回项目列表
+                    </button>
+                    <h2 className="text-xl font-bold text-gray-800">{currentPractical?.title}</h2>
+                  </div>
+                </div>
                 <div className="bg-gray-900 rounded-xl p-4">
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="text-white font-medium">代码编辑器</h3>

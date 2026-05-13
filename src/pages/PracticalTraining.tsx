@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, Play, RefreshCw, Star } from 'lucide-react';
+import PythonCodeRunner from '../components/PythonCodeRunner';
 
 const practicalProjects = [
   {
@@ -533,7 +534,7 @@ export default function PracticalTraining() {
   const navigate = useNavigate();
   const [currentPracticalId, setCurrentPracticalId] = useState<number | null>(null);
   const [userCode, setUserCode] = useState<string>('');
-  const [codeOutput, setCodeOutput] = useState<string>('');
+  
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
 
   const openPractice = (id: number) => {
@@ -542,125 +543,7 @@ export default function PracticalTraining() {
     if (project) {
       setUserCode(project.codeTemplate);
     }
-    setCodeOutput('');
     setShowAnswer(false);
-  };
-
-  const runCode = () => {
-    if (!userCode.trim()) {
-      setCodeOutput('请输入Python代码后再运行');
-      return;
-    }
-
-    try {
-      let output = '代码运行结果：\n\n';
-      const projectId = currentPracticalId || 1;
-
-      if (userCode.includes('1111') || userCode.includes('2222') || userCode.includes('3333')) {
-        output += '代码执行错误：\n语法错误 - 代码末尾有多余的数字';
-        setCodeOutput(output);
-        return;
-      }
-
-      let isOutputMatching = false;
-      let errorMessage = '';
-
-      if (projectId === 1) {
-        if (userCode.includes('read_csv') || userCode.includes('dropna') || userCode.includes('to_datetime')) {
-          output += `=== 01 清洗结果 ===\n   用户ID  订单日期  金额\n0        1 2023-09-01     100\n1        1 2023-09-15     150\n3        2 2023-08-10      80\n5        3 2023-07-01     300\n6        3 2023-07-10     300`;
-          isOutputMatching = true;
-        } else {
-          errorMessage = '请实现数据清洗功能，包括读取数据、删除空值、处理异常值和统一日期格式';
-        }
-      } else if (projectId === 2) {
-        if (userCode.includes('groupby')) {
-          if (userCode.includes('agg')) {
-            output += `=== 02 聚合结果 ===\n   用户ID  总销售额  订单数   客单价\n0        1      250      2  125.0\n1        2       80      1   80.0\n2        3      600      2  300.0`;
-            isOutputMatching = true;
-          } else {
-            errorMessage = '请使用 agg() 方法进行分组聚合，计算总销售额、订单数和客单价';
-          }
-        } else {
-          errorMessage = '请使用 groupby() 方法按用户进行分组';
-        }
-      } else if (projectId === 3) {
-        if (userCode.includes('apriori') || userCode.includes('association_rules')) {
-          output += `=== 03 关联规则 ===\n  antecedents consequents   support  confidence\n0      (面包)       (牛奶)  0.666667    1.000000\n1      (牛奶)       (面包)  0.666667    1.000000\n2      (鸡蛋)       (牛奶)  0.333333    0.500000（被阈值过滤）`;
-          isOutputMatching = true;
-        } else {
-          errorMessage = '请使用 mlxtend 库的 apriori 和 association_rules 函数进行关联规则分析';
-        }
-      } else if (projectId === 4) {
-        if (userCode.includes('KMeans') || userCode.includes('StandardScaler')) {
-          output += `=== 04 聚类结果 ===\n   用户ID  总金额  订单数  最近购买时间  聚类\n0        1    250      2        30     1\n1        2     80      1        60     2\n2        3    600      2         5     0\n\n聚类均值：\n       用户ID   总金额  订单数  最近购买时间\n聚类\n0         3.0  600.0    2.0        5.0\n1         1.0  250.0    2.0       30.0\n2         2.0   80.0    1.0       60.0`;
-          isOutputMatching = true;
-        } else {
-          errorMessage = '请使用 sklearn 的 KMeans 和 StandardScaler 进行客户聚类分析';
-        }
-      } else if (projectId === 5) {
-        if (userCode.includes('matplotlib') || userCode.includes('plot')) {
-          output += `=== 05 可视化已展示 ===\n弹出3 张图表：\n销售趋势折线图\n用户销售额占比饼图\n用户销售额柱状图`;
-          isOutputMatching = true;
-        } else {
-          errorMessage = '请使用 matplotlib 库创建销售趋势折线图、用户销售额占比饼图和柱状图';
-        }
-      } else if (projectId === 6) {
-        if (userCode.includes('chi2_contingency') || userCode.includes('crosstab')) {
-          output += `=== 06 A/B测试结果 ===\nP值: 0.5243\n无显著差异`;
-          isOutputMatching = true;
-        } else {
-          errorMessage = '请使用 chi2_contingency 和 crosstab 进行 A/B 测试效果分析';
-        }
-      } else if (projectId === 7) {
-        if (userCode.includes('ARIMA') || userCode.includes('forecast')) {
-          output += `=== 07 时间序列预测 ===\n未来2个月预测值：\n2023-06-30    148.678026\n2023-07-31    149.567892\nFreq: M, Name: predicted_mean, dtype: float64`;
-          isOutputMatching = true;
-        } else {
-          errorMessage = '请使用 ARIMA 模型进行时间序列预测分析';
-        }
-      } else if (projectId === 8) {
-        if (userCode.includes('LabelEncoder') || userCode.includes('dt.month')) {
-          output += `=== 08 特征工程结果 ===\n   月份  星期几  用户编码  金额\n0     9      4       0     100\n1     9      4       0     150\n2     8      3       1      80\n3     8      4       1     120`;
-          isOutputMatching = true;
-        } else {
-          errorMessage = '请创建衍生特征（如月份、星期几）并使用 LabelEncoder 进行编码';
-        }
-      } else if (projectId === 9) {
-        if (userCode.includes('qcut') || userCode.includes('R_score')) {
-          output += `=== 09 RFM分层结果 ===\n          R  F    M R_score F_score M_score  总分\n用户ID\n1        17  2  500       4       3       4   11\n2       112  1   80       1       2       1    4\n3        12  1  500       4       2       4   10`;
-          isOutputMatching = true;
-        } else {
-          errorMessage = '请使用 qcut 函数计算 R、F、M 评分并进行客户价值分层';
-        }
-      } else if (projectId === 10) {
-        if (userCode.includes('ExcelWriter') || userCode.includes('to_excel')) {
-          output += `=== 10 自动化报表已生成 ===\n文件：销售月报.xlsx、chart.png`;
-          isOutputMatching = true;
-        } else {
-          errorMessage = '请使用 ExcelWriter 生成包含数据透视表和统计摘要的 Excel 报表';
-        }
-      } else {
-        if (userCode.includes('print')) {
-          const printMatch = userCode.match(/print\((.*?)\)/);
-          if (printMatch) {
-            output += `输出：${printMatch[1]}`;
-            isOutputMatching = true;
-          } else {
-            errorMessage = '请使用 print() 函数输出结果';
-          }
-        } else {
-          errorMessage = '请实现相应的功能';
-        }
-      }
-
-      if (!isOutputMatching) {
-        output = `代码运行结果：\n\n输出不匹配\n\n提示：${errorMessage}`;
-      }
-
-      setCodeOutput(output);
-    } catch (error: any) {
-      setCodeOutput(`代码执行错误：\n${error.message}`);
-    }
   };
 
   const showAnswerSolution = () => {
@@ -795,53 +678,12 @@ export default function PracticalTraining() {
                     <h2 className="text-xl font-bold text-gray-800">{currentPractical?.title}</h2>
                   </div>
                 </div>
-                <div className="bg-gray-900 rounded-xl p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-white font-medium">代码编辑器</h3>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => {
-                          const project = practicalProjects.find(p => p.id === currentPracticalId);
-                          if (project) setUserCode(project.codeTemplate);
-                        }}
-                        className="px-3 py-1 bg-gray-700 text-white rounded hover:bg-gray-600 text-sm flex items-center gap-1"
-                      >
-                        <RefreshCw className="w-3 h-3" />
-                        重置
-                      </button>
-                      <button
-                        onClick={showAnswerSolution}
-                        className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-500 text-sm flex items-center gap-1"
-                      >
-                        <Star className="w-3 h-3" />
-                        查看答案
-                      </button>
-                    </div>
-                  </div>
-                  <textarea
-                    value={userCode}
-                    onChange={(e) => setUserCode(e.target.value)}
-                    className="w-full h-64 bg-gray-800 text-green-400 p-4 rounded border border-gray-700 font-mono text-sm resize-none"
-                    placeholder="请输入Python代码..."
+                {currentPractical && (
+                  <PythonCodeRunner
+                    initialCode={userCode || currentPractical.codeTemplate}
+                    onCodeChange={setUserCode}
                   />
-                  <div className="mt-4 flex justify-end">
-                    <button
-                      onClick={runCode}
-                      className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2"
-                    >
-                      <Play className="w-4 h-4" />
-                      运行代码
-                    </button>
-                  </div>
-                </div>
-
-                {/* 运行结果 */}
-                <div className="bg-white rounded-xl p-4 shadow-sm">
-                  <h3 className="font-bold text-gray-800 mb-2">输出结果</h3>
-                  <div className="bg-gray-50 p-4 rounded-lg min-h-40">
-                    <pre className="text-sm text-gray-700 whitespace-pre-wrap">{codeOutput || '运行代码后显示结果'}</pre>
-                  </div>
-                </div>
+                )}
 
                 {/* 参考答案 */}
                 {showAnswer && (

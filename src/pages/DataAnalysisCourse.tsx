@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { BookOpen, CheckCircle, ChevronLeft, Play, Code } from 'lucide-react';
 
 // 生成400道章节练习题
@@ -334,7 +334,7 @@ export default function DataAnalysisCourse() {
               数据分析技术课程
             </div>
             <div className="flex items-center gap-6 text-gray-600">
-              <a href="/" className="hover:text-blue-600 transition-colors">首页</a>
+              <Link to="/" className="hover:text-blue-600 transition-colors">首页</Link>
               <a href="#outline" className="hover:text-blue-600 transition-colors">课程大纲</a>
             </div>
           </div>

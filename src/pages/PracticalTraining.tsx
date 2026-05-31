@@ -1137,7 +1137,14 @@ export default function PracticalTraining() {
                     </button>
                     <h2 className="text-xl font-bold text-gray-800">{currentPractical?.title}</h2>
                   </div>
-                  <p className="text-sm text-gray-600 ml-20">在 Python 环境加载完成后，自动安装所需的模块</p>
+                  <div className="bg-gray-100 rounded-lg p-3 ml-20">
+                    <p className="text-sm text-gray-700 mb-2">
+                      <span className="font-semibold">安装方法：</span>在 Python 环境加载完成后，自动安装所需的模块
+                    </p>
+                    <pre className="bg-gray-800 text-green-400 p-2 rounded text-xs overflow-x-auto">
+{`await pyodide.loadPackage(['pandas', 'numpy'])`}
+                    </pre>
+                  </div>
                 </div>
                 {currentPractical && (
                   <PythonCodeRunner

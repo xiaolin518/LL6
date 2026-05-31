@@ -53,7 +53,11 @@ export default function PythonCodeRunner({ initialCode, onCodeChange, onShowAnsw
       
       pyodide.runPython(`
 import sys
+import warnings
 from io import StringIO
+
+warnings.filterwarnings('ignore', category=DeprecationWarning)
+
 _output_buffer = StringIO()
 sys.stdout = _output_buffer
 sys.stderr = _output_buffer

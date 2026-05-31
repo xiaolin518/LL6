@@ -23,12 +23,11 @@ export default function PythonCodeRunner({ initialCode, onCodeChange, onShowAnsw
       try {
         setIsLoading(true);
         const pyodide = await (window as any).loadPyodide({
-          indexURL: "https://cdn.jsdelivr.net/pyodide/v0.26.2/full/"
+          indexURL: "https://cdn.jsdelivr.net/pyodide/v0.26.2/full/",
+          packages: ['pandas', 'numpy']
         });
         
         pyodideRef.current = pyodide;
-        setOutput('正在安装pandas...');
-        await pyodide.loadPackage(['pandas', 'numpy', 'scipy', 'matplotlib']);
         setIsLoading(false);
         setOutput('Python环境加载成功！现在可以运行代码了。');
       } catch (error) {

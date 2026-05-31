@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, Play, RefreshCw, Star } from 'lucide-react';
+import { ChevronLeft, Play, RefreshCw, Star, Code2 } from 'lucide-react';
 import PythonCodeRunner from '../components/PythonCodeRunner';
 
 const practicalProjects = [
@@ -1137,13 +1137,28 @@ export default function PracticalTraining() {
                     </button>
                     <h2 className="text-xl font-bold text-gray-800">{currentPractical?.title}</h2>
                   </div>
-                  <div className="bg-gray-100 rounded-lg p-3 ml-20">
-                    <p className="text-sm text-gray-700 mb-2">
-                      <span className="font-semibold">安装方法：</span>在 Python 环境加载完成后，自动安装所需的模块
-                    </p>
-                    <pre className="bg-gray-800 text-green-400 p-2 rounded text-xs overflow-x-auto">
-{`await pyodide.loadPackage(['pandas', 'numpy'])`}
-                    </pre>
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 ml-20">
+                    <div className="flex items-start gap-3">
+                      <div className="bg-blue-100 rounded-full p-2">
+                        <Code2 className="w-5 h-5 text-blue-600" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-blue-900 mb-2">模块安装说明</h4>
+                        <p className="text-sm text-blue-800 mb-3">
+                          本网站使用 Pyodide 技术在浏览器中直接运行 Python 代码，无需安装任何软件。
+                          首次加载 Python 环境时，系统会自动安装数据分析所需的模块。
+                        </p>
+                        <div className="bg-gray-800 rounded-lg p-3 overflow-x-auto">
+                          <p className="text-xs text-gray-400 mb-2">自动安装代码（已在后台运行）：</p>
+                          <code className="text-green-400 text-xs font-mono">
+                            {`await pyodide.loadPackage(['pandas', 'numpy'])`}
+                          </code>
+                        </div>
+                        <p className="text-xs text-blue-700 mt-3">
+                          💡 提示：首次加载约需 10-15 秒，后续访问会更快
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 {currentPractical && (

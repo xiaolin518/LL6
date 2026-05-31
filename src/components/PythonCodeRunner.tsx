@@ -27,6 +27,8 @@ export default function PythonCodeRunner({ initialCode, onCodeChange, onShowAnsw
         });
         
         pyodideRef.current = pyodide;
+        setOutput('正在安装pandas...');
+        await pyodide.loadPackage(['pandas', 'numpy', 'scipy', 'matplotlib']);
         setIsLoading(false);
         setOutput('Python环境加载成功！现在可以运行代码了。');
       } catch (error) {

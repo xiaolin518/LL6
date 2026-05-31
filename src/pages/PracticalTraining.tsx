@@ -8,32 +8,250 @@ const practicalProjects = [
     id: 1,
     title: '销售数据读取与清洗',
     description: '学习使用Pandas读取CSV数据，处理缺失值和异常值，统一日期格式',
-    knowledge: `## 知识讲解：数据清洗基础
+    knowledge: `# 📚 数据清洗基础与实战
 
-### 1. Pandas数据读取
-- \`pd.read_csv()\`：读取CSV文件，支持多种参数配置
-- \`pd.read_excel()\`：读取Excel文件，需要openpyxl库支持
+---
 
-### 2. 缺失值处理
-- \`df.isnull()\` / \`df.notnull()\`：检测缺失值
-- \`df.dropna()\`：删除包含缺失值的行/列
-- \`df.fillna()\`：填充缺失值（均值、中位数、前向/后向填充）
+## 一、为什么数据清洗如此重要？
 
-### 3. 异常值处理
-- \`df.describe()\`：查看数据统计信息，识别异常范围
-- \`df.clip()\`：截断异常值到合理范围
-- IQR方法：基于四分位数间距识别离群值
+在数据分析领域，有一句名言：**"Garbage In, Garbage Out（垃圾进，垃圾出）"**。原始数据往往存在各种问题：
+- 🔴 **缺失值**：数据采集过程中遗漏
+- 🔴 **异常值**：极端值或错误值
+- 🔴 **格式混乱**：日期格式不统一、数据类型错误
+- 🔴 **重复数据**：重复记录
 
-### 4. 日期格式统一
-- \`pd.to_datetime()\`：将字符串转换为日期时间格式
-- \`df.dt.year/month/day\`：提取日期组件
+数据清洗的质量直接决定了后续分析结果的可靠性！
 
-### 5. 数据类型转换
-- \`df.astype()\`：转换数据类型
-- \`pd.to_numeric()\`：安全地转换为数值类型
+---
 
-### 业务意义
-数据清洗是数据分析的第一步，直接影响后续分析结果的准确性。`,
+## 二、Pandas数据读取详解
+
+### 2.1 读取CSV文件
+\`\`\`python
+import pandas as pd
+
+# 基础读取
+df = pd.read_csv("sales.csv")
+
+# 常用参数配置
+df = pd.read_csv(
+    "sales.csv",
+    encoding="utf-8",           # 编码格式
+    sep=",",                   # 分隔符
+    header=0,                  # 标题行位置
+    na_values=["NA", "missing"] # 识别缺失值
+)
+\`\`\`
+
+### 2.2 读取Excel文件
+\`\`\`python
+# 需要安装openpyxl库
+# pip install openpyxl
+
+df = pd.read_excel(
+    "sales.xlsx",
+    sheet_name="Sheet1",    # 工作表名
+    skiprows=0              # 跳过行数
+)
+\`\`\`
+
+### 2.3 检查读取结果
+\`\`\`python
+df.head()        # 查看前5行
+df.shape         # 查看形状（行数,列数）
+df.info()        # 查看数据信息
+df.describe()    # 查看统计信息
+\`\`\`
+
+---
+
+## 三、缺失值处理策略
+
+### 3.1 检测缺失值
+\`\`\`python
+# 检测每个单元格是否缺失
+df.isnull()
+
+# 统计每列缺失值数量
+df.isnull().sum()
+
+# 检测非缺失值
+df.notnull()
+\`\`\`
+
+### 3.2 删除缺失值
+\`\`\`python
+# 删除包含任何缺失值的行
+df_dropped = df.dropna()
+
+# 删除特定列有缺失值的行
+df_dropped = df.dropna(subset=["金额", "订单日期"])
+
+# 删除缺失值较多的列
+df_dropped = df.drop(columns=["问题列"])
+\`\`\`
+
+### 3.3 填充缺失值
+\`\`\`python
+# 用均值填充
+df["金额"] = df["金额"].fillna(df["金额"].mean())
+
+# 用中位数填充（更稳健）
+df["金额"] = df["金额"].fillna(df["金额"].median())
+
+# 用前向填充（ffill）
+df["金额"] = df["金额"].fillna(method="ffill")
+
+# 用后向填充（bfill）
+df["金额"] = df["金额"].fillna(method="bfill")
+
+# 用固定值填充
+df["金额"] = df["金额"].fillna(0)
+\`\`\`
+
+---
+
+## 四、异常值识别与处理
+
+### 4.1 什么是异常值？
+异常值是明显偏离正常范围的数据点，可能由：
+- 数据录入错误
+- 特殊业务场景
+- 测量误差
+
+### 4.2 使用describe()识别异常
+\`\`\`python
+# 查看统计信息，特别关注min和max
+print(df["金额"].describe())
+
+# count    100.000000
+# mean     150.000000
+# std       80.000000
+# min        0.000000  ← 注意最小值
+# 25%      100.000000
+# 50%      140.000000
+# 75%      180.000000
+# max     5000.000000  ← 明显异常的最大值！
+\`\`\`
+
+### 4.3 IQR方法（四分位数间距）
+\`\`\`python
+Q1 = df["金额"].quantile(0.25)  # 下四分位数
+Q3 = df["金额"].quantile(0.75)  # 上四分位数
+IQR = Q3 - Q1                    # 四分位数间距
+
+# 定义异常值范围
+lower_bound = Q1 - 1.5 * IQR
+upper_bound = Q3 + 1.5 * IQR
+
+# 识别异常值
+outliers = df[(df["金额"] < lower_bound) | (df["金额"] > upper_bound)]
+print("异常值数量：", len(outliers))
+\`\`\`
+
+### 4.4 处理异常值
+\`\`\`python
+# 方法1：截断到合理范围
+df["金额"] = df["金额"].clip(lower=0, upper=1000)
+
+# 方法2：删除异常值
+df_clean = df[(df["金额"] >= lower_bound) & (df["金额"] <= upper_bound)]
+\`\`\`
+
+---
+
+## 五、日期格式统一处理
+
+### 5.1 字符串转日期时间
+\`\`\`python
+# 基础转换
+df["订单日期"] = pd.to_datetime(df["订单日期"])
+
+# 处理多种日期格式
+df["订单日期"] = pd.to_datetime(
+    df["订单日期"],
+    format="%Y-%m-%d",  # 显式指定格式
+    errors="coerce"      # 无效值转为NaT
+)
+\`\`\`
+
+### 5.2 日期组件提取
+\`\`\`python
+# 提取年、月、日
+df["年份"] = df["订单日期"].dt.year
+df["月份"] = df["订单日期"].dt.month
+df["日期"] = df["订单日期"].dt.day
+df["星期几"] = df["订单日期"].dt.dayofweek  # 0=周一,6=周日
+df["季度"] = df["订单日期"].dt.quarter
+\`\`\`
+
+---
+
+## 六、数据类型转换
+
+### 6.1 基本类型转换
+\`\`\`python
+# 转换为整数
+df["用户ID"] = df["用户ID"].astype(int)
+
+# 转换为浮点数
+df["金额"] = df["金额"].astype(float)
+
+# 转换为字符串
+df["订单号"] = df["订单号"].astype(str)
+\`\`\`
+
+### 6.2 安全的数值转换
+\`\`\`python
+# 使用to_numeric，处理错误值
+df["金额"] = pd.to_numeric(
+    df["金额"],
+    errors="coerce"  # 无效值转为NaN
+)
+\`\`\`
+
+---
+
+## 七、完整的清洗流程示例
+
+\`\`\`python
+# 1. 读取数据
+df = pd.read_csv("sales.csv")
+
+# 2. 初步检查
+print("原始数据形状：", df.shape)
+print("缺失值统计：")
+print(df.isnull().sum())
+
+# 3. 处理缺失值
+df = df.dropna(subset=["订单日期"])  # 删除日期缺失的行
+df["金额"] = df["金额"].fillna(df["金额"].median())  # 金额用中位数填充
+
+# 4. 处理异常值
+Q1 = df["金额"].quantile(0.25)
+Q3 = df["金额"].quantile(0.75)
+IQR = Q3 - Q1
+df["金额"] = df["金额"].clip(lower=0, upper=Q3 + 1.5*IQR)
+
+# 5. 统一日期格式
+df["订单日期"] = pd.to_datetime(df["订单日期"])
+
+# 6. 输出清洗结果
+print("清洗后数据：")
+print(df.head())
+\`\`\`
+
+---
+
+## 💡 业务场景应用
+
+**数据清洗在电商业务中至关重要：**
+- ✅ 确保销售额统计准确
+- ✅ 防止异常订单影响趋势分析
+- ✅ 统一日期格式便于时间序列分析
+- ✅ 提高数据质量，减少决策失误
+
+**记住：数据清洗不是一次性任务，而是持续的数据质量管理过程！**`,
     data: '用户ID,订单日期,金额\n1,2023-09-01,100\n1,2023-09-15,150\n2,,80\n2,2023-08-10,80\n3,2023-07-01,300\n3,2023-07-10,300',
     codeTemplate: 'import pandas as pd\n\n# 读取数据\ndf = pd.read_csv("sales.csv")\n\n# 数据清洗\n# 删除空值\n# 处理异常值\n# 统一日期格式\n\nprint(df)',
     solution: 'import pandas as pd\n\n# 模拟数据加载\ndata = """用户ID,订单日期,金额\n1,2023-09-01,100\n1,2023-09-15,150\n2,,80\n2,2023-08-10,80\n3,2023-07-01,300\n3,2023-07-10,300"""\nfrom io import StringIO\ndf = pd.read_csv(StringIO(data))\n\n# 数据清洗\ndf = df.dropna()  # 删除空值\ndf["金额"] = df["金额"].clip(lower=0, upper=1000)  # 处理异常值\ndf["订单日期"] = pd.to_datetime(df["订单日期"])  # 统一日期格式\n\nprint("=== 01 清洗结果 ===")\nprint(df)',
@@ -43,40 +261,225 @@ const practicalProjects = [
     id: 2,
     title: '销售数据分组聚合',
     description: '学习使用groupby函数按用户分组，计算总销售额、订单数和客单价',
-    knowledge: `## 知识讲解：分组聚合
+    knowledge: `# 📊 分组聚合实战与应用
 
-### 1. Groupby基础
-- \`df.groupby(by)\`：按指定列分组，返回GroupBy对象
-- 支持按单列、多列或函数分组
+---
 
-### 2. 聚合函数
-- \`.sum()\`：求和
-- \`.mean()\`：平均值
-- \`.count()\`：计数
-- \`.min()\` / \`.max()\`：最小值/最大值
-- \`.agg()\`：自定义聚合函数
+## 一、什么是分组聚合？
 
-### 3. 多指标聚合
+分组聚合是数据分析中最核心的操作之一，就像**Excel的数据透视表**一样，它允许我们：
+1. **分组（Group）**：按照某个维度把数据分成不同的组
+2. **聚合（Aggregate）**：对每个组进行计算（求和、平均等）
+
+**典型应用场景：**
+- 📦 按用户分组，计算每个用户的消费金额
+- 📦 按月份分组，分析月度销售趋势
+- 📦 按地区分组，对比不同地区的销售情况
+- 📦 按产品分组，统计不同产品的销量
+
+---
+
+## 二、Groupby基础操作
+
+### 2.1 基础分组
 \`\`\`python
-df.groupby("用户ID").agg({
-    "金额": ["sum", "count", "mean"],
-    "订单日期": "max"
+import pandas as pd
+
+# 按用户ID分组
+grouped = df.groupby("用户ID")
+
+# 查看分组情况
+print("分组数量：", len(grouped))  # 有多少个不同用户
+
+# 查看某个分组的数据
+grouped.get_group(1)  # 查看用户1的所有数据
+\`\`\`
+
+### 2.2 多列分组
+\`\`\`python
+# 按用户ID和月份分组
+grouped = df.groupby(["用户ID", "月份"])
+
+# 这样可以同时从用户和时间两个维度分析
+\`\`\`
+
+---
+
+## 三、常用聚合函数详解
+
+### 3.1 基础聚合函数
+| 函数 | 作用 | 示例 |
+|------|------|------|
+| \`.sum()\` | 求和 | 总销售额 |
+| \`.mean()\` | 平均值 | 客单价 |
+| \`.count()\` | 计数 | 订单数 |
+| \`.median()\` | 中位数 | 更稳健的平均值 |
+| \`.std()\` | 标准差 | 数据离散程度 |
+| \`.min()\` | 最小值 | 最小订单金额 |
+| \`.max()\` | 最大值 | 最大订单金额 |
+
+\`\`\`python
+# 按用户分组，计算多个指标
+result = df.groupby("用户ID").agg({
+    "金额": ["sum", "count", "mean", "max"],
+    "订单日期": "max"  # 最后购买日期
 })
+
+print(result)
 \`\`\`
 
-### 4. 自定义聚合
+### 3.2 使用agg()进行自定义聚合
 \`\`\`python
-def top_n(x, n=3):
-    return x.sort_values(ascending=False).head(n)
+# 更复杂的聚合方式
+result = df.groupby("用户ID").agg(
+    总销售额=("金额", "sum"),
+    订单数=("金额", "count"),
+    平均客单价=("金额", "mean"),
+    最高消费=("金额", "max"),
+    最后购买日期=("订单日期", "max")
+)
 
-df.groupby("用户ID")["金额"].apply(top_n)
+# 结果会有更友好的列名
+print(result)
 \`\`\`
 
-### 5. 客单价计算
-客单价 = 总销售额 / 订单数
+---
 
-### 业务意义
-分组聚合是数据分析的核心操作，用于从不同维度（用户、时间、地区等）汇总数据。`,
+## 四、客单价计算与业务指标
+
+### 4.1 什么是客单价？
+**客单价（Average Order Value, AOV）** = 总销售额 ÷ 订单数
+
+它反映了每个订单的平均消费金额，是电商业务的核心指标！
+
+### 4.2 客单价计算实战
+\`\`\`python
+# 1. 按用户分组计算基础指标
+user_stats = df.groupby("用户ID").agg({
+    "金额": ["sum", "count"]
+})
+
+# 2. 重命名列名
+user_stats.columns = ["总销售额", "订单数"]
+
+# 3. 计算客单价
+user_stats["客单价"] = user_stats["总销售额"] / user_stats["订单数"]
+
+print("用户消费统计：")
+print(user_stats)
+\`\`\`
+
+### 4.3 更多业务指标
+\`\`\`python
+# 月度销售汇总
+monthly_stats = df.groupby(df["订单日期"].dt.month).agg({
+    "金额": ["sum", "mean", "count"],
+    "用户ID": "nunique"  # 独立用户数
+})
+
+monthly_stats.columns = ["总销售额", "平均客单价", "订单数", "活跃用户数"]
+
+# 计算复购率
+# 订单数 > 1的用户为复购用户
+repeat_users = user_stats[user_stats["订单数"] > 1].shape[0]
+total_users = user_stats.shape[0]
+repeat_rate = repeat_users / total_users
+
+print(f"复购率：{repeat_rate:.1%}")
+\`\`\`
+
+---
+
+## 五、高级聚合技巧
+
+### 5.1 使用自定义函数
+\`\`\`python
+def top_3_orders(x):
+    """返回每个用户金额最高的3笔订单"""
+    return x.nlargest(3)
+
+# 对每个用户的金额列应用自定义函数
+top_orders = df.groupby("用户ID")["金额"].apply(top_3_orders)
+print(top_orders)
+\`\`\`
+
+### 5.2 分组过滤
+\`\`\`python
+# 只保留总销售额超过500的用户
+high_value_users = user_stats[user_stats["总销售额"] > 500]
+
+# 或者在groupby后过滤
+high_value_groups = df.groupby("用户ID").filter(
+    lambda group: group["金额"].sum() > 500
+)
+\`\`\`
+
+### 5.3 分组转换（transform）
+\`\`\`python
+# 计算每个订单占该用户总金额的比例
+df["用户总金额"] = df.groupby("用户ID")["金额"].transform("sum")
+df["订单占比"] = df["金额"] / df["用户总金额"]
+
+print(df)
+\`\`\`
+
+---
+
+## 六、完整的业务分析流程
+
+\`\`\`python
+# 1. 数据准备
+df["订单日期"] = pd.to_datetime(df["订单日期"])
+df["月份"] = df["订单日期"].dt.month
+
+# 2. 用户维度分析
+user_analysis = df.groupby("用户ID").agg(
+    总消费=("金额", "sum"),
+    订单数=("金额", "count"),
+    首次购买=("订单日期", "min"),
+    最近购买=("订单日期", "max")
+)
+
+# 3. 计算客单价
+user_analysis["客单价"] = user_analysis["总消费"] / user_analysis["订单数"]
+
+# 4. 时间维度分析
+monthly_analysis = df.groupby("月份").agg(
+    月销售额=("金额", "sum"),
+    月订单数=("金额", "count"),
+    活跃用户=("用户ID", "nunique")
+)
+
+# 5. 输出分析结果
+print("=" * 50)
+print("用户分析结果")
+print("=" * 50)
+print(user_analysis.sort_values("总消费", ascending=False))
+print("\\n" + "=" * 50)
+print("月度分析结果")
+print("=" * 50)
+print(monthly_analysis)
+\`\`\`
+
+---
+
+## 💡 分组聚合的业务价值
+
+分组聚合不仅仅是数据计算，更是**业务洞察**的关键：
+
+**电商业务应用：**
+1. 🎯 识别高价值客户（按消费金额分组）
+2. 📈 分析销售趋势（按时间分组）
+3. 📍 区域销售对比（按地区分组）
+4. 🏷️ 产品表现分析（按产品分组）
+5. 💰 客单价优化（按订单维度分析）
+
+**决策支持：**
+- 为营销活动提供精准客户群
+- 为库存管理提供产品销售数据
+- 为定价策略提供客单价参考
+
+分组聚合是从数据到洞察的桥梁，掌握它，你就能从数据中发现无限商机！`,
     data: '用户ID,订单日期,金额\n1,2023-09-01,100\n1,2023-09-15,150\n2,2023-08-10,80\n3,2023-07-01,300\n3,2023-07-10,300',
     codeTemplate: 'import pandas as pd\n\n# 读取数据\n# 按用户分组\n# 计算总销售额、订单数、客单价\n\nprint(result)',
     solution: 'import pandas as pd\n\n# 模拟数据加载\ndata = """用户ID,订单日期,金额\n1,2023-09-01,100\n1,2023-09-15,150\n2,2023-08-10,80\n3,2023-07-01,300\n3,2023-07-10,300"""\nfrom io import StringIO\ndf = pd.read_csv(StringIO(data))\ndf["订单日期"] = pd.to_datetime(df["订单日期"])\n\n# 分组聚合\nagg_result = df.groupby("用户ID").agg(\n    总销售额=("金额", "sum"),\n    订单数=("金额", "count")\n).reset_index()\n\nagg_result["客单价"] = agg_result["总销售额"] / agg_result["订单数"]\n\nprint("=== 02 聚合结果 ===")\nprint(agg_result)',

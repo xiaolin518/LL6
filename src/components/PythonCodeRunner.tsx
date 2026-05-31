@@ -4,9 +4,10 @@ import { Play, RefreshCw, Loader2, Code2 } from 'lucide-react';
 interface PythonCodeRunnerProps {
   initialCode: string;
   onCodeChange: (code: string) => void;
+  onShowAnswer?: () => void;
 }
 
-export default function PythonCodeRunner({ initialCode, onCodeChange }: PythonCodeRunnerProps) {
+export default function PythonCodeRunner({ initialCode, onCodeChange, onShowAnswer }: PythonCodeRunnerProps) {
   const [code, setCode] = useState(initialCode);
   const [output, setOutput] = useState('');
   const [isRunning, setIsRunning] = useState(false);
@@ -165,6 +166,15 @@ for key, value in student.items():
             <RefreshCw className="w-3 h-3" />
             重置
           </button>
+          {onShowAnswer && (
+            <button
+              onClick={onShowAnswer}
+              disabled={isLoading || isRunning}
+              className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-500 text-sm flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              答案
+            </button>
+          )}
         </div>
       </div>
       

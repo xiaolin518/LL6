@@ -1126,15 +1126,18 @@ export default function PracticalTraining() {
 
               {/* 中间代码编辑器 */}
               <div className="lg:col-span-2 space-y-4">
-                <div className="flex items-center gap-4 mb-4">
-                  <button
-                    onClick={() => setCurrentPracticalId(null)}
-                    className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
-                  >
-                    <ChevronLeft className="w-4 h-4" />
-                    返回项目列表
-                  </button>
-                  <h2 className="text-xl font-bold text-gray-800">{currentPractical?.title}</h2>
+                <div className="mb-4">
+                  <div className="flex items-center gap-4 mb-2">
+                    <button
+                      onClick={() => setCurrentPracticalId(null)}
+                      className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                    >
+                      <ChevronLeft className="w-4 h-4" />
+                      返回项目列表
+                    </button>
+                    <h2 className="text-xl font-bold text-gray-800">{currentPractical?.title}</h2>
+                  </div>
+                  <p className="text-sm text-gray-600 ml-20">在 Python 环境加载完成后，自动安装所需的模块</p>
                 </div>
                 {currentPractical && (
                   <PythonCodeRunner

@@ -403,7 +403,7 @@ export default function DataAnalysisCourse() {
                     )}
                     {chapter.id !== 'chapter7' && (
                       <button
-                        onClick={() => startPractice(chapter.id)}
+                        onClick={() => navigate(`/data-analysis/chapter/${chapter.id.replace('chapter', '')}`)}
                         className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
                       >
                         <CheckCircle className="w-4 h-4" />

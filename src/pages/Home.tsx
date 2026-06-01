@@ -25,7 +25,7 @@ const courses: Course[] = [
     description: '掌握数据分析的基本方法和工具，包括数据可视化技术',
     icon: <BarChart3 className="w-8 h-8" />,
     color: 'from-purple-500 to-pink-500',
-    link: '/data-analysis'
+    link: '/data-analysis/select'
   },
   {
     id: 'data-collection',
@@ -171,7 +171,7 @@ export default function Home() {
             
             {/* 快速行动按钮 */}
             <div className="flex flex-wrap justify-center gap-4">
-              <Link to="/data-analysis" className="group">
+              <Link to="/data-analysis/select" className="group">
                 <div className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
                   <BookOpen className="w-6 h-6" />
                   <span className="text-lg font-bold">开始学习数据分析</span>
@@ -263,7 +263,7 @@ export default function Home() {
             <p className="text-lg text-blue-100 mb-8">
               加入小林的学习旅程，一起探索数据科学的奥秘
             </p>
-            <Link to="/data-analysis">
+            <Link to="/data-analysis/select">
               <div className="inline-flex items-center gap-3 px-10 py-4 bg-white text-blue-600 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
                 <GraduationCap className="w-6 h-6" />
                 <span className="text-lg font-bold">立即开始学习</span>
@@ -294,7 +294,7 @@ export default function Home() {
               <h4 className="text-lg font-bold text-white mb-4">快速链接</h4>
               <div className="space-y-2">
                 <Link to="/" className="block text-gray-400 hover:text-white transition-colors">首页</Link>
-                <Link to="/data-analysis" className="block text-gray-400 hover:text-white transition-colors">数据分析</Link>
+                <Link to="/data-analysis/select" className="block text-gray-400 hover:text-white transition-colors">数据分析</Link>
               </div>
             </div>
             <div>

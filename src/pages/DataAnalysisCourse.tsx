@@ -368,7 +368,7 @@ export default function DataAnalysisCourse() {
             课程大纲
           </h2>
           <div className="space-y-6">
-            {courseOutline.map((chapter, index) => (
+            {courseOutline.filter(chapter => chapter.id !== 'chapter7').map((chapter, index) => (
               <div
                 key={chapter.id}
                 className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow"
@@ -384,39 +384,26 @@ export default function DataAnalysisCourse() {
                     </div>
                   </div>
                   <div className="flex gap-3">
-                    {chapter.id !== 'chapter7' && (
-                      <button
-                        onClick={() => {
-                          setActiveChapter(chapter.id);
-                          setShowPractice(false);
-                        }}
-                        className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                      >
-                        <BookOpen className="w-4 h-4" />
-                        理论学习
-                      </button>
-                    )}
-                    {chapter.id === 'chapter7' && (
-                      <button
-                        onClick={() => navigate('/data-analysis/practical')}
-                        className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
-                      >
-                        <Code className="w-4 h-4" />
-                        实操训练
-                      </button>
-                    )}
-                    {chapter.id !== 'chapter7' && (
-                      <button
-                        onClick={() => navigate(`/data-analysis/chapter/${chapter.id.replace('chapter', '')}`)}
-                        className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-                      >
-                        <CheckCircle className="w-4 h-4" />
-                        章节练习
-                      </button>
-                    )}
+                    <button
+                      onClick={() => {
+                        setActiveChapter(chapter.id);
+                        setShowPractice(false);
+                      }}
+                      className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    >
+                      <BookOpen className="w-4 h-4" />
+                      理论学习
+                    </button>
+                    <button
+                      onClick={() => navigate(`/data-analysis/chapter/${chapter.id.replace('chapter', '')}`)}
+                      className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                    >
+                      <CheckCircle className="w-4 h-4" />
+                      章节练习
+                    </button>
                   </div>
                 </div>
-                {activeChapter === chapter.id && !showPractice && chapter.id !== 'chapter7' && (
+                {activeChapter === chapter.id && !showPractice && (
                   <div className="mt-4 p-6 bg-white rounded-xl shadow-sm">
                     <div dangerouslySetInnerHTML={{ __html: chapter.content }} />
                   </div>

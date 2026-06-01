@@ -350,10 +350,13 @@ export default function DataAnalysisCourse() {
           <p className="text-xl text-gray-600 mb-8">
             高职大二学期课程 | 理论学习 + 章节练习
           </p>
-          <div className="inline-flex items-center gap-2 px-6 py-3 bg-white rounded-full shadow-lg hover:shadow-xl transition-shadow">
+          <button
+            onClick={() => navigate('/data-analysis/select')}
+            className="inline-flex items-center gap-2 px-6 py-3 bg-white rounded-full shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+          >
             <BookOpen className="w-5 h-5 text-blue-600" />
             <span className="text-gray-700 font-medium">开始学习</span>
-          </div>
+          </button>
         </div>
       </section>
 

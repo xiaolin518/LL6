@@ -217,11 +217,11 @@ export default function PracticalTraining() {
             </div>
             <div className="flex items-center gap-6 text-gray-600">
               <button
-                onClick={() => navigate('/')}
+                onClick={() => navigate('/data-analysis/select')}
                 className="hover:text-blue-600 transition-colors flex items-center gap-2"
               >
                 <ChevronLeft className="w-4 h-4" />
-                返回首页
+                返回选择学习方式
               </button>
             </div>
           </div>

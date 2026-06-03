@@ -200,11 +200,11 @@ export default function ChapterPractice() {
             </div>
             <div className="flex items-center gap-6 text-gray-600">
               <button
-                onClick={() => navigate('/')}
+                onClick={() => navigate('/data-analysis/select')}
                 className="hover:text-blue-600 transition-colors flex items-center gap-2"
               >
                 <ChevronLeft className="w-4 h-4" />
-                返回首页
+                返回选择学习方式
               </button>
             </div>
           </div>
@@ -215,11 +215,11 @@ export default function ChapterPractice() {
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center gap-4 mb-6">
             <button
-              onClick={() => navigate('/')}
+              onClick={() => navigate('/data-analysis/select')}
               className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
-              返回首页
+              返回选择学习方式
             </button>
             <h2 className="text-2xl font-bold text-gray-800">
               章节练习 - 第{chapterId}章 {chapterNames[parseInt(chapterId) || 1]}
@@ -293,10 +293,10 @@ export default function ChapterPractice() {
                     重新练习
                   </button>
                   <button
-                    onClick={() => navigate('/')}
+                    onClick={() => navigate('/data-analysis/select')}
                     className="w-full py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
                   >
-                    返回首页
+                    返回选择学习方式
                   </button>
                 </div>
               </div>

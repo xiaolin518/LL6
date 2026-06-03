@@ -699,119 +699,172 @@ export default function PracticalTraining() {
                   <p className="text-gray-700">{currentPractical?.description}</p>
                 </div>
                 <div className="space-y-4 max-h-[700px] overflow-y-auto pr-2">
-                  {currentPractical?.knowledge.includes('学习目标') || currentPractical?.knowledge.includes('核心概念') ? (
-                    <>
-                      {currentPractical?.knowledge.includes('学习目标') && (
-                        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 shadow-sm">
-                          <h3 className="font-bold text-blue-800 mb-3 flex items-center gap-2">
-                            <span className="w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center text-xs font-bold">🎯</span>
-                            学习目标
-                          </h3>
-                          <div className="text-sm text-gray-700 space-y-2">
-                            {currentPractical.knowledge.includes('掌握Pandas读取') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握Pandas读取CSV/Excel文件</p>}
-                            {currentPractical.knowledge.includes('处理缺失值') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>学会识别和处理缺失值</p>}
-                            {currentPractical.knowledge.includes('处理异常值') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>学会识别和处理异常值</p>}
-                            {currentPractical.knowledge.includes('日期格式') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握日期格式统一方法</p>}
-                            {currentPractical.knowledge.includes('groupby') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握groupby分组聚合操作</p>}
-                            {currentPractical.knowledge.includes('Apriori') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握Apriori关联规则算法</p>}
-                            {currentPractical.knowledge.includes('K-means') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握K-means聚类算法</p>}
-                            {currentPractical.knowledge.includes('可视化') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握数据可视化方法</p>}
-                            {currentPractical.knowledge.includes('A/B测试') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握A/B测试与卡方检验</p>}
-                            {currentPractical.knowledge.includes('ARIMA') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握ARIMA时间序列预测</p>}
-                            {currentPractical.knowledge.includes('特征工程') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握特征工程方法</p>}
-                            {currentPractical.knowledge.includes('RFM') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握RFM客户价值分析</p>}
-                            {currentPractical.knowledge.includes('报表') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握自动化报表生成</p>}
-                          </div>
-                        </div>
+                  {/* 学习目标 */}
+                  <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 shadow-sm">
+                    <h3 className="font-bold text-blue-800 mb-3 flex items-center gap-2">
+                      <span className="w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center text-xs font-bold">🎯</span>
+                      学习目标
+                    </h3>
+                    <div className="text-sm text-gray-700 space-y-2">
+                      {currentPractical?.id === 1 && (
+                        <>
+                          <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握Pandas读取CSV文件</p>
+                          <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>学会识别和处理缺失值</p>
+                          <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>学会识别和处理异常值</p>
+                          <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握日期格式统一方法</p>
+                        </>
                       )}
-                  
-                  {currentPractical?.knowledge.includes('核心概念') && (
-                    <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-xl p-4 shadow-sm">
-                      <h3 className="font-bold text-green-800 mb-3 flex items-center gap-2">
-                        <span className="w-6 h-6 rounded-full bg-green-500 text-white flex items-center justify-center text-xs font-bold">📖</span>
-                        核心概念
-                      </h3>
-                      <div className="text-sm text-gray-700 space-y-2">
-                        {currentPractical.knowledge.includes('数据清洗') && (
-                          <>
-                            <p><strong>数据清洗：</strong>对原始数据进行预处理，修正错误、补充缺失、统一格式，使数据质量达到分析要求的过程。</p>
-                            <p><strong>重要性：</strong>原始数据质量决定分析结果准确性，业务决策依赖高质量数据。</p>
-                          </>
-                        )}
-                        {currentPractical.knowledge.includes('分组聚合') && (
-                          <>
-                            <p><strong>分组聚合：</strong>按照某个维度把数据分成不同的组，然后对每个组进行计算（求和、平均等）。</p>
-                            <p><strong>典型应用：</strong>按用户分组计算消费金额、按月份分析销售趋势。</p>
-                          </>
-                        )}
-                        {currentPractical.knowledge.includes('关联规则') && (
-                          <>
-                            <p><strong>支持度：</strong>项集出现的频率，Support(X) = 包含X的交易数 / 总交易数</p>
-                            <p><strong>置信度：</strong>规则的可靠程度，Confidence(X→Y) = Support(X∪Y) / Support(X)</p>
-                            <p><strong>提升度：</strong>规则的有效性，Lift &gt; 1表示正相关。</p>
-                          </>
-                        )}
-                        {currentPractical.knowledge.includes('K-means') && (
-                          <>
-                            <p><strong>K-means聚类：</strong>无监督学习算法，用于将数据划分为K个簇。</p>
-                            <p><strong>核心步骤：</strong>选择初始质心 → 分配到最近簇 → 重新计算质心 → 重复收敛。</p>
-                          </>
-                        )}
-                        {currentPractical.knowledge.includes('可视化') && (
-                          <>
-                            <p><strong>数据可视化：</strong>将数据以图形化方式展示，便于理解和分析。</p>
-                            <p><strong>图表类型：</strong>折线图（趋势）、柱状图（对比）、饼图（占比）、散点图（关系）。</p>
-                          </>
-                        )}
-                        {currentPractical.knowledge.includes('卡方检验') && (
-                          <>
-                            <p><strong>卡方检验：</strong>用于检验两个分类变量之间是否存在关联。</p>
-                            <p><strong>判断标准：</strong>p值 &lt; 0.05表示有显著差异，否则无显著差异。</p>
-                          </>
-                        )}
-                        {currentPractical.knowledge.includes('ARIMA') && (
-                          <>
-                            <p><strong>ARIMA：</strong>自回归综合移动平均模型，用于时间序列预测。</p>
-                            <p><strong>参数含义：</strong>ARIMA(p,d,q)，p为自回归阶数，d为差分阶数，q为移动平均阶数。</p>
-                          </>
-                        )}
-                        {currentPractical.knowledge.includes('特征工程') && (
-                          <>
-                            <p><strong>特征工程：</strong>将原始数据转换为机器学习模型可用特征的过程。</p>
-                            <p><strong>常用方法：</strong>特征提取、编码（LabelEncoder/OneHotEncoder）、标准化。</p>
-                          </>
-                        )}
-                        {currentPractical.knowledge.includes('RFM') && (
-                          <>
-                            <p><strong>RFM模型：</strong>客户价值分析模型，包含最近购买时间(R)、购买频率(F)、购买金额(M)三个维度。</p>
-                            <p><strong>评分方法：</strong>使用分位数法将每个维度分为5个等级。</p>
-                          </>
-                        )}
-                        {currentPractical.knowledge.includes('报表') && (
-                          <>
-                            <p><strong>自动化报表：</strong>将数据处理和报告生成过程自动化，减少人工操作。</p>
-                            <p><strong>报表组成：</strong>封面页、数据概览、详细数据、分析图表、数据透视。</p>
-                          </>
-                        )}
-                      </div>
+                      {currentPractical?.id === 2 && (
+                        <>
+                          <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握groupby分组聚合操作</p>
+                          <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>学会使用agg聚合函数</p>
+                          <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握多维度分组方法</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 3 && (
+                        <>
+                          <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握Apriori关联规则算法</p>
+                          <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>学会设置支持度和置信度</p>
+                          <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>理解提升度的含义</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 4 && (
+                        <>
+                          <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握K-means聚类算法</p>
+                          <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>学会数据标准化</p>
+                          <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>理解肘部法则选择K值</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 5 && (
+                        <>
+                          <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握数据可视化方法</p>
+                          <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>学会绘制折线图、饼图、柱状图</p>
+                          <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握图表美化技巧</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 6 && (
+                        <>
+                          <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握A/B测试与卡方检验</p>
+                          <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>学会构建列联表</p>
+                          <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>理解p值判断标准</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 7 && (
+                        <>
+                          <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握ARIMA时间序列预测</p>
+                          <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>学会时间序列数据准备</p>
+                          <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>理解模型参数含义</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 8 && (
+                        <>
+                          <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握特征工程方法</p>
+                          <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>学会创建时间特征</p>
+                          <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握LabelEncoder编码</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 9 && (
+                        <>
+                          <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握RFM客户价值分析</p>
+                          <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>学会使用分位数法评分</p>
+                          <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>理解客户分层方法</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 10 && (
+                        <>
+                          <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握自动化报表生成</p>
+                          <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>学会创建数据透视表</p>
+                          <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握统计摘要生成</p>
+                        </>
+                      )}
                     </div>
-                  )}
+                  </div>
                   
-                  {currentPractical?.knowledge.includes('常用场景') && (
-                    <div className="bg-gradient-to-br from-purple-50 to-violet-50 border border-purple-200 rounded-xl p-4 shadow-sm">
-                      <h3 className="font-bold text-purple-800 mb-3 flex items-center gap-2">
-                        <span className="w-6 h-6 rounded-full bg-purple-500 text-white flex items-center justify-center text-xs font-bold">🛠️</span>
-                        常用场景
-                      </h3>
-                      <div className="text-sm text-gray-700 space-y-3">
-                        {currentPractical.knowledge.includes('read_csv') && (
+                  {/* 核心概念 */}
+                  <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-xl p-4 shadow-sm">
+                    <h3 className="font-bold text-green-800 mb-3 flex items-center gap-2">
+                      <span className="w-6 h-6 rounded-full bg-green-500 text-white flex items-center justify-center text-xs font-bold">📖</span>
+                      核心概念
+                    </h3>
+                    <div className="text-sm text-gray-700 space-y-2">
+                      {currentPractical?.id === 1 && (
+                        <>
+                          <p><strong>数据清洗：</strong>对原始数据进行预处理，修正错误、补充缺失、统一格式，使数据质量达到分析要求的过程。</p>
+                          <p><strong>重要性：</strong>原始数据质量决定分析结果准确性，业务决策依赖高质量数据。</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 2 && (
+                        <>
+                          <p><strong>分组聚合：</strong>按照某个维度把数据分成不同的组，然后对每个组进行计算（求和、平均等）。</p>
+                          <p><strong>典型应用：</strong>按用户分组计算消费金额、按月份分析销售趋势。</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 3 && (
+                        <>
+                          <p><strong>支持度：</strong>项集出现的频率，Support(X) = 包含X的交易数 / 总交易数</p>
+                          <p><strong>置信度：</strong>规则的可靠程度，Confidence(X→Y) = Support(X∪Y) / Support(X)</p>
+                          <p><strong>提升度：</strong>规则的有效性，Lift &gt; 1表示正相关。</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 4 && (
+                        <>
+                          <p><strong>K-means聚类：</strong>无监督学习算法，用于将数据划分为K个簇。</p>
+                          <p><strong>核心步骤：</strong>选择初始质心 → 分配到最近簇 → 重新计算质心 → 重复收敛。</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 5 && (
+                        <>
+                          <p><strong>数据可视化：</strong>将数据以图形化方式展示，便于理解和分析。</p>
+                          <p><strong>图表类型：</strong>折线图（趋势）、柱状图（对比）、饼图（占比）、散点图（关系）。</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 6 && (
+                        <>
+                          <p><strong>卡方检验：</strong>用于检验两个分类变量之间是否存在关联。</p>
+                          <p><strong>判断标准：</strong>p值 &lt; 0.05表示有显著差异，否则无显著差异。</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 7 && (
+                        <>
+                          <p><strong>ARIMA：</strong>自回归综合移动平均模型，用于时间序列预测。</p>
+                          <p><strong>参数含义：</strong>ARIMA(p,d,q)，p为自回归阶数，d为差分阶数，q为移动平均阶数。</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 8 && (
+                        <>
+                          <p><strong>特征工程：</strong>将原始数据转换为机器学习模型可用特征的过程。</p>
+                          <p><strong>常用方法：</strong>特征提取、编码（LabelEncoder/OneHotEncoder）、标准化。</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 9 && (
+                        <>
+                          <p><strong>RFM模型：</strong>客户价值分析模型，包含最近购买时间(R)、购买频率(F)、购买金额(M)三个维度。</p>
+                          <p><strong>评分方法：</strong>使用分位数法将每个维度分为5个等级。</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 10 && (
+                        <>
+                          <p><strong>自动化报表：</strong>将数据处理和报告生成过程自动化，减少人工操作。</p>
+                          <p><strong>报表组成：</strong>封面页、数据概览、详细数据、分析图表、数据透视。</p>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                  
+                  {/* 常用场景 */}
+                  <div className="bg-gradient-to-br from-purple-50 to-violet-50 border border-purple-200 rounded-xl p-4 shadow-sm">
+                    <h3 className="font-bold text-purple-800 mb-3 flex items-center gap-2">
+                      <span className="w-6 h-6 rounded-full bg-purple-500 text-white flex items-center justify-center text-xs font-bold">🛠️</span>
+                      常用场景
+                    </h3>
+                    <div className="text-sm text-gray-700 space-y-3">
+                      {currentPractical?.id === 1 && (
+                        <>
                           <div className="bg-white rounded-lg p-3 border border-purple-100">
                             <p className="font-medium text-purple-700 mb-2">读取CSV文件</p>
                             <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">import pandas as pd
 df = pd.read_csv("sales.csv", encoding="utf-8")</pre>
                           </div>
-                        )}
-                        {currentPractical.knowledge.includes('dropna') && (
                           <div className="bg-white rounded-lg p-3 border border-purple-100">
                             <p className="font-medium text-purple-700 mb-2">处理缺失值</p>
                             <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600"># 删除缺失值
@@ -820,84 +873,103 @@ df = df.dropna()
 # 均值填充
 df["金额"] = df["金额"].fillna(df["金额"].mean())</pre>
                           </div>
-                        )}
-                        {currentPractical.knowledge.includes('groupby') && (
-                          <div className="bg-white rounded-lg p-3 border border-purple-100">
-                            <p className="font-medium text-purple-700 mb-2">分组聚合</p>
-                            <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">result = df.groupby("用户ID").agg(
+                        </>
+                      )}
+                      {currentPractical?.id === 2 && (
+                        <div className="bg-white rounded-lg p-3 border border-purple-100">
+                          <p className="font-medium text-purple-700 mb-2">分组聚合</p>
+                          <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">result = df.groupby("用户ID").agg(
     总销售额=("金额", "sum"),
     订单数=("金额", "count")
 )</pre>
-                          </div>
-                        )}
-                        {currentPractical.knowledge.includes('apriori') && (
-                          <div className="bg-white rounded-lg p-3 border border-purple-100">
-                            <p className="font-medium text-purple-700 mb-2">关联规则挖掘</p>
-                            <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">from mlxtend.frequent_patterns import apriori
+                        </div>
+                      )}
+                      {currentPractical?.id === 3 && (
+                        <div className="bg-white rounded-lg p-3 border border-purple-100">
+                          <p className="font-medium text-purple-700 mb-2">关联规则挖掘</p>
+                          <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">from mlxtend.frequent_patterns import apriori
 freq_items = apriori(df, min_support=0.1)</pre>
-                          </div>
-                        )}
-                        {currentPractical.knowledge.includes('KMeans') && (
-                          <div className="bg-white rounded-lg p-3 border border-purple-100">
-                            <p className="font-medium text-purple-700 mb-2">K-means聚类</p>
-                            <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">from sklearn.cluster import KMeans
+                        </div>
+                      )}
+                      {currentPractical?.id === 4 && (
+                        <div className="bg-white rounded-lg p-3 border border-purple-100">
+                          <p className="font-medium text-purple-700 mb-2">K-means聚类</p>
+                          <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">from sklearn.cluster import KMeans
 kmeans = KMeans(n_clusters=3)
 labels = kmeans.fit_predict(X)</pre>
-                          </div>
-                        )}
-                        {currentPractical.knowledge.includes('plt.plot') && (
-                          <div className="bg-white rounded-lg p-3 border border-purple-100">
-                            <p className="font-medium text-purple-700 mb-2">数据可视化</p>
-                            <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">import matplotlib.pyplot as plt
+                        </div>
+                      )}
+                      {currentPractical?.id === 5 && (
+                        <div className="bg-white rounded-lg p-3 border border-purple-100">
+                          <p className="font-medium text-purple-700 mb-2">数据可视化</p>
+                          <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">import matplotlib.pyplot as plt
 plt.plot(df["日期"], df["销售额"])
 plt.title("销售趋势")</pre>
-                          </div>
-                        )}
-                        {currentPractical.knowledge.includes('chi2_contingency') && (
-                          <div className="bg-white rounded-lg p-3 border border-purple-100">
-                            <p className="font-medium text-purple-700 mb-2">卡方检验</p>
-                            <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">from scipy.stats import chi2_contingency
+                        </div>
+                      )}
+                      {currentPractical?.id === 6 && (
+                        <div className="bg-white rounded-lg p-3 border border-purple-100">
+                          <p className="font-medium text-purple-700 mb-2">卡方检验</p>
+                          <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">from scipy.stats import chi2_contingency
 chi2, p, dof, expected = chi2_contingency(table)</pre>
-                          </div>
-                        )}
-                        {currentPractical.knowledge.includes('LabelEncoder') && (
-                          <div className="bg-white rounded-lg p-3 border border-purple-100">
-                            <p className="font-medium text-purple-700 mb-2">特征编码</p>
-                            <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">from sklearn.preprocessing import LabelEncoder
+                        </div>
+                      )}
+                      {currentPractical?.id === 7 && (
+                        <div className="bg-white rounded-lg p-3 border border-purple-100">
+                          <p className="font-medium text-purple-700 mb-2">ARIMA预测</p>
+                          <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">from statsmodels.tsa.arima.model import ARIMA
+model = ARIMA(data, order=(1,1,1))
+model_fit = model.fit()</pre>
+                        </div>
+                      )}
+                      {currentPractical?.id === 8 && (
+                        <div className="bg-white rounded-lg p-3 border border-purple-100">
+                          <p className="font-medium text-purple-700 mb-2">特征编码</p>
+                          <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">from sklearn.preprocessing import LabelEncoder
 le = LabelEncoder()
 df["编码"] = le.fit_transform(df["类别"])</pre>
-                          </div>
-                        )}
-                      </div>
+                        </div>
+                      )}
+                      {currentPractical?.id === 9 && (
+                        <div className="bg-white rounded-lg p-3 border border-purple-100">
+                          <p className="font-medium text-purple-700 mb-2">RFM评分</p>
+                          <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600"># 分位数评分
+df["R_score"] = pd.qcut(df["R"], 5, labels=[5,4,3,2,1])
+df["F_score"] = pd.qcut(df["F"], 5, labels=[1,2,3,4,5])
+df["M_score"] = pd.qcut(df["M"], 5, labels=[1,2,3,4,5])</pre>
+                        </div>
+                      )}
+                      {currentPractical?.id === 10 && (
+                        <div className="bg-white rounded-lg p-3 border border-purple-100">
+                          <p className="font-medium text-purple-700 mb-2">数据透视表</p>
+                          <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600"># 创建数据透视表
+pivot = pd.pivot_table(
+    df, 
+    index="用户ID", 
+    values="金额", 
+    aggfunc=["sum", "count"]
+)</pre>
+                        </div>
+                      )}
                     </div>
-                  )}
+                  </div>
                   
-                  {currentPractical?.knowledge.includes('易错点') && (
-                    <div className="bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 rounded-xl p-4 shadow-sm">
-                      <h3 className="font-bold text-orange-800 mb-3 flex items-center gap-2">
-                        <span className="w-6 h-6 rounded-full bg-orange-500 text-white flex items-center justify-center text-xs font-bold">⚠️</span>
-                        易错点
-                      </h3>
-                      <div className="text-sm text-gray-700 space-y-2">
-                        {currentPractical.knowledge.includes('缺失值') && (
+                  {/* 易错点 */}
+                  <div className="bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 rounded-xl p-4 shadow-sm">
+                    <h3 className="font-bold text-orange-800 mb-3 flex items-center gap-2">
+                      <span className="w-6 h-6 rounded-full bg-orange-500 text-white flex items-center justify-center text-xs font-bold">⚠️</span>
+                      易错点
+                    </h3>
+                    <div className="text-sm text-gray-700 space-y-2">
+                      {currentPractical?.id === 1 && (
+                        <>
                           <div className="flex items-start gap-2">
                             <span className="text-orange-500 font-bold">❌</span>
                             <div>
                               <p className="font-medium">忽视缺失值</p>
-                              <p className="text-xs text-gray-600">直接进行分析不处理缺失值会导致统计结果错误，应先检查df.isnull().sum()</p>
+                              <p className="text-xs text-gray-600">直接进行分析不处理缺失值会导致统计结果错误</p>
                             </div>
                           </div>
-                        )}
-                        {currentPractical.knowledge.includes('异常值') && (
-                          <div className="flex items-start gap-2">
-                            <span className="text-orange-500 font-bold">❌</span>
-                            <div>
-                              <p className="font-medium">异常值处理不当</p>
-                              <p className="text-xs text-gray-600">直接删除所有异常值可能丢失重要信息，应先分析异常原因</p>
-                            </div>
-                          </div>
-                        )}
-                        {currentPractical.knowledge.includes('日期格式') && (
                           <div className="flex items-start gap-2">
                             <span className="text-orange-500 font-bold">❌</span>
                             <div>
@@ -905,17 +977,10 @@ df["编码"] = le.fit_transform(df["类别"])</pre>
                               <p className="text-xs text-gray-600">混合格式的日期会导致问题，应使用pd.to_datetime统一转换</p>
                             </div>
                           </div>
-                        )}
-                        {currentPractical.knowledge.includes('数据类型') && (
-                          <div className="flex items-start gap-2">
-                            <span className="text-orange-500 font-bold">❌</span>
-                            <div>
-                              <p className="font-medium">数据类型混淆</p>
-                              <p className="text-xs text-gray-600">金额列可能是字符串类型，应先检查dtype并转换</p>
-                            </div>
-                          </div>
-                        )}
-                        {currentPractical.knowledge.includes('聚合函数') && (
+                        </>
+                      )}
+                      {currentPractical?.id === 2 && (
+                        <>
                           <div className="flex items-start gap-2">
                             <span className="text-orange-500 font-bold">❌</span>
                             <div>
@@ -923,96 +988,272 @@ df["编码"] = le.fit_transform(df["类别"])</pre>
                               <p className="text-xs text-gray-600">对非数值列使用聚合函数会报错，应指定要聚合的列</p>
                             </div>
                           </div>
-                        )}
-                      </div>
+                        </>
+                      )}
+                      {currentPractical?.id === 3 && (
+                        <>
+                          <div className="flex items-start gap-2">
+                            <span className="text-orange-500 font-bold">❌</span>
+                            <div>
+                              <p className="font-medium">支持度设置不当</p>
+                              <p className="text-xs text-gray-600">支持度过高或过低都会导致规则过少或过多，需根据业务调整</p>
+                            </div>
+                          </div>
+                        </>
+                      )}
+                      {currentPractical?.id === 4 && (
+                        <>
+                          <div className="flex items-start gap-2">
+                            <span className="text-orange-500 font-bold">❌</span>
+                            <div>
+                              <p className="font-medium">忘记标准化</p>
+                              <p className="text-xs text-gray-600">K-means对尺度敏感，不同量纲的特征会影响结果</p>
+                            </div>
+                          </div>
+                        </>
+                      )}
+                      {currentPractical?.id === 5 && (
+                        <>
+                          <div className="flex items-start gap-2">
+                            <span className="text-orange-500 font-bold">❌</span>
+                            <div>
+                              <p className="font-medium">图表类型选择错误</p>
+                              <p className="text-xs text-gray-600">应根据数据特点选择合适的图表类型</p>
+                            </div>
+                          </div>
+                        </>
+                      )}
+                      {currentPractical?.id === 6 && (
+                        <>
+                          <div className="flex items-start gap-2">
+                            <span className="text-orange-500 font-bold">❌</span>
+                            <div>
+                              <p className="font-medium">样本量不足</p>
+                              <p className="text-xs text-gray-600">卡方检验要求每个单元格的期望频数≥5</p>
+                            </div>
+                          </div>
+                        </>
+                      )}
+                      {currentPractical?.id === 7 && (
+                        <>
+                          <div className="flex items-start gap-2">
+                            <span className="text-orange-500 font-bold">❌</span>
+                            <div>
+                              <p className="font-medium">非平稳数据</p>
+                              <p className="text-xs text-gray-600">ARIMA要求数据平稳，不平稳时需先差分</p>
+                            </div>
+                          </div>
+                        </>
+                      )}
+                      {currentPractical?.id === 8 && (
+                        <>
+                          <div className="flex items-start gap-2">
+                            <span className="text-orange-500 font-bold">❌</span>
+                            <div>
+                              <p className="font-medium">编码方法不当</p>
+                              <p className="text-xs text-gray-600">无序类别不应使用LabelEncoder，应使用OneHotEncoder</p>
+                            </div>
+                          </div>
+                        </>
+                      )}
+                      {currentPractical?.id === 9 && (
+                        <>
+                          <div className="flex items-start gap-2">
+                            <span className="text-orange-500 font-bold">❌</span>
+                            <div>
+                              <p className="font-medium">评分方向错误</p>
+                              <p className="text-xs text-gray-600">R值（最近购买天数）越小越好，F和M值越大越好</p>
+                            </div>
+                          </div>
+                        </>
+                      )}
+                      {currentPractical?.id === 10 && (
+                        <>
+                          <div className="flex items-start gap-2">
+                            <span className="text-orange-500 font-bold">❌</span>
+                            <div>
+                              <p className="font-medium">图表过多</p>
+                              <p className="text-xs text-gray-600">报表图表应简洁明了，避免信息过载</p>
+                            </div>
+                          </div>
+                        </>
+                      )}
                     </div>
-                  )}
+                  </div>
                   
-                  {currentPractical?.knowledge.includes('实战技巧') && (
-                    <div className="bg-gradient-to-br from-indigo-50 to-blue-50 border border-indigo-200 rounded-xl p-4 shadow-sm">
-                      <h3 className="font-bold text-indigo-800 mb-3 flex items-center gap-2">
-                        <span className="w-6 h-6 rounded-full bg-indigo-500 text-white flex items-center justify-center text-xs font-bold">💡</span>
-                        实战技巧
-                      </h3>
-                      <div className="text-sm text-gray-700 space-y-2">
-                        {currentPractical.knowledge.includes('数据清洗') && (
-                          <>
-                            <p><strong>快速检查数据质量：</strong></p>
-                            <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">print(df.shape)
+                  {/* 实战技巧 */}
+                  <div className="bg-gradient-to-br from-indigo-50 to-blue-50 border border-indigo-200 rounded-xl p-4 shadow-sm">
+                    <h3 className="font-bold text-indigo-800 mb-3 flex items-center gap-2">
+                      <span className="w-6 h-6 rounded-full bg-indigo-500 text-white flex items-center justify-center text-xs font-bold">💡</span>
+                      实战技巧
+                    </h3>
+                    <div className="text-sm text-gray-700 space-y-2">
+                      {currentPractical?.id === 1 && (
+                        <>
+                          <p><strong>快速检查数据质量：</strong></p>
+                          <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">print(df.shape)
 print(df.isnull().sum())
 print(df.dtypes)</pre>
-                          </>
-                        )}
-                        {currentPractical.knowledge.includes('分组聚合') && (
-                          <>
-                            <p><strong>链式调用技巧：</strong></p>
-                            <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">df = df.dropna().query("金额 {'&gt;'} 0").drop_duplicates()</pre>
-                          </>
-                        )}
-                        {currentPractical.knowledge.includes('K-means') && (
-                          <>
-                            <p><strong>K值选择：</strong></p>
-                            <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600"># 肘部法则选择K值
+                        </>
+                      )}
+                      {currentPractical?.id === 2 && (
+                        <>
+                          <p><strong>链式调用技巧：</strong></p>
+                          <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">df = df.dropna().query("金额 {'&gt;'} 0").drop_duplicates()</pre>
+                        </>
+                      )}
+                      {currentPractical?.id === 3 && (
+                        <>
+                          <p><strong>规则筛选技巧：</strong></p>
+                          <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600"># 筛选高提升度的规则
+high_lift = rules[rules["lift"] &gt; 1.2].sort_values("lift", ascending=False)</pre>
+                        </>
+                      )}
+                      {currentPractical?.id === 4 && (
+                        <>
+                          <p><strong>K值选择：</strong></p>
+                          <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600"># 肘部法则选择K值
 inertia = []
 for k in range(1, 10):
     kmeans = KMeans(n_clusters=k)
     kmeans.fit(X)
     inertia.append(kmeans.inertia_)</pre>
-                          </>
-                        )}
-                        {currentPractical.knowledge.includes('可视化') && (
-                          <>
-                            <p><strong>图表美化技巧：</strong></p>
-                            <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">plt.figure(figsize=(10, 6))
+                        </>
+                      )}
+                      {currentPractical?.id === 5 && (
+                        <>
+                          <p><strong>图表美化技巧：</strong></p>
+                          <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">plt.figure(figsize=(10, 6))
 plt.xticks(rotation=45)
 plt.tight_layout()</pre>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                  )}
-                  
-                      {currentPractical?.knowledge.includes('业务案例') && (
-                        <div className="bg-gradient-to-br from-pink-50 to-rose-50 border border-pink-200 rounded-xl p-4 shadow-sm">
-                          <h3 className="font-bold text-pink-800 mb-3 flex items-center gap-2">
-                            <span className="w-6 h-6 rounded-full bg-pink-500 text-white flex items-center justify-center text-xs font-bold">📊</span>
-                            业务案例
-                          </h3>
-                          <div className="text-sm text-gray-700 space-y-2">
-                            {currentPractical.knowledge.includes('数据清洗') && (
-                              <>
-                                <p><strong>电商销售数据清洗：</strong></p>
-                                <p className="text-xs">某电商平台销售数据存在缺失值、异常大额订单、日期格式不统一等问题，通过数据清洗将1000行数据清洗为950行高质量数据。</p>
-                              </>
-                            )}
-                            {currentPractical.knowledge.includes('分组聚合') && (
-                              <>
-                                <p><strong>用户消费行为分析：</strong></p>
-                                <p className="text-xs">通过分组聚合分析用户消费能力，识别高价值客户，进行客户分层（普通客户、潜力客户、优质客户、VIP客户）。</p>
-                              </>
-                            )}
-                            {currentPractical.knowledge.includes('关联规则') && (
-                              <>
-                                <p><strong>购物篮分析：</strong></p>
-                                <p className="text-xs">使用Apriori算法发现商品购买规律，如"购买面包的用户也购买牛奶"，用于商品推荐和货架摆放优化。</p>
-                              </>
-                            )}
-                            {currentPractical.knowledge.includes('RFM') && (
-                              <>
-                                <p><strong>客户价值分层：</strong></p>
-                                <p className="text-xs">通过RFM分析对客户进行价值分层，制定差异化营销策略，提升客户管理效率。</p>
-                              </>
-                            )}
-                          </div>
-                        </div>
+                        </>
                       )}
-                    </>
-                  ) : (
-                    <div className="bg-white rounded-xl p-4 shadow-sm">
-                      <h3 className="font-bold text-blue-800 mb-2">知识讲解</h3>
-                      <pre className="text-sm text-gray-700 whitespace-pre-wrap">{currentPractical?.knowledge}</pre>
+                      {currentPractical?.id === 6 && (
+                        <>
+                          <p><strong>A/B测试流程：</strong></p>
+                          <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600"># 1. 确定目标
+# 2. 确定样本量
+# 3. 随机分组
+# 4. 收集数据
+# 5. 统计检验
+# 6. 决策结论</pre>
+                        </>
+                      )}
+                      {currentPractical?.id === 7 && (
+                        <>
+                          <p><strong>预测评估：</strong></p>
+                          <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600"># 使用历史数据回测
+train = data[:-12]
+test = data[-12:]
+model = ARIMA(train, order=(1,1,1))
+model_fit = model.fit()
+forecast = model_fit.forecast(steps=12)</pre>
+                        </>
+                      )}
+                      {currentPractical?.id === 8 && (
+                        <>
+                          <p><strong>时间特征提取：</strong></p>
+                          <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">df["月份"] = df["日期"].dt.month
+df["星期"] = df["日期"].dt.dayofweek
+df["季度"] = df["日期"].dt.quarter</pre>
+                        </>
+                      )}
+                      {currentPractical?.id === 9 && (
+                        <>
+                          <p><strong>客户分层策略：</strong></p>
+                          <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600"># 根据总分分层
+def get_tier(score):
+    if score &gt;= 12:
+        return "高价值客户"
+    elif score &gt;= 8:
+        return "潜力客户"
+    elif score &gt;= 5:
+        return "普通客户"
+    else:
+        return "需关注客户"</pre>
+                        </>
+                      )}
+                      {currentPractical?.id === 10 && (
+                        <>
+                          <p><strong>ExcelWriter使用：</strong></p>
+                          <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">with pd.ExcelWriter("报表.xlsx") as writer:
+    df.to_excel(writer, sheet_name="原始数据")
+    pivot.to_excel(writer, sheet_name="数据透视")
+    stats.to_excel(writer, sheet_name="统计摘要")</pre>
+                        </>
+                      )}
                     </div>
-                  )}
+                  </div>
+                  
+                  {/* 业务案例 */}
+                  <div className="bg-gradient-to-br from-pink-50 to-rose-50 border border-pink-200 rounded-xl p-4 shadow-sm">
+                    <h3 className="font-bold text-pink-800 mb-3 flex items-center gap-2">
+                      <span className="w-6 h-6 rounded-full bg-pink-500 text-white flex items-center justify-center text-xs font-bold">📊</span>
+                      业务案例
+                    </h3>
+                    <div className="text-sm text-gray-700 space-y-2">
+                      {currentPractical?.id === 1 && (
+                        <>
+                          <p><strong>电商销售数据清洗：</strong></p>
+                          <p className="text-xs">某电商平台销售数据存在缺失值、异常大额订单、日期格式不统一等问题，通过数据清洗将1000行数据清洗为950行高质量数据。</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 2 && (
+                        <>
+                          <p><strong>用户消费行为分析：</strong></p>
+                          <p className="text-xs">通过分组聚合分析用户消费能力，识别高价值客户，进行客户分层（普通客户、潜力客户、优质客户、VIP客户）。</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 3 && (
+                        <>
+                          <p><strong>购物篮分析：</strong></p>
+                          <p className="text-xs">使用Apriori算法发现商品购买规律，如"购买面包的用户也购买牛奶"，用于商品推荐和货架摆放优化。</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 4 && (
+                        <>
+                          <p><strong>客户画像聚类：</strong></p>
+                          <p className="text-xs">将客户根据消费习惯、浏览行为等特征进行聚类，识别不同客户群体，为精准营销提供依据。</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 5 && (
+                        <>
+                          <p><strong>销售仪表盘：</strong></p>
+                          <p className="text-xs">创建可视化销售报表，包含销售趋势图、产品分布饼图、区域对比柱状图，帮助管理层快速了解业务状况。</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 6 && (
+                        <>
+                          <p><strong>页面改版效果评估：</strong></p>
+                          <p className="text-xs">通过A/B测试比较新旧版本页面的转化率，使用卡方检验判断差异是否显著，为产品迭代提供数据支撑。</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 7 && (
+                        <>
+                          <p><strong>销售预测：</strong></p>
+                          <p className="text-xs">基于历史销售数据使用ARIMA模型进行未来3-6个月的销售预测，为库存管理和营销计划提供指导。</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 8 && (
+                        <>
+                          <p><strong>客户流失预警：</strong></p>
+                          <p className="text-xs">通过特征工程提取客户行为特征，构建流失预测模型，提前识别可能流失的客户并采取挽留措施。</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 9 && (
+                        <>
+                          <p><strong>客户价值分层：</strong></p>
+                          <p className="text-xs">通过RFM分析对客户进行价值分层，制定差异化营销策略，提升客户管理效率和资源投入ROI。</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 10 && (
+                        <>
+                          <p><strong>月度销售报表：</strong></p>
+                          <p className="text-xs">自动生成包含销售概览、区域分析、产品排名、客户统计等内容的月度报表，减少人工报告工作量。</p>
+                        </>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
 

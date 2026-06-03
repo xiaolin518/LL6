@@ -370,8 +370,8 @@ export default function DataAnalysisCourse() {
       <section id="outline" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-gray-800 mb-12 text-center">
-            课程大纲
-          </h2>
+          章节学习
+        </h2>
           <div className="space-y-6">
             {courseOutline.filter(chapter => chapter.id !== 'chapter7').map((chapter, index) => (
               <div

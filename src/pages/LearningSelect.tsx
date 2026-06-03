@@ -4,15 +4,6 @@ import { BookOpen, Code, ChevronLeft, BookText, GraduationCap } from 'lucide-rea
 export default function LearningSelect() {
   const navigate = useNavigate();
 
-  const chapters = [
-    { id: 'chapter1', title: '数据分析概述', description: '了解数据分析的基本概念、流程和应用领域' },
-    { id: 'chapter2', title: '数据可视化技术', description: '学习使用Python进行数据可视化' },
-    { id: 'chapter3', title: '描述性统计分析', description: '学习使用统计方法描述和分析数据' },
-    { id: 'chapter4', title: '推断统计分析', description: '学习使用推断统计方法从样本推断总体' },
-    { id: 'chapter5', title: '预测分析', description: '学习使用机器学习方法进行预测' },
-    { id: 'chapter6', title: '商务数据分析案例', description: '通过实际案例学习商务数据分析' },
-  ];
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
       <nav className="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
@@ -57,28 +48,13 @@ export default function LearningSelect() {
               </div>
               <div className="p-6">
                 <p className="text-gray-600 mb-6">学习1-6章的理论知识，包含数据分析概述、数据可视化、统计分析等内容</p>
-                <div className="space-y-3">
-                  {chapters.map((chapter, index) => (
-                    <button
-                      key={chapter.id}
-                      onClick={() => navigate(`/data-analysis#${chapter.id}`)}
-                      className="w-full text-left p-4 bg-blue-50 rounded-xl hover:bg-blue-100 transition-colors group"
-                    >
-                      <div className="flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-bold shrink-0">
-                          {index + 1}
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">
-                            {chapter.title}
-                          </h3>
-                          <p className="text-sm text-gray-500 mt-1">{chapter.description}</p>
-                        </div>
-                        <ChevronLeft className="w-5 h-5 text-gray-400 group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
-                      </div>
-                    </button>
-                  ))}
-                </div>
+                <button
+                  onClick={() => navigate('/data-analysis')}
+                  className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-colors flex items-center justify-center gap-2"
+                >
+                  <BookOpen className="w-5 h-5" />
+                  进入章节学习
+                </button>
               </div>
             </div>
 

@@ -1007,29 +1007,31 @@ export default function PracticalTraining() {
                   <p className="text-gray-700">{currentPractical?.description}</p>
                 </div>
                 <div className="space-y-4 max-h-[700px] overflow-y-auto pr-2">
-                  {currentPractical?.knowledge.includes('学习目标') && (
-                    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 shadow-sm">
-                      <h3 className="font-bold text-blue-800 mb-3 flex items-center gap-2">
-                        <span className="w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center text-xs font-bold">🎯</span>
-                        学习目标
-                      </h3>
-                      <div className="text-sm text-gray-700 space-y-2">
-                        {currentPractical.knowledge.includes('掌握Pandas读取') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握Pandas读取CSV/Excel文件</p>}
-                        {currentPractical.knowledge.includes('处理缺失值') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>学会识别和处理缺失值</p>}
-                        {currentPractical.knowledge.includes('处理异常值') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>学会识别和处理异常值</p>}
-                        {currentPractical.knowledge.includes('日期格式') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握日期格式统一方法</p>}
-                        {currentPractical.knowledge.includes('groupby') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握groupby分组聚合操作</p>}
-                        {currentPractical.knowledge.includes('Apriori') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握Apriori关联规则算法</p>}
-                        {currentPractical.knowledge.includes('K-means') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握K-means聚类算法</p>}
-                        {currentPractical.knowledge.includes('可视化') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握数据可视化方法</p>}
-                        {currentPractical.knowledge.includes('A/B测试') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握A/B测试与卡方检验</p>}
-                        {currentPractical.knowledge.includes('ARIMA') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握ARIMA时间序列预测</p>}
-                        {currentPractical.knowledge.includes('特征工程') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握特征工程方法</p>}
-                        {currentPractical.knowledge.includes('RFM') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握RFM客户价值分析</p>}
-                        {currentPractical.knowledge.includes('报表') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握自动化报表生成</p>}
-                      </div>
-                    </div>
-                  )}
+                  {currentPractical?.knowledge.includes('学习目标') || currentPractical?.knowledge.includes('核心概念') ? (
+                    <>
+                      {currentPractical?.knowledge.includes('学习目标') && (
+                        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 shadow-sm">
+                          <h3 className="font-bold text-blue-800 mb-3 flex items-center gap-2">
+                            <span className="w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center text-xs font-bold">🎯</span>
+                            学习目标
+                          </h3>
+                          <div className="text-sm text-gray-700 space-y-2">
+                            {currentPractical.knowledge.includes('掌握Pandas读取') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握Pandas读取CSV/Excel文件</p>}
+                            {currentPractical.knowledge.includes('处理缺失值') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>学会识别和处理缺失值</p>}
+                            {currentPractical.knowledge.includes('处理异常值') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>学会识别和处理异常值</p>}
+                            {currentPractical.knowledge.includes('日期格式') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握日期格式统一方法</p>}
+                            {currentPractical.knowledge.includes('groupby') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握groupby分组聚合操作</p>}
+                            {currentPractical.knowledge.includes('Apriori') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握Apriori关联规则算法</p>}
+                            {currentPractical.knowledge.includes('K-means') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握K-means聚类算法</p>}
+                            {currentPractical.knowledge.includes('可视化') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握数据可视化方法</p>}
+                            {currentPractical.knowledge.includes('A/B测试') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握A/B测试与卡方检验</p>}
+                            {currentPractical.knowledge.includes('ARIMA') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握ARIMA时间序列预测</p>}
+                            {currentPractical.knowledge.includes('特征工程') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握特征工程方法</p>}
+                            {currentPractical.knowledge.includes('RFM') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握RFM客户价值分析</p>}
+                            {currentPractical.knowledge.includes('报表') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握自动化报表生成</p>}
+                          </div>
+                        </div>
+                      )}
                   
                   {currentPractical?.knowledge.includes('核心概念') && (
                     <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-xl p-4 shadow-sm">
@@ -1278,38 +1280,45 @@ plt.tight_layout()</pre>
                     </div>
                   )}
                   
-                  {currentPractical?.knowledge.includes('业务案例') && (
-                    <div className="bg-gradient-to-br from-pink-50 to-rose-50 border border-pink-200 rounded-xl p-4 shadow-sm">
-                      <h3 className="font-bold text-pink-800 mb-3 flex items-center gap-2">
-                        <span className="w-6 h-6 rounded-full bg-pink-500 text-white flex items-center justify-center text-xs font-bold">📊</span>
-                        业务案例
-                      </h3>
-                      <div className="text-sm text-gray-700 space-y-2">
-                        {currentPractical.knowledge.includes('数据清洗') && (
-                          <>
-                            <p><strong>电商销售数据清洗：</strong></p>
-                            <p className="text-xs">某电商平台销售数据存在缺失值、异常大额订单、日期格式不统一等问题，通过数据清洗将1000行数据清洗为950行高质量数据。</p>
-                          </>
-                        )}
-                        {currentPractical.knowledge.includes('分组聚合') && (
-                          <>
-                            <p><strong>用户消费行为分析：</strong></p>
-                            <p className="text-xs">通过分组聚合分析用户消费能力，识别高价值客户，进行客户分层（普通客户、潜力客户、优质客户、VIP客户）。</p>
-                          </>
-                        )}
-                        {currentPractical.knowledge.includes('关联规则') && (
-                          <>
-                            <p><strong>购物篮分析：</strong></p>
-                            <p className="text-xs">使用Apriori算法发现商品购买规律，如"购买面包的用户也购买牛奶"，用于商品推荐和货架摆放优化。</p>
-                          </>
-                        )}
-                        {currentPractical.knowledge.includes('RFM') && (
-                          <>
-                            <p><strong>客户价值分层：</strong></p>
-                            <p className="text-xs">通过RFM分析对客户进行价值分层，制定差异化营销策略，提升客户管理效率。</p>
-                          </>
-                        )}
-                      </div>
+                      {currentPractical?.knowledge.includes('业务案例') && (
+                        <div className="bg-gradient-to-br from-pink-50 to-rose-50 border border-pink-200 rounded-xl p-4 shadow-sm">
+                          <h3 className="font-bold text-pink-800 mb-3 flex items-center gap-2">
+                            <span className="w-6 h-6 rounded-full bg-pink-500 text-white flex items-center justify-center text-xs font-bold">📊</span>
+                            业务案例
+                          </h3>
+                          <div className="text-sm text-gray-700 space-y-2">
+                            {currentPractical.knowledge.includes('数据清洗') && (
+                              <>
+                                <p><strong>电商销售数据清洗：</strong></p>
+                                <p className="text-xs">某电商平台销售数据存在缺失值、异常大额订单、日期格式不统一等问题，通过数据清洗将1000行数据清洗为950行高质量数据。</p>
+                              </>
+                            )}
+                            {currentPractical.knowledge.includes('分组聚合') && (
+                              <>
+                                <p><strong>用户消费行为分析：</strong></p>
+                                <p className="text-xs">通过分组聚合分析用户消费能力，识别高价值客户，进行客户分层（普通客户、潜力客户、优质客户、VIP客户）。</p>
+                              </>
+                            )}
+                            {currentPractical.knowledge.includes('关联规则') && (
+                              <>
+                                <p><strong>购物篮分析：</strong></p>
+                                <p className="text-xs">使用Apriori算法发现商品购买规律，如"购买面包的用户也购买牛奶"，用于商品推荐和货架摆放优化。</p>
+                              </>
+                            )}
+                            {currentPractical.knowledge.includes('RFM') && (
+                              <>
+                                <p><strong>客户价值分层：</strong></p>
+                                <p className="text-xs">通过RFM分析对客户进行价值分层，制定差异化营销策略，提升客户管理效率。</p>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <div className="bg-white rounded-xl p-4 shadow-sm">
+                      <h3 className="font-bold text-blue-800 mb-2">知识讲解</h3>
+                      <pre className="text-sm text-gray-700 whitespace-pre-wrap">{currentPractical?.knowledge}</pre>
                     </div>
                   )}
                 </div>

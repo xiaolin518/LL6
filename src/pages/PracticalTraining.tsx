@@ -1076,11 +1076,312 @@ export default function PracticalTraining() {
                   <h3 className="font-bold text-blue-800 mb-2">题目要求</h3>
                   <p className="text-gray-700">{currentPractical?.description}</p>
                 </div>
-                <div className="bg-white rounded-xl p-4 shadow-sm max-h-96 overflow-y-auto">
-                  <h3 className="font-bold text-blue-800 mb-2">知识讲解</h3>
-                  <div className="text-sm text-gray-700 whitespace-pre-wrap">
-                    {currentPractical?.knowledge}
-                  </div>
+                <div className="space-y-4 max-h-[700px] overflow-y-auto pr-2">
+                  {currentPractical?.knowledge.includes('学习目标') && (
+                    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 shadow-sm">
+                      <h3 className="font-bold text-blue-800 mb-3 flex items-center gap-2">
+                        <span className="w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center text-xs font-bold">🎯</span>
+                        学习目标
+                      </h3>
+                      <div className="text-sm text-gray-700 space-y-2">
+                        {currentPractical.knowledge.includes('掌握Pandas读取') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握Pandas读取CSV/Excel文件</p>}
+                        {currentPractical.knowledge.includes('处理缺失值') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>学会识别和处理缺失值</p>}
+                        {currentPractical.knowledge.includes('处理异常值') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>学会识别和处理异常值</p>}
+                        {currentPractical.knowledge.includes('日期格式') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握日期格式统一方法</p>}
+                        {currentPractical.knowledge.includes('groupby') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握groupby分组聚合操作</p>}
+                        {currentPractical.knowledge.includes('Apriori') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握Apriori关联规则算法</p>}
+                        {currentPractical.knowledge.includes('K-means') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握K-means聚类算法</p>}
+                        {currentPractical.knowledge.includes('可视化') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握数据可视化方法</p>}
+                        {currentPractical.knowledge.includes('A/B测试') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握A/B测试与卡方检验</p>}
+                        {currentPractical.knowledge.includes('ARIMA') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握ARIMA时间序列预测</p>}
+                        {currentPractical.knowledge.includes('特征工程') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握特征工程方法</p>}
+                        {currentPractical.knowledge.includes('RFM') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握RFM客户价值分析</p>}
+                        {currentPractical.knowledge.includes('报表') && <p className="flex items-start gap-2"><span className="text-blue-500">✓</span>掌握自动化报表生成</p>}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {currentPractical?.knowledge.includes('核心概念') && (
+                    <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-xl p-4 shadow-sm">
+                      <h3 className="font-bold text-green-800 mb-3 flex items-center gap-2">
+                        <span className="w-6 h-6 rounded-full bg-green-500 text-white flex items-center justify-center text-xs font-bold">📖</span>
+                        核心概念
+                      </h3>
+                      <div className="text-sm text-gray-700 space-y-2">
+                        {currentPractical.knowledge.includes('数据清洗') && (
+                          <>
+                            <p><strong>数据清洗：</strong>对原始数据进行预处理，修正错误、补充缺失、统一格式，使数据质量达到分析要求的过程。</p>
+                            <p><strong>重要性：</strong>原始数据质量决定分析结果准确性，业务决策依赖高质量数据。</p>
+                          </>
+                        )}
+                        {currentPractical.knowledge.includes('分组聚合') && (
+                          <>
+                            <p><strong>分组聚合：</strong>按照某个维度把数据分成不同的组，然后对每个组进行计算（求和、平均等）。</p>
+                            <p><strong>典型应用：</strong>按用户分组计算消费金额、按月份分析销售趋势。</p>
+                          </>
+                        )}
+                        {currentPractical.knowledge.includes('关联规则') && (
+                          <>
+                            <p><strong>支持度：</strong>项集出现的频率，Support(X) = 包含X的交易数 / 总交易数</p>
+                            <p><strong>置信度：</strong>规则的可靠程度，Confidence(X→Y) = Support(X∪Y) / Support(X)</p>
+                            <p><strong>提升度：</strong>规则的有效性，Lift &gt; 1表示正相关。</p>
+                          </>
+                        )}
+                        {currentPractical.knowledge.includes('K-means') && (
+                          <>
+                            <p><strong>K-means聚类：</strong>无监督学习算法，用于将数据划分为K个簇。</p>
+                            <p><strong>核心步骤：</strong>选择初始质心 → 分配到最近簇 → 重新计算质心 → 重复收敛。</p>
+                          </>
+                        )}
+                        {currentPractical.knowledge.includes('可视化') && (
+                          <>
+                            <p><strong>数据可视化：</strong>将数据以图形化方式展示，便于理解和分析。</p>
+                            <p><strong>图表类型：</strong>折线图（趋势）、柱状图（对比）、饼图（占比）、散点图（关系）。</p>
+                          </>
+                        )}
+                        {currentPractical.knowledge.includes('卡方检验') && (
+                          <>
+                            <p><strong>卡方检验：</strong>用于检验两个分类变量之间是否存在关联。</p>
+                            <p><strong>判断标准：</strong>p值 &lt; 0.05表示有显著差异，否则无显著差异。</p>
+                          </>
+                        )}
+                        {currentPractical.knowledge.includes('ARIMA') && (
+                          <>
+                            <p><strong>ARIMA：</strong>自回归综合移动平均模型，用于时间序列预测。</p>
+                            <p><strong>参数含义：</strong>ARIMA(p,d,q)，p为自回归阶数，d为差分阶数，q为移动平均阶数。</p>
+                          </>
+                        )}
+                        {currentPractical.knowledge.includes('特征工程') && (
+                          <>
+                            <p><strong>特征工程：</strong>将原始数据转换为机器学习模型可用特征的过程。</p>
+                            <p><strong>常用方法：</strong>特征提取、编码（LabelEncoder/OneHotEncoder）、标准化。</p>
+                          </>
+                        )}
+                        {currentPractical.knowledge.includes('RFM') && (
+                          <>
+                            <p><strong>RFM模型：</strong>客户价值分析模型，包含最近购买时间(R)、购买频率(F)、购买金额(M)三个维度。</p>
+                            <p><strong>评分方法：</strong>使用分位数法将每个维度分为5个等级。</p>
+                          </>
+                        )}
+                        {currentPractical.knowledge.includes('报表') && (
+                          <>
+                            <p><strong>自动化报表：</strong>将数据处理和报告生成过程自动化，减少人工操作。</p>
+                            <p><strong>报表组成：</strong>封面页、数据概览、详细数据、分析图表、数据透视。</p>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {currentPractical?.knowledge.includes('常用场景') && (
+                    <div className="bg-gradient-to-br from-purple-50 to-violet-50 border border-purple-200 rounded-xl p-4 shadow-sm">
+                      <h3 className="font-bold text-purple-800 mb-3 flex items-center gap-2">
+                        <span className="w-6 h-6 rounded-full bg-purple-500 text-white flex items-center justify-center text-xs font-bold">🛠️</span>
+                        常用场景
+                      </h3>
+                      <div className="text-sm text-gray-700 space-y-3">
+                        {currentPractical.knowledge.includes('read_csv') && (
+                          <div className="bg-white rounded-lg p-3 border border-purple-100">
+                            <p className="font-medium text-purple-700 mb-2">读取CSV文件</p>
+                            <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">import pandas as pd
+df = pd.read_csv("sales.csv", encoding="utf-8")</pre>
+                          </div>
+                        )}
+                        {currentPractical.knowledge.includes('dropna') && (
+                          <div className="bg-white rounded-lg p-3 border border-purple-100">
+                            <p className="font-medium text-purple-700 mb-2">处理缺失值</p>
+                            <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600"># 删除缺失值
+df = df.dropna()
+
+# 均值填充
+df["金额"] = df["金额"].fillna(df["金额"].mean())</pre>
+                          </div>
+                        )}
+                        {currentPractical.knowledge.includes('groupby') && (
+                          <div className="bg-white rounded-lg p-3 border border-purple-100">
+                            <p className="font-medium text-purple-700 mb-2">分组聚合</p>
+                            <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">result = df.groupby("用户ID").agg(
+    总销售额=("金额", "sum"),
+    订单数=("金额", "count")
+)</pre>
+                          </div>
+                        )}
+                        {currentPractical.knowledge.includes('apriori') && (
+                          <div className="bg-white rounded-lg p-3 border border-purple-100">
+                            <p className="font-medium text-purple-700 mb-2">关联规则挖掘</p>
+                            <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">from mlxtend.frequent_patterns import apriori
+freq_items = apriori(df, min_support=0.1)</pre>
+                          </div>
+                        )}
+                        {currentPractical.knowledge.includes('KMeans') && (
+                          <div className="bg-white rounded-lg p-3 border border-purple-100">
+                            <p className="font-medium text-purple-700 mb-2">K-means聚类</p>
+                            <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">from sklearn.cluster import KMeans
+kmeans = KMeans(n_clusters=3)
+labels = kmeans.fit_predict(X)</pre>
+                          </div>
+                        )}
+                        {currentPractical.knowledge.includes('plt.plot') && (
+                          <div className="bg-white rounded-lg p-3 border border-purple-100">
+                            <p className="font-medium text-purple-700 mb-2">数据可视化</p>
+                            <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">import matplotlib.pyplot as plt
+plt.plot(df["日期"], df["销售额"])
+plt.title("销售趋势")</pre>
+                          </div>
+                        )}
+                        {currentPractical.knowledge.includes('chi2_contingency') && (
+                          <div className="bg-white rounded-lg p-3 border border-purple-100">
+                            <p className="font-medium text-purple-700 mb-2">卡方检验</p>
+                            <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">from scipy.stats import chi2_contingency
+chi2, p, dof, expected = chi2_contingency(table)</pre>
+                          </div>
+                        )}
+                        {currentPractical.knowledge.includes('LabelEncoder') && (
+                          <div className="bg-white rounded-lg p-3 border border-purple-100">
+                            <p className="font-medium text-purple-700 mb-2">特征编码</p>
+                            <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">from sklearn.preprocessing import LabelEncoder
+le = LabelEncoder()
+df["编码"] = le.fit_transform(df["类别"])</pre>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {currentPractical?.knowledge.includes('易错点') && (
+                    <div className="bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 rounded-xl p-4 shadow-sm">
+                      <h3 className="font-bold text-orange-800 mb-3 flex items-center gap-2">
+                        <span className="w-6 h-6 rounded-full bg-orange-500 text-white flex items-center justify-center text-xs font-bold">⚠️</span>
+                        易错点
+                      </h3>
+                      <div className="text-sm text-gray-700 space-y-2">
+                        {currentPractical.knowledge.includes('缺失值') && (
+                          <div className="flex items-start gap-2">
+                            <span className="text-orange-500 font-bold">❌</span>
+                            <div>
+                              <p className="font-medium">忽视缺失值</p>
+                              <p className="text-xs text-gray-600">直接进行分析不处理缺失值会导致统计结果错误，应先检查df.isnull().sum()</p>
+                            </div>
+                          </div>
+                        )}
+                        {currentPractical.knowledge.includes('异常值') && (
+                          <div className="flex items-start gap-2">
+                            <span className="text-orange-500 font-bold">❌</span>
+                            <div>
+                              <p className="font-medium">异常值处理不当</p>
+                              <p className="text-xs text-gray-600">直接删除所有异常值可能丢失重要信息，应先分析异常原因</p>
+                            </div>
+                          </div>
+                        )}
+                        {currentPractical.knowledge.includes('日期格式') && (
+                          <div className="flex items-start gap-2">
+                            <span className="text-orange-500 font-bold">❌</span>
+                            <div>
+                              <p className="font-medium">日期格式不统一</p>
+                              <p className="text-xs text-gray-600">混合格式的日期会导致问题，应使用pd.to_datetime统一转换</p>
+                            </div>
+                          </div>
+                        )}
+                        {currentPractical.knowledge.includes('数据类型') && (
+                          <div className="flex items-start gap-2">
+                            <span className="text-orange-500 font-bold">❌</span>
+                            <div>
+                              <p className="font-medium">数据类型混淆</p>
+                              <p className="text-xs text-gray-600">金额列可能是字符串类型，应先检查dtype并转换</p>
+                            </div>
+                          </div>
+                        )}
+                        {currentPractical.knowledge.includes('聚合函数') && (
+                          <div className="flex items-start gap-2">
+                            <span className="text-orange-500 font-bold">❌</span>
+                            <div>
+                              <p className="font-medium">聚合函数使用错误</p>
+                              <p className="text-xs text-gray-600">对非数值列使用聚合函数会报错，应指定要聚合的列</p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {currentPractical?.knowledge.includes('实战技巧') && (
+                    <div className="bg-gradient-to-br from-indigo-50 to-blue-50 border border-indigo-200 rounded-xl p-4 shadow-sm">
+                      <h3 className="font-bold text-indigo-800 mb-3 flex items-center gap-2">
+                        <span className="w-6 h-6 rounded-full bg-indigo-500 text-white flex items-center justify-center text-xs font-bold">💡</span>
+                        实战技巧
+                      </h3>
+                      <div className="text-sm text-gray-700 space-y-2">
+                        {currentPractical.knowledge.includes('数据清洗') && (
+                          <>
+                            <p><strong>快速检查数据质量：</strong></p>
+                            <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">print(df.shape)
+print(df.isnull().sum())
+print(df.dtypes)</pre>
+                          </>
+                        )}
+                        {currentPractical.knowledge.includes('分组聚合') && (
+                          <>
+                            <p><strong>链式调用技巧：</strong></p>
+                            <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">df = df.dropna().query("金额 {'&gt;'} 0").drop_duplicates()</pre>
+                          </>
+                        )}
+                        {currentPractical.knowledge.includes('K-means') && (
+                          <>
+                            <p><strong>K值选择：</strong></p>
+                            <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600"># 肘部法则选择K值
+inertia = []
+for k in range(1, 10):
+    kmeans = KMeans(n_clusters=k)
+    kmeans.fit(X)
+    inertia.append(kmeans.inertia_)</pre>
+                          </>
+                        )}
+                        {currentPractical.knowledge.includes('可视化') && (
+                          <>
+                            <p><strong>图表美化技巧：</strong></p>
+                            <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">plt.figure(figsize=(10, 6))
+plt.xticks(rotation=45)
+plt.tight_layout()</pre>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {currentPractical?.knowledge.includes('业务案例') && (
+                    <div className="bg-gradient-to-br from-pink-50 to-rose-50 border border-pink-200 rounded-xl p-4 shadow-sm">
+                      <h3 className="font-bold text-pink-800 mb-3 flex items-center gap-2">
+                        <span className="w-6 h-6 rounded-full bg-pink-500 text-white flex items-center justify-center text-xs font-bold">📊</span>
+                        业务案例
+                      </h3>
+                      <div className="text-sm text-gray-700 space-y-2">
+                        {currentPractical.knowledge.includes('数据清洗') && (
+                          <>
+                            <p><strong>电商销售数据清洗：</strong></p>
+                            <p className="text-xs">某电商平台销售数据存在缺失值、异常大额订单、日期格式不统一等问题，通过数据清洗将1000行数据清洗为950行高质量数据。</p>
+                          </>
+                        )}
+                        {currentPractical.knowledge.includes('分组聚合') && (
+                          <>
+                            <p><strong>用户消费行为分析：</strong></p>
+                            <p className="text-xs">通过分组聚合分析用户消费能力，识别高价值客户，进行客户分层（普通客户、潜力客户、优质客户、VIP客户）。</p>
+                          </>
+                        )}
+                        {currentPractical.knowledge.includes('关联规则') && (
+                          <>
+                            <p><strong>购物篮分析：</strong></p>
+                            <p className="text-xs">使用Apriori算法发现商品购买规律，如"购买面包的用户也购买牛奶"，用于商品推荐和货架摆放优化。</p>
+                          </>
+                        )}
+                        {currentPractical.knowledge.includes('RFM') && (
+                          <>
+                            <p><strong>客户价值分层：</strong></p>
+                            <p className="text-xs">通过RFM分析对客户进行价值分层，制定差异化营销策略，提升客户管理效率。</p>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </div>
                 <div className="bg-white rounded-xl p-4 shadow-sm">
                   <h3 className="font-bold text-blue-800 mb-2">实操数据</h3>

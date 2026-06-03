@@ -338,9 +338,10 @@ export default function DataAnalysisCourse() {
               数据分析技术课程
             </div>
             <div className="flex items-center gap-6 text-gray-600">
-              <Link to="/" className="hover:text-blue-600 transition-colors">首页</Link>
-              <Link to="/data-analysis/select" className="hover:text-blue-600 transition-colors">学习选择</Link>
-              <a href="#outline" className="hover:text-blue-600 transition-colors">课程大纲</a>
+              <Link to="/" className="hover:text-blue-600 transition-colors flex items-center gap-2">
+                <ChevronLeft className="w-4 h-4" />
+                返回首页
+              </Link>
             </div>
           </div>
         </div>

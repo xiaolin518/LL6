@@ -19,11 +19,11 @@ export default function LearningSelect() {
             </div>
             <div className="flex items-center gap-6 text-gray-600">
               <button
-                onClick={() => navigate('/data-analysis')}
+                onClick={() => navigate('/')}
                 className="hover:text-blue-600 transition-colors flex items-center gap-2"
               >
                 <ChevronLeft className="w-4 h-4" />
-                返回课程
+                返回首页
               </button>
             </div>
           </div>

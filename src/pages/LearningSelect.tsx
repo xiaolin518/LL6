@@ -13,19 +13,6 @@ export default function LearningSelect() {
     { id: 'chapter6', title: '商务数据分析案例', description: '通过实际案例学习商务数据分析' },
   ];
 
-  const projects = [
-    { id: 1, title: '销售数据读取与清洗', desc: '使用Pandas读取CSV数据，处理缺失值和异常值' },
-    { id: 2, title: '销售数据分组聚合', desc: '使用groupby函数按用户分组，计算销售额和客单价' },
-    { id: 3, title: '购物篮关联规则分析', desc: '使用Apriori算法进行关联规则挖掘' },
-    { id: 4, title: '客户聚类分析', desc: '使用K-means算法对客户进行聚类分析' },
-    { id: 5, title: '销售数据可视化', desc: '使用Matplotlib绘制销售趋势图表' },
-    { id: 6, title: 'A/B测试效果分析', desc: '使用卡方检验分析A/B测试结果' },
-    { id: 7, title: '时间序列预测分析', desc: '使用ARIMA模型进行时间序列预测' },
-    { id: 8, title: '机器学习特征工程', desc: '创建衍生特征和使用LabelEncoder编码' },
-    { id: 9, title: '客户RFM价值分层', desc: '计算RFM评分，进行客户分层' },
-    { id: 10, title: '自动化销售报表生成', desc: '使用ExcelWriter生成自动化报表' },
-  ];
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
       <nav className="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
@@ -112,23 +99,11 @@ export default function LearningSelect() {
                 <p className="text-gray-600 mb-6">通过10个实战项目，掌握Python数据分析技能，包含数据清洗、分析、可视化等</p>
                 <button
                   onClick={() => navigate('/data-analysis/practical')}
-                  className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-4 rounded-xl font-semibold hover:from-indigo-700 hover:to-purple-700 transition-colors flex items-center justify-center gap-2 mb-4"
+                  className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-4 rounded-xl font-semibold hover:from-indigo-700 hover:to-purple-700 transition-colors flex items-center justify-center gap-2"
                 >
                   <GraduationCap className="w-5 h-5" />
                   进入实操训练
                 </button>
-                <div className="grid grid-cols-2 gap-2">
-                  {projects.map(project => (
-                    <div
-                      key={project.id}
-                      onClick={() => navigate(`/data-analysis/practical`)}
-                      className="p-3 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors cursor-pointer"
-                    >
-                      <div className="text-xs text-indigo-600 font-medium mb-1">项目{project.id}</div>
-                      <div className="text-sm text-gray-700 line-clamp-2">{project.title}</div>
-                    </div>
-                  ))}
-                </div>
               </div>
             </div>
           </div>

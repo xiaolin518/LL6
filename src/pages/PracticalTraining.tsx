@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, Play, RefreshCw, Star, Code2 } from 'lucide-react';
 import PythonCodeRunner from '../components/PythonCodeRunner';
@@ -182,6 +182,10 @@ export default function PracticalTraining() {
   const [userCode, setUserCode] = useState<string>('');
   
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
+
+  useEffect(() => {
+    document.title = 'Python数据分析实操训练 - 小林学习网站';
+  }, []);
 
   const openPractice = (id: number) => {
     setCurrentPracticalId(id);

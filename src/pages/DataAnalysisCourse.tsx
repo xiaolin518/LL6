@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { BookOpen, CheckCircle, ChevronLeft, Play, Code } from 'lucide-react';
 
@@ -243,6 +243,10 @@ export default function DataAnalysisCourse() {
   const [userAnswers, setUserAnswers] = useState<Record<string, any>>({});
   const [showResult, setShowResult] = useState(false);
   const [score, setScore] = useState(0);
+
+  useEffect(() => {
+    document.title = '数据分析技术课程 - 小林学习网站';
+  }, []);
 
   const allQuestions = generateChapterQuestions();
 

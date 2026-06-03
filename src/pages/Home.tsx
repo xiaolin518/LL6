@@ -13,46 +13,19 @@ interface Course {
 
 const courses: Course[] = [
   {
-    id: 'python',
-    title: 'Python基础',
-    description: '学习Python编程语言的基础知识，包括语法、数据结构、函数等',
-    icon: <Code className="w-8 h-8" />,
-    color: 'from-blue-500 to-cyan-500'
-  },
-  {
     id: 'data-analysis',
     title: '数据分析技术',
     description: '掌握数据分析的基本方法和工具，包括数据可视化技术',
     icon: <BarChart3 className="w-8 h-8" />,
     color: 'from-purple-500 to-pink-500',
     link: '/data-analysis/select'
-  },
-  {
-    id: 'data-collection',
-    title: '数据采集与处理',
-    description: '学习网络爬虫、数据清洗和数据预处理技术',
-    icon: <Globe className="w-8 h-8" />,
-    color: 'from-green-500 to-emerald-500'
-  },
-  {
-    id: 'supply-chain',
-    title: '供应链数据分析',
-    description: '应用数据分析技术优化供应链管理，提升运营效率',
-    icon: <LineChart className="w-8 h-8" />,
-    color: 'from-orange-500 to-red-500'
-  },
-  {
-    id: 'database',
-    title: '数据库原理与应用',
-    description: '学习数据库系统原理、SQL语言和数据库应用开发',
-    icon: <Database className="w-8 h-8" />,
-    color: 'from-indigo-500 to-violet-500'
   }
 ];
 
 export default function Home() {
   // 添加CSS动画
   useEffect(() => {
+    document.title = '小林学习网站 - 在线学习平台';
     const style = document.createElement('style');
     style.textContent = `
       @keyframes fade-in-up {
@@ -194,7 +167,7 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
-              { number: '5', label: '精品课程', icon: <BookOpen className="w-6 h-6" />, color: 'from-blue-500 to-cyan-500' },
+              { number: '1', label: '精品课程', icon: <BookOpen className="w-6 h-6" />, color: 'from-blue-500 to-cyan-500' },
               { number: '10+', label: '实践项目', icon: <Code className="w-6 h-6" />, color: 'from-purple-500 to-pink-500' },
               { number: '∞', label: '学习时长', icon: <Star className="w-6 h-6" />, color: 'from-green-500 to-emerald-500' },
               { number: '2024', label: '学习年份', icon: <GraduationCap className="w-6 h-6" />, color: 'from-orange-500 to-red-500' }
@@ -223,7 +196,7 @@ export default function Home() {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 max-w-2xl mx-auto">
             {courses.map((course, index) => (
               <Link
                 key={course.id}

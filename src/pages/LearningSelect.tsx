@@ -1,8 +1,13 @@
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { BookOpen, Code, ChevronLeft, BookText, GraduationCap } from 'lucide-react';
 
 export default function LearningSelect() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.title = '选择学习方式 - 小林学习网站';
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">

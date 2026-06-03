@@ -241,45 +241,6 @@ df.to_csv("sales_cleaned.csv", index=False)
 
 ---
 
-## 📝 第六部分：完整代码示例
-
-\`\`\`python
-import pandas as pd
-
-# 1. 读取数据
-data = """用户ID,订单日期,金额
-1,2023-09-01,100
-1,2023-09-15,150
-2,,80
-2,2023-08-10,80
-3,2023-07-01,300
-3,2023-07-10,300"""
-
-from io import StringIO
-df = pd.read_csv(StringIO(data))
-
-print("=== 原始数据 ===")
-print(df)
-
-# 2. 检查缺失值
-print("\\n=== 缺失值检查 ===")
-print(df.isnull().sum())
-
-# 3. 处理缺失值 - 删除金额或日期为空的行
-df_cleaned = df.dropna(subset=["金额", "订单日期"])
-
-# 4. 处理异常值 - 金额不能为负或过高
-df_cleaned["金额"] = df_cleaned["金额"].clip(lower=0, upper=1000)
-
-# 5. 统一日期格式
-df_cleaned["订单日期"] = pd.to_datetime(df_cleaned["订单日期"])
-
-print("\\n=== 清洗后数据 ===")
-print(df_cleaned)
-\`\`\`
-
----
-
 ## 🎓 总结
 
 | 知识点 | 关键函数 |
@@ -489,37 +450,6 @@ user_stats["客户等级"] = pd.cut(
 
 # 3. 输出结果
 print(user_stats.sort_values("总消费", ascending=False))
-\`\`\`
-
----
-
-## 📝 第六部分：完整代码示例
-
-\`\`\`python
-import pandas as pd
-
-data = """用户ID,订单日期,金额
-1,2023-09-01,100
-1,2023-09-15,150
-2,2023-08-10,80
-3,2023-07-01,300
-3,2023-07-10,300"""
-
-from io import StringIO
-df = pd.read_csv(StringIO(data))
-df["订单日期"] = pd.to_datetime(df["订单日期"])
-
-# 按用户分组聚合
-result = df.groupby("用户ID").agg(
-    总销售额=("金额", "sum"),
-    订单数=("金额", "count")
-).reset_index()
-
-# 计算客单价
-result["客单价"] = (result["总销售额"] / result["订单数"]).round(2)
-
-print("=== 用户消费统计 ===")
-print(result)
 \`\`\`
 
 ---

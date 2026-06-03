@@ -1254,6 +1254,106 @@ def get_tier(score):
                       )}
                     </div>
                   </div>
+                  
+                  {/* 如何运用 */}
+                  <div className="bg-gradient-to-br from-teal-50 to-cyan-50 border border-teal-200 rounded-xl p-4 shadow-sm">
+                    <h3 className="font-bold text-teal-800 mb-3 flex items-center gap-2">
+                      <span className="w-6 h-6 rounded-full bg-teal-500 text-white flex items-center justify-center text-xs font-bold">🚀</span>
+                      如何运用
+                    </h3>
+                    <div className="text-sm text-gray-700 space-y-2">
+                      {currentPractical?.id === 1 && (
+                        <>
+                          <p><strong>步骤1：</strong>使用pd.read_csv()读取数据文件，检查数据基本信息</p>
+                          <p><strong>步骤2：</strong>检查缺失值(df.isnull().sum())，根据业务决定处理方式</p>
+                          <p><strong>步骤3：</strong>识别异常值，可使用describe()或箱线图</p>
+                          <p><strong>步骤4：</strong>统一日期格式，使用pd.to_datetime()</p>
+                          <p><strong>步骤5：</strong>验证清洗后的数据质量，确保数据可直接用于分析</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 2 && (
+                        <>
+                          <p><strong>步骤1：</strong>确定分析维度（如按用户、月份、产品分类）</p>
+                          <p><strong>步骤2：</strong>使用groupby()进行分组</p>
+                          <p><strong>步骤3：</strong>选择合适的聚合函数（sum、mean、count等）</p>
+                          <p><strong>步骤4：</strong>结合多个维度进行分析</p>
+                          <p><strong>步骤5：</strong>可视化结果，便于理解</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 3 && (
+                        <>
+                          <p><strong>步骤1：</strong>将数据转换为适合apriori算法的格式（布尔矩阵）</p>
+                          <p><strong>步骤2：</strong>设置最小支持度阈值（通常0.01-0.1）</p>
+                          <p><strong>步骤3：</strong>运行apriori算法找出频繁项集</p>
+                          <p><strong>步骤4：</strong>设置最小置信度，生成关联规则</p>
+                          <p><strong>步骤5：</strong>根据提升度筛选有价值的规则，指导业务决策</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 4 && (
+                        <>
+                          <p><strong>步骤1：</strong>选择用于聚类的特征（消费金额、频率等）</p>
+                          <p><strong>步骤2：</strong>对特征进行标准化处理</p>
+                          <p><strong>步骤3：</strong>使用肘部法则确定最佳K值</p>
+                          <p><strong>步骤4：</strong>运行K-means算法</p>
+                          <p><strong>步骤5：</strong>分析各簇特征，制定差异化运营策略</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 5 && (
+                        <>
+                          <p><strong>步骤1：</strong>根据分析目的选择合适的图表类型</p>
+                          <p><strong>步骤2：</strong>准备数据，确保数据格式正确</p>
+                          <p><strong>步骤3：</strong>使用matplotlib/seaborn绑制图表</p>
+                          <p><strong>步骤4：</strong>添加标题、标签、图例等元素</p>
+                          <p><strong>步骤5：</strong>调整样式和布局，导出或嵌入报表</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 6 && (
+                        <>
+                          <p><strong>步骤1：</strong>设计A/B测试方案，确定测试组和对照组</p>
+                          <p><strong>步骤2：</strong>收集实验数据，构建列联表</p>
+                          <p><strong>步骤3：</strong>使用卡方检验分析结果</p>
+                          <p><strong>步骤4：</strong>根据p值判断差异是否显著</p>
+                          <p><strong>步骤5：</strong>得出结论，指导产品迭代决策</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 7 && (
+                        <>
+                          <p><strong>步骤1：</strong>准备时间序列数据，确保日期连续</p>
+                          <p><strong>步骤2：</strong>进行平稳性检验，必要时差分</p>
+                          <p><strong>步骤3：</strong>使用ACF/PACF图确定ARIMA参数</p>
+                          <p><strong>步骤4：</strong>拟合模型，进行预测</p>
+                          <p><strong>步骤5：</strong>评估预测效果，用于业务规划</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 8 && (
+                        <>
+                          <p><strong>步骤1：</strong>分析原始数据，识别可用特征</p>
+                          <p><strong>步骤2：</strong>提取时间特征（年、月、日、周等）</p>
+                          <p><strong>步骤3：</strong>对分类特征进行编码</p>
+                          <p><strong>步骤4：</strong>必要时进行特征标准化</p>
+                          <p><strong>步骤5：</strong>将处理后的特征用于机器学习模型</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 9 && (
+                        <>
+                          <p><strong>步骤1：</strong>计算每个客户的R、F、M值</p>
+                          <p><strong>步骤2：</strong>使用分位数法对三个维度分别评分</p>
+                          <p><strong>步骤3：</strong>计算总分或加权总分</p>
+                          <p><strong>步骤4：</strong>根据分数进行客户分层</p>
+                          <p><strong>步骤5：</strong>针对不同层级客户制定营销策略</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 10 && (
+                        <>
+                          <p><strong>步骤1：</strong>进行数据清洗和预处理</p>
+                          <p><strong>步骤2：</strong>生成统计摘要和关键指标</p>
+                          <p><strong>步骤3：</strong>创建数据透视表进行多维度分析</p>
+                          <p><strong>步骤4：</strong>生成可视化图表</p>
+                          <p><strong>步骤5：</strong>使用ExcelWriter整合所有内容到Excel文件</p>
+                        </>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
 

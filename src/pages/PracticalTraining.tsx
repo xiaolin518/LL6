@@ -1313,6 +1313,29 @@ plt.tight_layout()</pre>
                     </div>
                   )}
                 </div>
+              </div>
+
+              {/* 中间代码编辑器 */}
+              <div className="lg:col-span-2 space-y-4">
+                <div className="flex items-center gap-4 mb-4">
+                  <button
+                    onClick={() => setCurrentPracticalId(null)}
+                    className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                    返回项目列表
+                  </button>
+                  <h2 className="text-xl font-bold text-gray-800">{currentPractical?.title}</h2>
+                </div>
+                {currentPractical && (
+                  <PythonCodeRunner
+                    initialCode={userCode || currentPractical.codeTemplate}
+                    onCodeChange={setUserCode}
+                    onShowAnswer={showAnswerSolution}
+                  />
+                )}
+
+                {/* 实操数据 */}
                 <div className="bg-white rounded-xl p-4 shadow-sm">
                   <h3 className="font-bold text-blue-800 mb-2">实操数据</h3>
                   <div className="bg-gray-50 p-3 rounded-lg overflow-x-auto">
@@ -1353,27 +1376,6 @@ plt.tight_layout()</pre>
                     })()}
                   </div>
                 </div>
-              </div>
-
-              {/* 中间代码编辑器 */}
-              <div className="lg:col-span-2 space-y-4">
-                <div className="flex items-center gap-4 mb-4">
-                  <button
-                    onClick={() => setCurrentPracticalId(null)}
-                    className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
-                  >
-                    <ChevronLeft className="w-4 h-4" />
-                    返回项目列表
-                  </button>
-                  <h2 className="text-xl font-bold text-gray-800">{currentPractical?.title}</h2>
-                </div>
-                {currentPractical && (
-                  <PythonCodeRunner
-                    initialCode={userCode || currentPractical.codeTemplate}
-                    onCodeChange={setUserCode}
-                    onShowAnswer={showAnswerSolution}
-                  />
-                )}
 
                 {/* 参考答案 */}
                 {showAnswer && (

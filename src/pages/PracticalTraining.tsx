@@ -789,63 +789,72 @@ export default function PracticalTraining() {
                     <div className="text-sm text-gray-700 space-y-2">
                       {currentPractical?.id === 1 && (
                         <>
-                          <p><strong>数据清洗：</strong>对原始数据进行预处理，修正错误、补充缺失、统一格式，使数据质量达到分析要求的过程。</p>
-                          <p><strong>重要性：</strong>原始数据质量决定分析结果准确性，业务决策依赖高质量数据。</p>
+                          <p><strong>数据清洗：</strong>对原始数据进行全面预处理的过程，包括修正数据错误、补充缺失值、统一数据格式、删除重复记录、识别异常值等步骤，使数据质量达到分析要求的标准。</p>
+                          <p><strong>重要性：</strong>原始数据质量直接决定分析结果的准确性和可靠性，高质量的数据是做出正确业务决策的基础。Garbage in, garbage out（垃圾进，垃圾出）。</p>
+                          <p><strong>常见问题：</strong>缺失值、重复记录、异常值、格式不一致、数据类型错误、无效数据等。</p>
                         </>
                       )}
                       {currentPractical?.id === 2 && (
                         <>
-                          <p><strong>分组聚合：</strong>按照某个维度把数据分成不同的组，然后对每个组进行计算（求和、平均等）。</p>
-                          <p><strong>典型应用：</strong>按用户分组计算消费金额、按月份分析销售趋势。</p>
+                          <p><strong>分组聚合：</strong>按照一个或多个维度将数据分成不同的组，然后对每个组进行统计计算（求和、平均、计数、最大值、最小值等）的操作。就像Excel中的数据透视表。</p>
+                          <p><strong>典型应用场景：</strong>按用户分组计算总消费金额、按月份分析销售趋势、按产品分类统计销量、按地区比较业绩、按时间段分析用户活跃度等。</p>
+                          <p><strong>聚合函数：</strong>sum（求和）、mean（均值）、count（计数）、max（最大）、min（最小）、std（标准差）、var（方差）、median（中位数）等。</p>
                         </>
                       )}
                       {currentPractical?.id === 3 && (
                         <>
-                          <p><strong>支持度：</strong>项集出现的频率，Support(X) = 包含X的交易数 / 总交易数</p>
-                          <p><strong>置信度：</strong>规则的可靠程度，Confidence(X→Y) = Support(X∪Y) / Support(X)</p>
-                          <p><strong>提升度：</strong>规则的有效性，Lift &gt; 1表示正相关。</p>
+                          <p><strong>支持度（Support）：</strong>项集在所有交易中出现的频率，计算公式：Support(X) = 包含X的交易数 / 总交易数。支持度越高，说明这个商品组合越常见。</p>
+                          <p><strong>置信度（Confidence）：</strong>规则的可靠程度，表示购买X的用户中有多少比例也购买了Y，计算公式：Confidence(X→Y) = Support(X∪Y) / Support(X)。</p>
+                          <p><strong>提升度（Lift）：</strong>规则的有效性指标，Lift = Confidence(X→Y) / Support(Y)。Lift &gt; 1表示正相关（购买X确实增加了购买Y的可能性），Lift = 1表示无关，Lift &lt; 1表示负相关。</p>
                         </>
                       )}
                       {currentPractical?.id === 4 && (
                         <>
-                          <p><strong>K-means聚类：</strong>无监督学习算法，用于将数据划分为K个簇。</p>
-                          <p><strong>核心步骤：</strong>选择初始质心 → 分配到最近簇 → 重新计算质心 → 重复收敛。</p>
+                          <p><strong>K-means聚类：</strong>经典的无监督机器学习算法，用于将数据自动划分为K个相似的簇（组）。不需要预先标记数据，算法自动发现数据中的分组模式。</p>
+                          <p><strong>核心工作流程：</strong>1. 随机选择K个初始质心；2. 计算每个点到各质心的距离，分配到最近的簇；3. 重新计算每个簇的质心（所有点的平均值）；4. 重复步骤2-3直到质心不再变化（收敛）。</p>
+                          <p><strong>关键参数：</strong>K值（簇的数量）需要预先指定，常用肘部法则或轮廓系数来确定最佳K值。特征标准化很重要，因为K-means对量纲敏感。</p>
                         </>
                       )}
                       {currentPractical?.id === 5 && (
                         <>
-                          <p><strong>数据可视化：</strong>将数据以图形化方式展示，便于理解和分析。</p>
-                          <p><strong>图表类型：</strong>折线图（趋势）、柱状图（对比）、饼图（占比）、散点图（关系）。</p>
+                          <p><strong>数据可视化：</strong>将抽象的数据以直观的图形化方式展示，帮助人们快速理解数据中的规律、趋势和异常，便于做出决策和发现洞察。</p>
+                          <p><strong>常用图表类型：</strong>折线图（展示时间序列趋势）、柱状图（对比不同类别的数值）、饼图（显示各部分占比）、散点图（探索两个变量的关系）、直方图（展示数据分布）、箱线图（查看异常值和四分位数）、热力图（展示矩阵数据）。</p>
+                          <p><strong>选择原则：</strong>根据数据类型和分析目标选择合适的图表，确保图表清晰易懂，避免过度装饰影响信息传达。</p>
                         </>
                       )}
                       {currentPractical?.id === 6 && (
                         <>
-                          <p><strong>卡方检验：</strong>用于检验两个分类变量之间是否存在关联。</p>
-                          <p><strong>判断标准：</strong>p值 &lt; 0.05表示有显著差异，否则无显著差异。</p>
+                          <p><strong>卡方检验：</strong>一种统计假设检验方法，用于检验两个分类变量之间是否存在统计学上的显著关联。属于非参数检验方法。</p>
+                          <p><strong>判断标准：</strong>p值 &lt; 0.05表示拒绝原假设，认为两个变量之间存在显著关联；p值 &ge; 0.05表示不能拒绝原假设，认为两个变量之间无显著差异。</p>
+                          <p><strong>A/B测试应用：</strong>对比两个版本（A和B）的转化率、点击率等指标，判断新版本是否显著优于旧版本，为产品迭代提供数据支持。</p>
                         </>
                       )}
                       {currentPractical?.id === 7 && (
                         <>
-                          <p><strong>ARIMA：</strong>自回归综合移动平均模型，用于时间序列预测。</p>
-                          <p><strong>参数含义：</strong>ARIMA(p,d,q)，p为自回归阶数，d为差分阶数，q为移动平均阶数。</p>
+                          <p><strong>ARIMA模型：</strong>自回归综合移动平均模型（AutoRegressive Integrated Moving Average），是经典的时间序列预测方法。结合了自回归（AR）、差分（I）和移动平均（MA）三个部分。</p>
+                          <p><strong>参数含义：</strong>ARIMA(p,d,q)三个参数的含义：p=自回归阶数（用过去p期的值预测），d=差分阶数（使序列平稳的差分次数），q=移动平均阶数（用过去q期的误差项预测）。</p>
+                          <p><strong>建模流程：</strong>1. 平稳性检验（ADF检验）；2. 差分使序列平稳；3. ACF/PACF图确定p和q；4. 拟合模型；5. 残差检验；6. 预测。</p>
                         </>
                       )}
                       {currentPractical?.id === 8 && (
                         <>
-                          <p><strong>特征工程：</strong>将原始数据转换为机器学习模型可用特征的过程。</p>
-                          <p><strong>常用方法：</strong>特征提取、编码（LabelEncoder/OneHotEncoder）、标准化。</p>
+                          <p><strong>特征工程：</strong>将原始数据转换为机器学习模型可用的特征的过程，是机器学习项目中最关键的步骤之一。好的特征能显著提升模型性能。</p>
+                          <p><strong>常用技术方法：</strong>特征提取（从日期中提取月份、星期等）、特征编码（LabelEncoder、OneHotEncoder）、特征标准化（StandardScaler）、特征归一化（MinMaxScaler）、特征选择（方差选择、相关系数）等。</p>
+                          <p><strong>重要性：</strong>数据和特征决定了机器学习的上限，而模型和算法只是逼近这个上限而已。特征工程通常占据项目80%的工作量。</p>
                         </>
                       )}
                       {currentPractical?.id === 9 && (
                         <>
-                          <p><strong>RFM模型：</strong>客户价值分析模型，包含最近购买时间(R)、购买频率(F)、购买金额(M)三个维度。</p>
-                          <p><strong>评分方法：</strong>使用分位数法将每个维度分为5个等级。</p>
+                          <p><strong>RFM模型：</strong>经典的客户价值分析模型，从三个维度评估客户价值：R（Recency）最近购买时间、F（Frequency）购买频率、M（Monetary）购买金额。</p>
+                          <p><strong>评分方法：</strong>使用分位数法将每个维度分为5个等级（1-5分）。R值越小越好（最近购买过），所以通常R=5分代表最近，F和M值越大越好，5分代表最高。</p>
+                          <p><strong>客户分层应用：</strong>根据RFM得分将客户分为不同层级（重要价值客户、潜力客户、一般客户、流失客户等），针对不同层级采取差异化的营销策略。</p>
                         </>
                       )}
                       {currentPractical?.id === 10 && (
                         <>
-                          <p><strong>自动化报表：</strong>将数据处理和报告生成过程自动化，减少人工操作。</p>
-                          <p><strong>报表组成：</strong>封面页、数据概览、详细数据、分析图表、数据透视。</p>
+                          <p><strong>自动化报表：</strong>将数据处理、分析计算、图表生成、报告导出等流程自动化，大幅减少重复性人工操作，提高工作效率和准确性。</p>
+                          <p><strong>报表组成要素：</strong>封面页、关键指标概览、详细数据表格、多维度分析图表、数据透视表、趋势分析、异常提醒等内容模块。</p>
+                          <p><strong>实现工具：</strong>Python的Pandas用于数据处理，Matplotlib/Seaborn/Plotly用于可视化，openpyxl/xlsxwriter用于Excel操作，也可以使用BI工具如Tableau、Power BI。</p>
                         </>
                       )}
                     </div>

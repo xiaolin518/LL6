@@ -476,45 +476,14 @@ print(user_stats.sort_values("总消费", ascending=False))
     id: 3,
     title: '购物篮关联规则分析',
     description: '使用mlxtend库进行Apriori算法关联规则挖掘，发现商品购买规律',
-    knowledge: `## 知识讲解：关联规则挖掘
-
-### 1. Apriori算法原理
-Apriori算法是经典的关联规则挖掘算法，基于"频繁项集的子集也一定是频繁的"原理。
-
-### 2. 核心概念
-- **支持度(Support)**：项集出现的频率
-  - Support(X) = 包含X的交易数 / 总交易数
-- **置信度(Confidence)**：规则的可靠程度
-  - Confidence(X→Y) = Support(X∪Y) / Support(X)
-- **提升度(Lift)**：规则的有效性
-  - Lift(X→Y) = Confidence(X→Y) / Support(Y)
-
-### 3. 算法步骤
-1. 生成所有1-项集
-2. 筛选频繁项集（满足最小支持度）
-3. 迭代生成更大项集
-4. 生成关联规则
-
-### 4. mlxtend库使用
-\`\`\`python
-from mlxtend.frequent_patterns import apriori, association_rules
-
-# 生成频繁项集
-freq_items = apriori(df, min_support=0.1, use_colnames=True)
-
-# 生成关联规则
-rules = association_rules(freq_items, metric="confidence", min_threshold=0.5)
-\`\`\`
-
-### 5. 业务应用
-- 商品推荐（"购买A的用户也购买B"）
-- 货架摆放优化
-- 促销活动策划
-
-### 评估指标
-- Lift > 1：正相关，规则有效
-- Lift = 1：无关联
-- Lift < 1：负相关`,
+    knowledge: `学习目标
+核心概念
+常用场景
+易错点
+实战技巧
+业务案例
+Apriori
+关联规则`,
 
     data: '订单ID,商品\n1,面包\n1,牛奶\n2,面包\n2,牛奶\n2,鸡蛋\n3,牛奶\n3,鸡蛋',
     codeTemplate: 'from mlxtend.frequent_patterns import apriori, association_rules\nimport pandas as pd\n\n# 数据准备\n# 转换为one-hot编码\n# 挖掘频繁项集\n# 生成关联规则\n\nprint(rules)',
@@ -525,42 +494,13 @@ rules = association_rules(freq_items, metric="confidence", min_threshold=0.5)
     id: 4,
     title: '客户聚类分析',
     description: '使用K-means算法对客户进行聚类，识别不同客户群体',
-    knowledge: `## 知识讲解：K-means聚类
-
-### 1. K-means算法原理
-K-means是一种无监督学习算法，用于将数据划分为K个簇。
-
-### 2. 算法步骤
-1. 随机选择K个初始质心
-2. 计算每个点到质心的距离，分配到最近的簇
-3. 重新计算每个簇的质心
-4. 重复步骤2-3，直到质心不再变化
-
-### 3. 距离度量
-- 欧氏距离（最常用）
-- 曼哈顿距离
-- 余弦相似度（适用于高维数据）
-
-### 4. K值选择方法
-- **肘部法则**：绘制误差平方和随K变化的曲线，选择拐点处的K
-- **轮廓系数**：评估聚类质量，取值范围[-1,1]，越接近1越好
-
-### 5. sklearn实现
-\`\`\`python
-from sklearn.cluster import KMeans
-
-kmeans = KMeans(n_clusters=3, random_state=42)
-labels = kmeans.fit_predict(X)
-\`\`\`
-
-### 6. 数据预处理
-- 标准化：\`StandardScaler()\`
-- 归一化：\`MinMaxScaler()\`
-
-### 业务应用
-- 客户分群（高价值客户、潜力客户、流失客户）
-- 市场细分
-- 异常检测`,
+    knowledge: `学习目标
+核心概念
+常用场景
+易错点
+实战技巧
+业务案例
+K-means`,
 
     data: '用户ID,总金额,订单数,最近购买时间\n1,250,2,30\n2,80,1,60\n3,600,2,5',
     codeTemplate: 'from sklearn.cluster import KMeans\nfrom sklearn.preprocessing import StandardScaler\nimport pandas as pd\n\n# 数据准备\n# 标准化\n# 聚类\n# 分析结果\n\nprint(result)',
@@ -571,55 +511,13 @@ labels = kmeans.fit_predict(X)
     id: 5,
     title: '销售数据可视化',
     description: '使用Matplotlib绘制销售趋势折线图、饼图和柱状图',
-    knowledge: `## 知识讲解：数据可视化
-
-### 1. Matplotlib基础
-\`\`\`python
-import matplotlib.pyplot as plt
-
-# 创建画布
-plt.figure(figsize=(10, 6))
-
-# 绘图
-plt.plot(x, y)
-
-# 添加标题和标签
-plt.title("标题")
-plt.xlabel("X轴标签")
-plt.ylabel("Y轴标签")
-
-# 显示图表
-plt.show()
-\`\`\`
-
-### 2. 常用图表类型
-- **折线图**：展示趋势变化（\`plt.plot()\`）
-- **柱状图**：比较不同类别数据（\`plt.bar()\`）
-- **饼图**：展示占比关系（\`plt.pie()\`）
-- **散点图**：展示变量间关系（\`plt.scatter()\`）
-- **直方图**：展示数据分布（\`plt.hist()\`）
-
-### 3. 图表美化
-- \`plt.grid()\`：添加网格线
-- \`plt.legend()\`：添加图例
-- \`plt.xticks(rotation=45)\`：旋转X轴标签
-- \`plt.tight_layout()\`：自动调整布局
-
-### 4. 子图布局
-\`\`\`python
-fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(15, 10))
-axes[0, 0].plot(x, y1)
-axes[0, 1].bar(categories, values)
-axes[0, 2].pie(sizes)
-\`\`\`
-
-### 5. Seaborn高级可视化
-Seaborn是基于Matplotlib的更高级库，提供更美观的图表样式。
-
-### 可视化原则
-- 简洁清晰，避免信息过载
-- 选择合适的图表类型
-- 添加必要的标签和说明`,
+    knowledge: `学习目标
+核心概念
+常用场景
+易错点
+实战技巧
+业务案例
+可视化`,
 
     data: '日期,销售额\n2023-01,100\n2023-02,120\n2023-03,150\n2023-04,130\n2023-05,160',
     codeTemplate: 'import matplotlib.pyplot as plt\nimport pandas as pd\n\n# 读取数据\n# 绘制图表\n\nplt.show()',
@@ -630,52 +528,14 @@ Seaborn是基于Matplotlib的更高级库，提供更美观的图表样式。
     id: 6,
     title: 'A/B测试效果分析',
     description: '使用卡方检验分析A/B测试结果，判断两组是否有显著差异',
-    knowledge: `## 知识讲解：A/B测试与统计检验
-
-### 1. A/B测试概念
-A/B测试是一种对照实验，用于比较两个版本（A和B）的效果差异。
-
-### 2. 卡方检验原理
-卡方检验用于检验两个分类变量之间是否存在关联。
-
-### 3. 假设检验步骤
-1. **提出假设**：
-   - H0（原假设）：两组没有显著差异
-   - H1（备择假设）：两组存在显著差异
-   
-2. **计算检验统计量**：
-   - 卡方值 = Σ[(观测值-期望值)² / 期望值]
-
-3. **确定显著性水平**：通常取α=0.05
-
-4. **做出决策**：
-   - p值 < 0.05：拒绝原假设，认为有显著差异
-   - p值 ≥ 0.05：不拒绝原假设，认为无显著差异
-
-### 4. 适用场景
-- 转化率测试
-- 点击率测试
-- 用户行为对比
-
-### 5. 代码实现
-\`\`\`python
-from scipy.stats import chi2_contingency
-
-# 列联表
-contingency_table = [[转化A, 未转化A], [转化B, 未转化B]]
-chi2, p, dof, expected = chi2_contingency(contingency_table)
-
-# 判断结果
-if p < 0.05:
-    print("有显著差异")
-else:
-    print("无显著差异")
-\`\`\`
-
-### 注意事项
-- 样本量要足够大
-- 确保随机分组
-- 控制其他变量`,
+    knowledge: `学习目标
+核心概念
+常用场景
+易错点
+实战技巧
+业务案例
+A/B测试
+卡方检验`,
 
     data: '组别,转化,未转化\nA,100,900\nB,110,890',
     codeTemplate: 'from scipy.stats import chi2_contingency\nimport pandas as pd\n\n# 数据准备\n# 卡方检验\n# 分析结果\n\nprint(result)',
@@ -686,51 +546,13 @@ else:
     id: 7,
     title: '时间序列预测分析',
     description: '使用ARIMA模型进行时间序列预测，预测未来销售趋势',
-    knowledge: `## 知识讲解：时间序列预测
-
-### 1. 时间序列概念
-时间序列是按时间顺序排列的数据序列。
-
-### 2. ARIMA模型
-ARIMA（自回归综合移动平均模型）是常用的时间序列预测模型。
-
-- **AR（自回归）**：用自身历史值预测未来值
-- **I（差分）**：使非平稳序列变平稳
-- **MA（移动平均）**：用误差项的线性组合进行预测
-
-### 3. 模型参数
-ARIMA(p, d, q)
-- p：自回归阶数
-- d：差分阶数
-- q：移动平均阶数
-
-### 4. 建模步骤
-1. **数据准备**：转换为时间序列格式
-2. **平稳性检验**：ADF检验
-3. **确定参数**：ACF/PACF图
-4. **模型训练**：拟合ARIMA模型
-5. **预测**：生成预测值
-
-### 5. 代码实现
-\`\`\`python
-from statsmodels.tsa.arima.model import ARIMA
-
-# 拟合模型
-model = ARIMA(df["销售额"], order=(p, d, q))
-model_fit = model.fit()
-
-# 预测
-forecast = model_fit.forecast(steps=5)
-\`\`\`
-
-### 6. 其他模型
-- SARIMA：考虑季节性的ARIMA
-- Prophet：Facebook开发的强大时间序列模型
-
-### 评估指标
-- MAE（平均绝对误差）
-- MSE（均方误差）
-- RMSE（均方根误差）`,
+    knowledge: `学习目标
+核心概念
+常用场景
+易错点
+实战技巧
+业务案例
+ARIMA`,
 
     data: '日期,销售额\n2023-01,100\n2023-02,120\n2023-03,150\n2023-04,130\n2023-05,160',
     codeTemplate: 'from statsmodels.tsa.arima.model import ARIMA\nimport pandas as pd\n\n# 数据准备\n# 训练模型\n# 预测\n\nprint(forecast)',
@@ -741,50 +563,13 @@ forecast = model_fit.forecast(steps=5)
     id: 8,
     title: '机器学习特征工程',
     description: '创建衍生特征（月份、星期几），使用LabelEncoder进行编码',
-    knowledge: `## 知识讲解：特征工程
-
-### 1. 特征工程概念
-特征工程是将原始数据转换为机器学习模型可用特征的过程。
-
-### 2. 特征类型
-- **数值特征**：连续值（如年龄、收入）
-- **分类特征**：离散值（如性别、地区）
-- **时间特征**：日期时间数据
-
-### 3. 特征创建
-- **时间特征**：提取年、月、日、周、小时
-- **聚合特征**：统计量（均值、标准差）
-- **交互特征**：特征之间的组合
-
-### 4. 分类特征编码
-- **LabelEncoder**：将类别转换为整数（适用于有序分类）
-- **OneHotEncoder**：独热编码（适用于无序分类）
-- **get_dummies**：Pandas的便捷独热编码
-
-### 5. 特征缩放
-- **StandardScaler**：标准化（均值为0，标准差为1）
-- **MinMaxScaler**：归一化（缩放到[0,1]区间）
-
-### 6. 特征选择
-- **方差选择**：删除低方差特征
-- **相关分析**：删除高度相关的特征
-- **SelectKBest**：选择K个最优特征
-
-### 7. 代码示例
-\`\`\`python
-from sklearn.preprocessing import LabelEncoder, StandardScaler
-
-# 编码
-le = LabelEncoder()
-df["类别编码"] = le.fit_transform(df["类别"])
-
-# 标准化
-scaler = StandardScaler()
-df[["特征1", "特征2"]] = scaler.fit_transform(df[["特征1", "特征2"]])
-\`\`\`
-
-### 重要性
-好的特征工程能显著提升模型性能！`,
+    knowledge: `学习目标
+核心概念
+常用场景
+易错点
+实战技巧
+业务案例
+特征工程`,
 
     data: '用户ID,订单日期,金额\n1,2023-09-01,100\n1,2023-09-15,150\n2,2023-08-10,80\n2,2023-08-20,120',
     codeTemplate: 'from sklearn.preprocessing import LabelEncoder\nimport pandas as pd\n\n# 读取数据\n# 特征工程\n# 编码\n\nprint(result)',
@@ -795,53 +580,13 @@ df[["特征1", "特征2"]] = scaler.fit_transform(df[["特征1", "特征2"]])
     id: 9,
     title: '客户RFM价值分层',
     description: '计算R(最近购买)、F(购买频率)、M(购买金额)评分，进行客户分层',
-    knowledge: `## 知识讲解：RFM分析
-
-### 1. RFM概念
-RFM是客户价值分析的经典模型：
-
-- **R（Recency）**：最近购买时间
-  - 越小越好，表示客户越活跃
-  
-- **F（Frequency）**：购买频率
-  - 越大越好，表示客户购买次数多
-  
-- **M（Monetary）**：购买金额
-  - 越大越好，表示客户消费能力强
-
-### 2. 评分方法
-- **分位数法**：使用qcut将数据分成5个等级
-- **自定义规则**：根据业务经验设定阈值
-
-### 3. 客户分层
-| 层级 | R | F | M | 策略 |
-|------|---|---|---|------|
-| 高价值客户 | 1 | 5 | 5 | 重点维护 |
-| 潜力客户 | 3 | 3 | 3 | 促活提升 |
-| 普通客户 | 3 | 2 | 2 | 常规运营 |
-| 流失客户 | 5 | 1 | 1 | 召回活动 |
-
-### 4. 计算步骤
-1. 计算每个客户的R、F、M值
-2. 对R、F、M分别评分（1-5分）
-3. 计算总分或加权分
-4. 根据分数进行客户分层
-
-### 5. 代码实现
-\`\`\`python
-# RFM评分
-df["R_score"] = pd.qcut(df["R"], 5, labels=[5, 4, 3, 2, 1])
-df["F_score"] = pd.qcut(df["F"], 5, labels=[1, 2, 3, 4, 5])
-df["M_score"] = pd.qcut(df["M"], 5, labels=[1, 2, 3, 4, 5])
-
-# 总分
-df["总分"] = df[["R_score", "F_score", "M_score"]].sum(axis=1)
-\`\`\`
-
-### 业务应用
-- 客户细分与精准营销
-- 资源优化配置
-- 个性化推荐`,
+    knowledge: `学习目标
+核心概念
+常用场景
+易错点
+实战技巧
+业务案例
+RFM`,
 
     data: '用户ID,最近购买天数,购买次数,总金额\n1,17,2,500\n2,112,1,80\n3,12,1,500',
     codeTemplate: 'import pandas as pd\n\n# 读取数据\n# 计算RFM评分\n# 分层\n\nprint(result)',
@@ -852,66 +597,13 @@ df["总分"] = df[["R_score", "F_score", "M_score"]].sum(axis=1)
     id: 10,
     title: '自动化销售报表生成',
     description: '使用ExcelWriter生成包含数据透视表和统计摘要的Excel报表',
-    knowledge: `## 知识讲解：自动化报表
-
-### 1. 报表自动化概念
-将数据处理和报告生成过程自动化，减少人工操作。
-
-### 2. Pandas Excel操作
-\`\`\`python
-import pandas as pd
-
-# 创建ExcelWriter对象
-with pd.ExcelWriter("报表.xlsx") as writer:
-    # 写入DataFrame
-    df.to_excel(writer, sheet_name="原始数据")
-    
-    # 写入数据透视表
-    pivot.to_excel(writer, sheet_name="数据透视")
-    
-    # 写入统计摘要
-    stats.to_excel(writer, sheet_name="统计摘要")
-\`\`\`
-
-### 3. 数据透视表
-\`\`\`python
-pivot = pd.pivot_table(
-    df, 
-    index="用户ID", 
-    values="金额", 
-    aggfunc=["sum", "count", "mean"]
-)
-\`\`\`
-
-### 4. 统计摘要
-\`\`\`python
-stats = df.describe()  # 基本统计量
-stats = df.groupby("月份")["金额"].agg(["sum", "mean", "count"])
-\`\`\`
-
-### 5. 报表组成部分
-- **封面页**：报表标题、日期、编制单位
-- **数据概览**：关键指标汇总
-- **详细数据**：原始数据表
-- **分析图表**：可视化展示
-- **数据透视**：多维度汇总
-
-### 6. 自动化流程
-1. 数据采集
-2. 数据清洗
-3. 数据处理分析
-4. 报表生成
-5. 自动发送（邮件/消息）
-
-### 7. 常用工具
-- **openpyxl**：读取/写入Excel文件
-- **xlsxwriter**：高级Excel功能支持
-- **win32com**：控制Excel应用程序
-
-### 业务价值
-- 节省时间成本
-- 减少人为错误
-- 保证数据一致性`,
+    knowledge: `学习目标
+核心概念
+常用场景
+易错点
+实战技巧
+业务案例
+报表`,
 
     data: '用户ID,订单日期,金额\n1,2023-09-01,100\n1,2023-09-15,150\n2,2023-08-10,80\n3,2023-07-01,300',
     codeTemplate: 'import pandas as pd\n\n# 读取数据\n# 生成报表\n# 保存Excel\n\nprint("报表已生成")',

@@ -16,47 +16,8 @@ const practicalProjects = [
 业务案例
 如何运用`,
     data: '用户ID,订单日期,金额\n1,2023-09-01,100\n1,2023-09-15,150\n2,,80\n2,2023-08-10,80\n3,2023-07-01,300\n3,2023-07-10,300',
-    codeTemplate: `import pandas as pd
-from io import StringIO
-
-# 模拟数据（不用读取文件）
-data = """用户ID,订单日期,金额
-1,2023-09-01,100
-1,2023-09-15,150
-2,,80
-2,2023-08-10,80
-3,2023-07-01,300
-3,2023-07-10,300"""
-
-df = pd.read_csv(StringIO(data))
-
-# 数据清洗
-# 删除空值
-# 处理异常值
-# 统一日期格式
-
-print(df)`,
-    solution: `import pandas as pd
-from io import StringIO
-
-# 模拟数据
-data = """用户ID,订单日期,金额
-1,2023-09-01,100
-1,2023-09-15,150
-2,,80
-2,2023-08-10,80
-3,2023-07-01,300
-3,2023-07-10,300"""
-
-df = pd.read_csv(StringIO(data))
-
-# 数据清洗
-df = df.dropna()  # 删除空值
-df["金额"] = df["金额"].clip(lower=0, upper=1000)  # 处理异常值
-df["订单日期"] = pd.to_datetime(df["订单日期"])  # 统一日期格式
-
-print("=== 01 清洗结果 ===")
-print(df)`,
+    codeTemplate: 'import pandas as pd\nfrom io import StringIO\n\n# 模拟数据（不用读取文件）\ndata = """用户ID,订单日期,金额\n1,2023-09-01,100\n1,2023-09-15,150\n2,,80\n2,2023-08-10,80\n3,2023-07-01,300\n3,2023-07-10,300"""\n\ndf = pd.read_csv(StringIO(data))\n\n# 数据清洗\n# 删除空值\n# 处理异常值\n# 统一日期格式\n\nprint(df)',
+    solution: 'import pandas as pd\n\n# 模拟数据加载\ndata = """用户ID,订单日期,金额\n1,2023-09-01,100\n1,2023-09-15,150\n2,,80\n2,2023-08-10,80\n3,2023-07-01,300\n3,2023-07-10,300"""\nfrom io import StringIO\ndf = pd.read_csv(StringIO(data))\n\n# 数据清洗\ndf = df.dropna()  # 删除空值\ndf["金额"] = df["金额"].clip(lower=0, upper=1000)  # 处理异常值\ndf["订单日期"] = pd.to_datetime(df["订单日期"])  # 统一日期格式\n\nprint("=== 01 清洗结果 ===")\nprint(df)',
     answer: '=== 01 清洗结果 ===\n   用户ID      订单日期  金额\n0        1 2023-09-01   100\n1        1 2023-09-15   150\n3        2 2023-08-10    80\n4        3 2023-07-01   300\n5        3 2023-07-10   300'
   },
   {
@@ -71,48 +32,8 @@ print(df)`,
 业务案例
 如何运用`,
     data: '用户ID,订单日期,金额\n1,2023-09-01,100\n1,2023-09-15,150\n2,2023-08-10,80\n3,2023-07-01,300\n3,2023-07-10,300',
-    codeTemplate: `import pandas as pd
-from io import StringIO
-
-# 模拟数据
-data = """用户ID,订单日期,金额
-1,2023-09-01,100
-1,2023-09-15,150
-2,2023-08-10,80
-3,2023-07-01,300
-3,2023-07-10,300"""
-
-df = pd.read_csv(StringIO(data))
-df["订单日期"] = pd.to_datetime(df["订单日期"])
-
-# 按用户分组
-# 计算总销售额、订单数、客单价
-
-print(result)`,
-    solution: `import pandas as pd
-from io import StringIO
-
-# 模拟数据
-data = """用户ID,订单日期,金额
-1,2023-09-01,100
-1,2023-09-15,150
-2,2023-08-10,80
-3,2023-07-01,300
-3,2023-07-10,300"""
-
-df = pd.read_csv(StringIO(data))
-df["订单日期"] = pd.to_datetime(df["订单日期"])
-
-# 分组聚合
-agg_result = df.groupby("用户ID").agg(
-    总销售额=("金额", "sum"),
-    订单数=("金额", "count")
-).reset_index()
-
-agg_result["客单价"] = agg_result["总销售额"] / agg_result["订单数"]
-
-print("=== 02 聚合结果 ===")
-print(agg_result)`,
+    codeTemplate: 'import pandas as pd\nfrom io import StringIO\n\n# 模拟数据\ndata = """用户ID,订单日期,金额\n1,2023-09-01,100\n1,2023-09-15,150\n2,2023-08-10,80\n3,2023-07-01,300\n3,2023-07-10,300"""\n\ndf = pd.read_csv(StringIO(data))\ndf["订单日期"] = pd.to_datetime(df["订单日期"])\n\n# 按用户分组\n# 计算总销售额、订单数、客单价\n\nprint(result)',
+    solution: 'import pandas as pd\n\n# 模拟数据加载\ndata = """用户ID,订单日期,金额\n1,2023-09-01,100\n1,2023-09-15,150\n2,2023-08-10,80\n3,2023-07-01,300\n3,2023-07-10,300"""\nfrom io import StringIO\ndf = pd.read_csv(StringIO(data))\ndf["订单日期"] = pd.to_datetime(df["订单日期"])\n\n# 分组聚合\nagg_result = df.groupby("用户ID").agg(\n    总销售额=("金额", "sum"),\n    订单数=("金额", "count")\n).reset_index()\n\nagg_result["客单价"] = agg_result["总销售额"] / agg_result["订单数"]\n\nprint("=== 02 聚合结果 ===")\nprint(agg_result)',
     answer: '=== 02 聚合结果 ===\n   用户ID  总销售额  订单数   客单价\n0        1      250      2  125.0\n1        2       80      1   80.0\n2        3      600      2  300.0'
   },
   {
@@ -129,58 +50,8 @@ Apriori
 关联规则
 如何运用`,
     data: '订单ID,商品\n1,面包\n1,牛奶\n2,面包\n2,牛奶\n2,鸡蛋\n3,牛奶\n3,鸡蛋',
-    codeTemplate: `from mlxtend.frequent_patterns import apriori, association_rules
-import pandas as pd
-from io import StringIO
-
-# 模拟数据
-data = """订单ID,商品
-1,面包
-1,牛奶
-2,面包
-2,牛奶
-2,鸡蛋
-3,牛奶
-3,鸡蛋"""
-
-df = pd.read_csv(StringIO(data))
-
-# 数据准备
-# 转换为one-hot编码
-# 挖掘频繁项集
-# 生成关联规则
-
-print(rules)`,
-    solution: `from mlxtend.frequent_patterns import apriori, association_rules
-import pandas as pd
-from io import StringIO
-
-# 模拟数据
-data = """订单ID,商品
-1,面包
-1,牛奶
-2,面包
-2,牛奶
-2,鸡蛋
-3,牛奶
-3,鸡蛋"""
-
-df = pd.read_csv(StringIO(data))
-
-# 数据转换
-basket = df.groupby("订单ID")["商品"].apply(list).tolist()
-from mlxtend.preprocessing import TransactionEncoder
-te = TransactionEncoder()
-te_ary = te.fit(basket).transform(basket)
-df_encoded = pd.DataFrame(te_ary, columns=te.columns_)
-
-# 关联规则挖掘
-freq_items = apriori(df_encoded, min_support=0.3, use_colnames=True)
-rules = association_rules(freq_items, metric="confidence", min_threshold=0.5)
-rules = rules.sort_values("confidence", ascending=False)
-
-print("=== 03 关联规则 ===")
-print(rules[["antecedents", "consequents", "support", "confidence"]])`,
+    codeTemplate: 'from mlxtend.frequent_patterns import apriori, association_rules\nimport pandas as pd\nfrom io import StringIO\n\n# 模拟数据\ndata = """订单ID,商品\n1,面包\n1,牛奶\n2,面包\n2,牛奶\n2,鸡蛋\n3,牛奶\n3,鸡蛋"""\n\ndf = pd.read_csv(StringIO(data))\n\n# 数据准备\n# 转换为one-hot编码\n# 挖掘频繁项集\n# 生成关联规则\n\nprint(rules)',
+    solution: 'from mlxtend.frequent_patterns import apriori, association_rules\nimport pandas as pd\n\n# 模拟数据加载\ndata = """订单ID,商品\n1,面包\n1,牛奶\n2,面包\n2,牛奶\n2,鸡蛋\n3,牛奶\n3,鸡蛋"""\nfrom io import StringIO\ndf = pd.read_csv(StringIO(data))\n\n# 数据转换\nbasket = df.groupby("订单ID")["商品"].apply(list).tolist()\nfrom mlxtend.preprocessing import TransactionEncoder\nte = TransactionEncoder()\nte_ary = te.fit(basket).transform(basket)\ndf_encoded = pd.DataFrame(te_ary, columns=te.columns_)\n\n# 关联规则挖掘\nfreq_items = apriori(df_encoded, min_support=0.3, use_colnames=True)\nrules = association_rules(freq_items, metric="confidence", min_threshold=0.5)\nrules = rules.sort_values("confidence", ascending=False)\n\nprint("=== 03 关联规则 ===")\nprint(rules[["antecedents", "consequents", "support", "confidence"]])',
     answer: '=== 03 关联规则 ===\n  antecedents consequents   support  confidence\n0      (面包)       (牛奶)  0.666667    1.000000\n1      (牛奶)       (面包)  0.666667    0.666667\n2      (鸡蛋)       (牛奶)  0.333333    1.000000\n3      (牛奶)       (鸡蛋)  0.333333    0.333333'
   },
   {
@@ -196,51 +67,8 @@ print(rules[["antecedents", "consequents", "support", "confidence"]])`,
 K-means
 如何运用`,
     data: '用户ID,总金额,订单数,最近购买时间\n1,250,2,30\n2,80,1,60\n3,600,2,5',
-    codeTemplate: `from sklearn.cluster import KMeans
-from sklearn.preprocessing import StandardScaler
-import pandas as pd
-from io import StringIO
-
-# 模拟数据
-data = """用户ID,总金额,订单数,最近购买时间
-1,250,2,30
-2,80,1,60
-3,600,2,5"""
-
-df = pd.read_csv(StringIO(data))
-
-# 数据准备
-# 标准化
-# 聚类
-# 分析结果
-
-print(result)`,
-    solution: `from sklearn.cluster import KMeans
-from sklearn.preprocessing import StandardScaler
-import pandas as pd
-from io import StringIO
-
-# 模拟数据
-data = """用户ID,总金额,订单数,最近购买时间
-1,250,2,30
-2,80,1,60
-3,600,2,5"""
-
-df = pd.read_csv(StringIO(data))
-
-# 数据准备
-features = df[["总金额", "订单数", "最近购买时间"]]
-scaler = StandardScaler()
-scaled_features = scaler.fit_transform(features)
-
-# K-means聚类
-kmeans = KMeans(n_clusters=3, random_state=42)
-df["聚类"] = kmeans.fit_predict(scaled_features)
-
-print("=== 04 聚类结果 ===")
-print(df)
-print("\n聚类均值：")
-print(df.groupby("聚类").mean())`,
+    codeTemplate: 'from sklearn.cluster import KMeans\nfrom sklearn.preprocessing import StandardScaler\nimport pandas as pd\nfrom io import StringIO\n\n# 模拟数据\ndata = """用户ID,总金额,订单数,最近购买时间\n1,250,2,30\n2,80,1,60\n3,600,2,5"""\n\ndf = pd.read_csv(StringIO(data))\n\n# 数据准备\n# 标准化\n# 聚类\n# 分析结果\n\nprint(result)',
+    solution: 'from sklearn.cluster import KMeans\nfrom sklearn.preprocessing import StandardScaler\nimport pandas as pd\n\n# 模拟数据加载\ndata = """用户ID,总金额,订单数,最近购买时间\n1,250,2,30\n2,80,1,60\n3,600,2,5"""\nfrom io import StringIO\ndf = pd.read_csv(StringIO(data))\n\n# 数据准备\nfeatures = df[["总金额", "订单数", "最近购买时间"]]\nscaler = StandardScaler()\nscaled_features = scaler.fit_transform(features)\n\n# K-means聚类\nkmeans = KMeans(n_clusters=3, random_state=42)\ndf["聚类"] = kmeans.fit_predict(scaled_features)\n\nprint("=== 04 聚类结果 ===")\nprint(df)\nprint("\\n聚类均值：")\nprint(df.groupby("聚类").mean())',
     answer: '=== 04 聚类结果 ===\n   用户ID  总金额  订单数  最近购买时间  聚类\n0        1    250      2        30     1\n1        2     80      1        60     2\n2        3    600      2         5     0\n\n聚类均值：\n       用户ID   总金额  订单数  最近购买时间\n聚类\n0         3.0  600.0    2.0        5.0\n1         1.0  250.0    2.0       30.0\n2         2.0   80.0    1.0       60.0'
   },
   {
@@ -256,65 +84,8 @@ print(df.groupby("聚类").mean())`,
 可视化
 如何运用`,
     data: '日期,销售额\n2023-01,100\n2023-02,120\n2023-03,150\n2023-04,130\n2023-05,160',
-    codeTemplate: `import matplotlib.pyplot as plt
-import pandas as pd
-from io import StringIO
-
-# 模拟数据
-data = """日期,销售额
-2023-01,100
-2023-02,120
-2023-03,150
-2023-04,130
-2023-05,160"""
-
-df = pd.read_csv(StringIO(data))
-
-# 绘制图表
-
-plt.show()`,
-    solution: `import matplotlib.pyplot as plt
-import pandas as pd
-from io import StringIO
-
-# 模拟数据
-data = """日期,销售额
-2023-01,100
-2023-02,120
-2023-03,150
-2023-04,130
-2023-05,160"""
-
-df = pd.read_csv(StringIO(data))
-
-# 可视化
-print("=== 05 可视化已展示 ===")
-print("弹出3 张图表：")
-print("销售趋势折线图")
-print("用户销售额占比饼图")
-print("用户销售额柱状图")
-
-# 实际绘图代码示例
-plt.figure(figsize=(12, 4))
-
-# 折线图
-plt.subplot(131)
-plt.plot(df["日期"], df["销售额"], marker="o")
-plt.title("销售趋势")
-plt.xticks(rotation=45)
-
-# 饼图
-plt.subplot(132)
-plt.pie(df["销售额"], labels=df["日期"], autopct="%1.1f%%")
-plt.title("销售额占比")
-
-# 柱状图
-plt.subplot(133)
-plt.bar(df["日期"], df["销售额"])
-plt.title("销售额对比")
-plt.xticks(rotation=45)
-
-plt.tight_layout()`,
+    codeTemplate: 'import matplotlib.pyplot as plt\nimport pandas as pd\nfrom io import StringIO\n\n# 模拟数据\ndata = """日期,销售额\n2023-01,100\n2023-02,120\n2023-03,150\n2023-04,130\n2023-05,160"""\n\ndf = pd.read_csv(StringIO(data))\n\n# 绘制图表\n\nplt.show()',
+    solution: 'import matplotlib.pyplot as plt\nimport pandas as pd\n\n# 模拟数据加载\ndata = """日期,销售额\n2023-01,100\n2023-02,120\n2023-03,150\n2023-04,130\n2023-05,160"""\nfrom io import StringIO\ndf = pd.read_csv(StringIO(data))\n\n# 可视化\nprint("=== 05 可视化已展示 ===")\nprint("弹出3 张图表：")\nprint("销售趋势折线图")\nprint("用户销售额占比饼图")\nprint("用户销售额柱状图")\n\n# 实际绘图代码示例\nplt.figure(figsize=(12, 4))\n\n# 折线图\nplt.subplot(131)\nplt.plot(df["日期"], df["销售额"], marker="o")\nplt.title("销售趋势")\nplt.xticks(rotation=45)\n\n# 饼图\nplt.subplot(132)\nplt.pie(df["销售额"], labels=df["日期"], autopct="%1.1f%%")\nplt.title("销售额占比")\n\n# 柱状图\nplt.subplot(133)\nplt.bar(df["日期"], df["销售额"])\nplt.title("销售额对比")\nplt.xticks(rotation=45)\n\nplt.tight_layout()',
     answer: '=== 05 可视化已展示 ===\n弹出3张图表：\n销售趋势折线图\n销售额占比饼图\n销售额对比柱状图\n\n图表数据：\n日期    销售额\n2023-01     100\n2023-02     120\n2023-03     150\n2023-04     130\n2023-05     160'
   },
   {
@@ -331,47 +102,9 @@ A/B测试
 卡方检验
 如何运用`,
     data: '组别,转化,未转化\nA,100,900\nB,110,890',
-    codeTemplate: `from scipy.stats import chi2_contingency
-import pandas as pd
-from io import StringIO
-
-# 模拟数据
-data = """组别,转化,未转化
-A,100,900
-B,110,890"""
-
-df = pd.read_csv(StringIO(data))
-
-# 数据准备
-# 卡方检验
-# 分析结果
-
-print(result)`,
-    solution: `from scipy.stats import chi2_contingency
-import pandas as pd
-from io import StringIO
-
-# 模拟数据
-data = """组别,转化,未转化
-A,100,900
-B,110,890"""
-
-df = pd.read_csv(StringIO(data))
-
-# 构建列联表
-contingency = pd.crosstab(index=df["组别"], values=[df["转化"], df["未转化"]], aggfunc="sum")
-contingency_table = [[100, 900], [110, 890]]
-
-# 卡方检验
-chi2, p, dof, expected = chi2_contingency(contingency_table)
-
-print("=== 06 A/B测试结果 ===")
-print(f"P值: {p:.4f}")
-if p < 0.05:
-    print("有显著差异")
-else:
-    print("无显著差异")`,
-    answer: '=== 06 A/B测试结果 ===\n卡方值: 0.5243\n自由度: 1\nP值: 0.4697\n\n结论：不拒绝原假设，两组无显著差异（P值 = 0.4697 >= 0.05'
+    codeTemplate: 'from scipy.stats import chi2_contingency\nimport pandas as pd\nfrom io import StringIO\n\n# 模拟数据\ndata = """组别,转化,未转化\nA,100,900\nB,110,890"""\n\ndf = pd.read_csv(StringIO(data))\n\n# 数据准备\n# 卡方检验\n# 分析结果\n\nprint(result)',
+    solution: 'from scipy.stats import chi2_contingency\nimport pandas as pd\n\n# 模拟数据加载\ndata = """组别,转化,未转化\nA,100,900\nB,110,890"""\nfrom io import StringIO\ndf = pd.read_csv(StringIO(data))\n\n# 构建列联表\ncontingency = pd.crosstab(index=df["组别"], values=[df["转化"], df["未转化"]], aggfunc="sum")\ncontingency_table = [[100, 900], [110, 890]]\n\n# 卡方检验\nchi2, p, dof, expected = chi2_contingency(contingency_table)\n\nprint("=== 06 A/B测试结果 ===")\nprint(f"P值: {p:.4f}")\nif p < 0.05:\n    print("有显著差异")\nelse:\n    print("无显著差异")',
+    answer: '=== 06 A/B测试结果 ===\n卡方值: 0.5243\n自由度: 1\nP值: 0.4697\n\n结论：不拒绝原假设，两组无显著差异（P值 = 0.4697 >= 0.05）'
   },
   {
     id: 7,
@@ -386,54 +119,8 @@ else:
 ARIMA
 如何运用`,
     data: '日期,销售额\n2023-01,100\n2023-02,120\n2023-03,150\n2023-04,130\n2023-05,160',
-    codeTemplate: `from statsmodels.tsa.arima.model import ARIMA
-import pandas as pd
-from io import StringIO
-
-# 模拟数据
-data = """日期,销售额
-2023-01,100
-2023-02,120
-2023-03,150
-2023-04,130
-2023-05,160"""
-
-df = pd.read_csv(StringIO(data))
-df["日期"] = pd.to_datetime(df["日期"])
-df.set_index("日期", inplace=True)
-
-# 数据准备
-# 训练模型
-# 预测
-
-print(forecast)`,
-    solution: `from statsmodels.tsa.arima.model import ARIMA
-import pandas as pd
-import numpy as np
-from io import StringIO
-
-# 模拟数据
-data = """日期,销售额
-2023-01,100
-2023-02,120
-2023-03,150
-2023-04,130
-2023-05,160"""
-
-df = pd.read_csv(StringIO(data))
-df["日期"] = pd.to_datetime(df["日期"])
-df.set_index("日期", inplace=True)
-
-# ARIMA模型
-model = ARIMA(df["销售额"], order=(1, 1, 1))
-model_fit = model.fit()
-
-# 预测未来2个月
-forecast = model_fit.forecast(steps=2)
-
-print("=== 07 时间序列预测 ===")
-print("未来2个月预测值：")
-print(forecast)`,
+    codeTemplate: 'from statsmodels.tsa.arima.model import ARIMA\nimport pandas as pd\nfrom io import StringIO\n\n# 模拟数据\ndata = """日期,销售额\n2023-01,100\n2023-02,120\n2023-03,150\n2023-04,130\n2023-05,160"""\n\ndf = pd.read_csv(StringIO(data))\ndf["日期"] = pd.to_datetime(df["日期"])\ndf.set_index("日期", inplace=True)\n\n# 数据准备\n# 训练模型\n# 预测\n\nprint(forecast)',
+    solution: 'from statsmodels.tsa.arima.model import ARIMA\nimport pandas as pd\nimport numpy as np\n\n# 模拟数据加载\ndata = """日期,销售额\n2023-01,100\n2023-02,120\n2023-03,150\n2023-04,130\n2023-05,160"""\nfrom io import StringIO\ndf = pd.read_csv(StringIO(data))\ndf["日期"] = pd.to_datetime(df["日期"])\ndf.set_index("日期", inplace=True)\n\n# ARIMA模型\nmodel = ARIMA(df["销售额"], order=(1, 1, 1))\nmodel_fit = model.fit()\n\n# 预测未来2个月\nforecast = model_fit.forecast(steps=2)\n\nprint("=== 07 时间序列预测 ===")\nprint("未来2个月预测值：")\nprint(forecast)',
     answer: '=== 07 时间序列预测 ===\n未来2个月预测值：\n2023-06-30    148.678026\n2023-07-31    149.567892\nFreq: M, Name: predicted_mean, dtype: float64'
   },
   {
@@ -449,54 +136,14 @@ print(forecast)`,
 特征工程
 如何运用`,
     data: '用户ID,订单日期,金额\n1,2023-09-01,100\n1,2023-09-15,150\n2,2023-08-10,80\n2,2023-08-20,120',
-    codeTemplate: `from sklearn.preprocessing import LabelEncoder
-import pandas as pd
-from io import StringIO
-
-# 模拟数据
-data = """用户ID,订单日期,金额
-1,2023-09-01,100
-1,2023-09-15,150
-2,2023-08-10,80
-2,2023-08-20,120"""
-
-df = pd.read_csv(StringIO(data))
-df["订单日期"] = pd.to_datetime(df["订单日期"])
-
-# 特征工程
-# 编码
-
-print(result)`,
-    solution: `from sklearn.preprocessing import LabelEncoder
-import pandas as pd
-from io import StringIO
-
-# 模拟数据
-data = """用户ID,订单日期,金额
-1,2023-09-01,100
-1,2023-09-15,150
-2,2023-08-10,80
-2,2023-08-20,120"""
-
-df = pd.read_csv(StringIO(data))
-df["订单日期"] = pd.to_datetime(df["订单日期"])
-
-# 特征工程
-df["月份"] = df["订单日期"].dt.month
-df["星期几"] = df["订单日期"].dt.dayofweek
-
-# 编码
-le = LabelEncoder()
-df["用户编码"] = le.fit_transform(df["用户ID"])
-
-print("=== 08 特征工程结果 ===")
-print(df[["月份", "星期几", "用户编码", "金额"]])`,
+    codeTemplate: 'from sklearn.preprocessing import LabelEncoder\nimport pandas as pd\nfrom io import StringIO\n\n# 模拟数据\ndata = """用户ID,订单日期,金额\n1,2023-09-01,100\n1,2023-09-15,150\n2,2023-08-10,80\n2,2023-08-20,120"""\n\ndf = pd.read_csv(StringIO(data))\ndf["订单日期"] = pd.to_datetime(df["订单日期"])\n\n# 特征工程\n# 编码\n\nprint(result)',
+    solution: 'from sklearn.preprocessing import LabelEncoder\nimport pandas as pd\n\n# 模拟数据加载\ndata = """用户ID,订单日期,金额\n1,2023-09-01,100\n1,2023-09-15,150\n2,2023-08-10,80\n2,2023-08-20,120"""\nfrom io import StringIO\ndf = pd.read_csv(StringIO(data))\ndf["订单日期"] = pd.to_datetime(df["订单日期"])\n\n# 特征工程\ndf["月份"] = df["订单日期"].dt.month\ndf["星期几"] = df["订单日期"].dt.dayofweek\n\n# 编码\nle = LabelEncoder()\ndf["用户编码"] = le.fit_transform(df["用户ID"])\n\nprint("=== 08 特征工程结果 ===")\nprint(df[["月份", "星期几", "用户编码", "金额"]])',
     answer: '=== 08 特征工程结果 ===\n   月份  星期几  用户编码  金额\n0     9      4       0   100\n1     9      4       0   150\n2     8      3       1    80\n3     8      6       1   120'
   },
   {
     id: 9,
     title: '客户RFM价值分层',
-    description: '计算R（最近购买）、F（购买频率）、M（购买金额）评分，进行客户分层',
+    description: '计算R(最近购买)、F(购买频率)、M(购买金额)评分，进行客户分层',
     knowledge: `学习目标
 核心概念
 常用场景
@@ -506,52 +153,8 @@ print(df[["月份", "星期几", "用户编码", "金额"]])`,
 RFM
 如何运用`,
     data: '用户ID,最近购买天数,购买次数,总金额\n1,17,2,500\n2,112,1,80\n3,12,1,500',
-    codeTemplate: `import pandas as pd
-from io import StringIO
-
-# 模拟数据
-data = """用户ID,最近购买天数,购买次数,总金额
-1,17,2,500
-2,112,1,80
-3,12,1,500"""
-
-df = pd.read_csv(StringIO(data))
-df.set_index("用户ID", inplace=True)
-
-# 计算RFM评分
-# 分层
-
-print(result)`,
-    solution: `import pandas as pd
-from io import StringIO
-
-# 模拟数据
-data = """用户ID,最近购买天数,购买次数,总金额
-1,17,2,500
-2,112,1,80
-3,12,1,500"""
-
-df = pd.read_csv(StringIO(data))
-df.set_index("用户ID", inplace=True)
-
-# RFM评分
-df["R"] = df["最近购买天数"]
-df["F"] = df["购买次数"]
-df["M"] = df["总金额"]
-
-# 分位数评分
-df["R_score"] = pd.qcut(df["R"], 5, labels=[1, 2, 3, 4, 5])
-df["F_score"] = pd.qcut(df["F"], 5, labels=[1, 2, 3, 4, 5])
-df["M_score"] = pd.qcut(df["M"], 5, labels=[1, 2, 3, 4, 5])
-
-# 总分
-df["R_score"] = df["R_score"].astype(int)
-df["F_score"] = df["F_score"].astype(int)
-df["M_score"] = df["M_score"].astype(int)
-df["总分"] = df["R_score"] + df["F_score"] + df["M_score"]
-
-print("=== 09 RFM分层结果 ===")
-print(df[["R", "F", "M", "R_score", "F_score", "M_score", "总分"]])`,
+    codeTemplate: 'import pandas as pd\nfrom io import StringIO\n\n# 模拟数据\ndata = """用户ID,最近购买天数,购买次数,总金额\n1,17,2,500\n2,112,1,80\n3,12,1,500"""\n\ndf = pd.read_csv(StringIO(data))\ndf.set_index("用户ID", inplace=True)\n\n# 计算RFM评分\n# 分层\n\nprint(result)',
+    solution: 'import pandas as pd\n\n# 模拟数据加载\ndata = """用户ID,最近购买天数,购买次数,总金额\n1,17,2,500\n2,112,1,80\n3,12,1,500"""\nfrom io import StringIO\ndf = pd.read_csv(StringIO(data))\ndf.set_index("用户ID", inplace=True)\n\n# RFM评分\ndf["R"] = df["最近购买天数"]\ndf["F"] = df["购买次数"]\ndf["M"] = df["总金额"]\n\n# 分位数评分\ndf["R_score"] = pd.qcut(df["R"], 5, labels=[1, 2, 3, 4, 5])\ndf["F_score"] = pd.qcut(df["F"], 5, labels=[1, 2, 3, 4, 5])\ndf["M_score"] = pd.qcut(df["M"], 5, labels=[1, 2, 3, 4, 5])\n\n# 总分\ndf["R_score"] = df["R_score"].astype(int)\ndf["F_score"] = df["F_score"].astype(int)\ndf["M_score"] = df["M_score"].astype(int)\ndf["总分"] = df["R_score"] + df["F_score"] + df["M_score"]\n\nprint("=== 09 RFM分层结果 ===")\nprint(df[["R", "F", "M", "R_score", "F_score", "M_score", "总分"]])',
     answer: '=== 09 RFM分层结果 ===\n          R  F    M  R_score  F_score  M_score  总分\n用户ID\n1        17  2  500        4        3        4   11\n2       112  1   80        1        2        1    4\n3        12  1  500        4        2        4   10'
   },
   {
@@ -567,50 +170,8 @@ print(df[["R", "F", "M", "R_score", "F_score", "M_score", "总分"]])`,
 报表
 如何运用`,
     data: '用户ID,订单日期,金额\n1,2023-09-01,100\n1,2023-09-15,150\n2,2023-08-10,80\n3,2023-07-01,300',
-    codeTemplate: `import pandas as pd
-from io import StringIO
-
-# 模拟数据
-data = """用户ID,订单日期,金额
-1,2023-09-01,100
-1,2023-09-15,150
-2,2023-08-10,80
-3,2023-07-01,300"""
-
-df = pd.read_csv(StringIO(data))
-df["订单日期"] = pd.to_datetime(df["订单日期"])
-
-# 生成报表
-# 保存Excel
-
-print("报表已生成")`,
-    solution: `import pandas as pd
-from io import StringIO
-
-# 模拟数据
-data = """用户ID,订单日期,金额
-1,2023-09-01,100
-1,2023-09-15,150
-2,2023-08-10,80
-3,2023-07-01,300"""
-
-df = pd.read_csv(StringIO(data))
-df["订单日期"] = pd.to_datetime(df["订单日期"])
-
-# 生成统计摘要
-stats = df.describe()
-
-# 数据透视表
-pivot = pd.pivot_table(df, index="用户ID", values="金额", aggfunc=["sum", "count"])
-
-print("=== 10 自动化报表已生成 ===")
-print("文件：销售月报.xlsx、chart.png")
-
-# 实际保存代码示例
-# with pd.ExcelWriter("销售月报.xlsx") as writer:
-#     df.to_excel(writer, sheet_name="原始数据", index=False)
-#     pivot.to_excel(writer, sheet_name="数据透视")
-#     stats.to_excel(writer, sheet_name="统计摘要")`,
+    codeTemplate: 'import pandas as pd\nfrom io import StringIO\n\n# 模拟数据\ndata = """用户ID,订单日期,金额\n1,2023-09-01,100\n1,2023-09-15,150\n2,2023-08-10,80\n3,2023-07-01,300"""\n\ndf = pd.read_csv(StringIO(data))\ndf["订单日期"] = pd.to_datetime(df["订单日期"])\n\n# 生成报表\n# 保存Excel\n\nprint("报表已生成")',
+    solution: 'import pandas as pd\n\n# 模拟数据加载\ndata = """用户ID,订单日期,金额\n1,2023-09-01,100\n1,2023-09-15,150\n2,2023-08-10,80\n3,2023-07-01,300"""\nfrom io import StringIO\ndf = pd.read_csv(StringIO(data))\ndf["订单日期"] = pd.to_datetime(df["订单日期"])\n\n# 生成统计摘要\nstats = df.describe()\n\n# 数据透视表\npivot = pd.pivot_table(df, index="用户ID", values="金额", aggfunc=["sum", "count"])\n\nprint("=== 10 自动化报表已生成 ===")\nprint("文件：销售月报.xlsx、chart.png")\n\n# 实际保存代码示例\n# with pd.ExcelWriter("销售月报.xlsx") as writer:\n#     df.to_excel(writer, sheet_name="原始数据", index=False)\n#     pivot.to_excel(writer, sheet_name="数据透视")\n#     stats.to_excel(writer, sheet_name="统计摘要")',
     answer: '=== 10 自动化报表已生成 ===\n\n【销售概览】\n销售总额: 630 元\n订单总数: 4 单\n平均订单金额: 157.5 元\n\n【用户消费统计】\n   用户ID  消费总额  订单数\n0        1      250      2\n1        2       80      1\n2        3      300      1\n\n【统计摘要】\n             金额\ncount    4.000000\nmean   157.500000\nstd     96.279665\nmin     80.000000\n25%     95.000000\n50%    125.000000\n75%    262.500000\nmax    300.000000\n\n已生成文件：销售月报.xlsx'
   }
 ];
@@ -832,7 +393,7 @@ export default function PracticalTraining() {
                       {currentPractical?.id === 6 && (
                         <>
                           <p><strong>卡方检验：</strong>一种统计假设检验方法，用于检验两个分类变量之间是否存在统计学上的显著关联。属于非参数检验方法。</p>
-                          <p><strong>判断标准：</strong>p值 &lt; 0.05表示拒绝原假设，认为两个变量之间存在显著关联；p值 &gt;= 0.05表示不能拒绝原假设，认为两个变量之间无显著差异。</p>
+                          <p><strong>判断标准：</strong>p值 &lt; 0.05表示拒绝原假设，认为两个变量之间存在显著关联；p值 &ge; 0.05表示不能拒绝原假设，认为两个变量之间无显著差异。</p>
                           <p><strong>A/B测试应用：</strong>对比两个版本（A和B）的转化率、点击率等指标，判断新版本是否显著优于旧版本，为产品迭代提供数据支持。</p>
                         </>
                       )}
@@ -979,10 +540,7 @@ export default function PracticalTraining() {
                           <div className="bg-white rounded-lg p-3 border border-purple-100">
                             <p className="font-medium text-purple-700 mb-2">读取CSV文件</p>
                             <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">import pandas as pd
-from io import StringIO
-data = """用户ID,订单日期,金额
-1,2023-09-01,100"""
-df = pd.read_csv(StringIO(data))</pre>
+df = pd.read_csv("sales.csv", encoding="utf-8")</pre>
                           </div>
                           <div className="bg-white rounded-lg p-3 border border-purple-100">
                             <p className="font-medium text-purple-700 mb-2">处理缺失值</p>
@@ -1126,14 +684,7 @@ pivot = pd.pivot_table(
                             <span className="text-orange-500 font-bold">❌</span>
                             <div>
                               <p className="font-medium">忘记标准化</p>
-                              <p className="text-xs text-gray-600">K-means对量纲敏感，必须标准化很重要</p>
-                            </div>
-                          </div>
-                          <div className="flex items-start gap-2">
-                            <span className="text-orange-500 font-bold">❌</span>
-                            <div>
-                              <p className="font-medium">K值选择随意</p>
-                              <p className="text-xs text-gray-600">应使用肘部法则或轮廓系数确定最佳K值</p>
+                              <p className="text-xs text-gray-600">K-means对尺度敏感，不同量纲的特征会影响结果</p>
                             </div>
                           </div>
                         </>
@@ -1143,8 +694,8 @@ pivot = pd.pivot_table(
                           <div className="flex items-start gap-2">
                             <span className="text-orange-500 font-bold">❌</span>
                             <div>
-                              <p className="font-medium">图表选择不当</p>
-                              <p className="text-xs text-gray-600">根据数据类型和分析目标选择合适的图表类型</p>
+                              <p className="font-medium">图表类型选择错误</p>
+                              <p className="text-xs text-gray-600">应根据数据特点选择合适的图表类型</p>
                             </div>
                           </div>
                         </>
@@ -1154,8 +705,8 @@ pivot = pd.pivot_table(
                           <div className="flex items-start gap-2">
                             <span className="text-orange-500 font-bold">❌</span>
                             <div>
-                              <p className="font-medium">p值解读错误</p>
-                              <p className="text-xs text-gray-600">p &lt; 0.05才表示有显著差异</p>
+                              <p className="font-medium">样本量不足</p>
+                              <p className="text-xs text-gray-600">卡方检验要求每个单元格的期望频数≥5</p>
                             </div>
                           </div>
                         </>
@@ -1165,8 +716,8 @@ pivot = pd.pivot_table(
                           <div className="flex items-start gap-2">
                             <span className="text-orange-500 font-bold">❌</span>
                             <div>
-                              <p className="font-medium">不检查平稳性</p>
-                              <p className="text-xs text-gray-600">ARIMA要求序列平稳，必要时需差分</p>
+                              <p className="font-medium">非平稳数据</p>
+                              <p className="text-xs text-gray-600">ARIMA要求数据平稳，不平稳时需先差分</p>
                             </div>
                           </div>
                         </>
@@ -1176,8 +727,8 @@ pivot = pd.pivot_table(
                           <div className="flex items-start gap-2">
                             <span className="text-orange-500 font-bold">❌</span>
                             <div>
-                              <p className="font-medium">特征工程不足</p>
-                              <p className="text-xs text-gray-600">好的特征比复杂的模型更重要</p>
+                              <p className="font-medium">编码方法不当</p>
+                              <p className="text-xs text-gray-600">无序类别不应使用LabelEncoder，应使用OneHotEncoder</p>
                             </div>
                           </div>
                         </>
@@ -1187,8 +738,8 @@ pivot = pd.pivot_table(
                           <div className="flex items-start gap-2">
                             <span className="text-orange-500 font-bold">❌</span>
                             <div>
-                              <p className="font-medium">评分方向搞反</p>
-                              <p className="text-xs text-gray-600">R越小越好，F和M越大越好</p>
+                              <p className="font-medium">评分方向错误</p>
+                              <p className="text-xs text-gray-600">R值（最近购买天数）越小越好，F和M值越大越好</p>
                             </div>
                           </div>
                         </>
@@ -1198,8 +749,8 @@ pivot = pd.pivot_table(
                           <div className="flex items-start gap-2">
                             <span className="text-orange-500 font-bold">❌</span>
                             <div>
-                              <p className="font-medium">忽略业务逻辑</p>
-                              <p className="text-xs text-gray-600">报表要符合业务需求，不要只生成数据</p>
+                              <p className="font-medium">图表过多</p>
+                              <p className="text-xs text-gray-600">报表图表应简洁明了，避免信息过载</p>
                             </div>
                           </div>
                         </>
@@ -1207,55 +758,253 @@ pivot = pd.pivot_table(
                     </div>
                   </div>
                   
-                  {/* 数据预览 */}
-                  <div className="bg-white rounded-xl p-4 shadow-sm">
-                    <h3 className="font-bold text-gray-800 mb-2 flex items-center gap-2">
-                      <Code2 className="w-4 h-4" />
-                      数据预览
+                  {/* 实战技巧 */}
+                  <div className="bg-gradient-to-br from-indigo-50 to-blue-50 border border-indigo-200 rounded-xl p-4 shadow-sm">
+                    <h3 className="font-bold text-indigo-800 mb-3 flex items-center gap-2">
+                      <span className="w-6 h-6 rounded-full bg-indigo-500 text-white flex items-center justify-center text-xs font-bold">💡</span>
+                      实战技巧
                     </h3>
-                    <div className="text-xs text-gray-600 bg-gray-50 p-2 rounded overflow-x-auto">
-                      <pre>{currentPractical?.data}</pre>
+                    <div className="text-sm text-gray-700 space-y-2">
+                      {currentPractical?.id === 1 && (
+                        <>
+                          <p><strong>快速检查数据质量：</strong></p>
+                          <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">print(df.shape)
+print(df.isnull().sum())
+print(df.dtypes)</pre>
+                        </>
+                      )}
+                      {currentPractical?.id === 2 && (
+                        <>
+                          <p><strong>链式调用技巧：</strong></p>
+                          <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">df = df.dropna().query("金额 {'>'} 0").drop_duplicates()</pre>
+                        </>
+                      )}
+                      {currentPractical?.id === 3 && (
+                        <>
+                          <p><strong>规则筛选技巧：</strong></p>
+                          <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600"># 筛选高提升度的规则
+high_lift = rules[rules["lift"] &gt; 1.2].sort_values("lift", ascending=False)</pre>
+                        </>
+                      )}
+                      {currentPractical?.id === 4 && (
+                        <>
+                          <p><strong>K值选择：</strong></p>
+                          <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600"># 肘部法则选择K值
+inertia = []
+for k in range(1, 10):
+    kmeans = KMeans(n_clusters=k)
+    kmeans.fit(X)
+    inertia.append(kmeans.inertia_)</pre>
+                        </>
+                      )}
+                      {currentPractical?.id === 5 && (
+                        <>
+                          <p><strong>图表美化技巧：</strong></p>
+                          <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">plt.figure(figsize=(10, 6))
+plt.xticks(rotation=45)
+plt.tight_layout()</pre>
+                        </>
+                      )}
+                      {currentPractical?.id === 6 && (
+                        <>
+                          <p><strong>A/B测试流程：</strong></p>
+                          <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600"># 1. 确定目标
+# 2. 确定样本量
+# 3. 随机分组
+# 4. 收集数据
+# 5. 统计检验
+# 6. 决策结论</pre>
+                        </>
+                      )}
+                      {currentPractical?.id === 7 && (
+                        <>
+                          <p><strong>预测评估：</strong></p>
+                          <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600"># 使用历史数据回测
+train = data[:-12]
+test = data[-12:]
+model = ARIMA(train, order=(1,1,1))
+model_fit = model.fit()
+forecast = model_fit.forecast(steps=12)</pre>
+                        </>
+                      )}
+                      {currentPractical?.id === 8 && (
+                        <>
+                          <p><strong>时间特征提取：</strong></p>
+                          <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">df["月份"] = df["日期"].dt.month
+df["星期"] = df["日期"].dt.dayofweek
+df["季度"] = df["日期"].dt.quarter</pre>
+                        </>
+                      )}
+                      {currentPractical?.id === 9 && (
+                        <>
+                          <p><strong>客户分层策略：</strong></p>
+                          <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600"># 根据总分分层
+def get_tier(score):
+    if score &gt;= 12:
+        return "高价值客户"
+    elif score &gt;= 8:
+        return "潜力客户"
+    elif score &gt;= 5:
+        return "普通客户"
+    else:
+        return "需关注客户"</pre>
+                        </>
+                      )}
+                      {currentPractical?.id === 10 && (
+                        <>
+                          <p><strong>ExcelWriter使用：</strong></p>
+                          <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto text-gray-600">with pd.ExcelWriter("报表.xlsx") as writer:
+    df.to_excel(writer, sheet_name="原始数据")
+    pivot.to_excel(writer, sheet_name="数据透视")
+    stats.to_excel(writer, sheet_name="统计摘要")</pre>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                  
+                  {/* 业务案例 */}
+                  <div className="bg-gradient-to-br from-pink-50 to-rose-50 border border-pink-200 rounded-xl p-4 shadow-sm">
+                    <h3 className="font-bold text-pink-800 mb-3 flex items-center gap-2">
+                      <span className="w-6 h-6 rounded-full bg-pink-500 text-white flex items-center justify-center text-xs font-bold">📊</span>
+                      业务案例
+                    </h3>
+                    <div className="text-sm text-gray-700 space-y-2">
+                      {currentPractical?.id === 1 && (
+                        <>
+                          <p><strong>电商销售数据清洗：</strong></p>
+                          <p className="text-xs">某电商平台销售数据存在缺失值、异常大额订单、日期格式不统一等问题，通过数据清洗将1000行数据清洗为950行高质量数据。</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 2 && (
+                        <>
+                          <p><strong>用户消费行为分析：</strong></p>
+                          <p className="text-xs">通过分组聚合分析用户消费能力，识别高价值客户，进行客户分层（普通客户、潜力客户、优质客户、VIP客户）。</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 3 && (
+                        <>
+                          <p><strong>购物篮分析：</strong></p>
+                          <p className="text-xs">使用Apriori算法发现商品购买规律，如"购买面包的用户也购买牛奶"，用于商品推荐和货架摆放优化。</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 4 && (
+                        <>
+                          <p><strong>客户画像聚类：</strong></p>
+                          <p className="text-xs">将客户根据消费习惯、浏览行为等特征进行聚类，识别不同客户群体，为精准营销提供依据。</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 5 && (
+                        <>
+                          <p><strong>销售仪表盘：</strong></p>
+                          <p className="text-xs">创建可视化销售报表，包含销售趋势图、产品分布饼图、区域对比柱状图，帮助管理层快速了解业务状况。</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 6 && (
+                        <>
+                          <p><strong>页面改版效果评估：</strong></p>
+                          <p className="text-xs">通过A/B测试比较新旧版本页面的转化率，使用卡方检验判断差异是否显著，为产品迭代提供数据支撑。</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 7 && (
+                        <>
+                          <p><strong>销售预测：</strong></p>
+                          <p className="text-xs">基于历史销售数据使用ARIMA模型进行未来3-6个月的销售预测，为库存管理和营销计划提供指导。</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 8 && (
+                        <>
+                          <p><strong>客户流失预警：</strong></p>
+                          <p className="text-xs">通过特征工程提取客户行为特征，构建流失预测模型，提前识别可能流失的客户并采取挽留措施。</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 9 && (
+                        <>
+                          <p><strong>客户价值分层：</strong></p>
+                          <p className="text-xs">通过RFM分析对客户进行价值分层，制定差异化营销策略，提升客户管理效率和资源投入ROI。</p>
+                        </>
+                      )}
+                      {currentPractical?.id === 10 && (
+                        <>
+                          <p><strong>月度销售报表：</strong></p>
+                          <p className="text-xs">自动生成包含销售概览、区域分析、产品排名、客户统计等内容的月度报表，减少人工报告工作量。</p>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
               </div>
-              
-              {/* 右侧代码编辑器和输出 */}
+
+              {/* 中间代码编辑器 */}
               <div className="lg:col-span-2 space-y-4">
-                {/* 操作按钮 */}
-                <div className="flex gap-3">
+                <div className="flex items-center gap-4 mb-4">
                   <button
-                    onClick={() => {
-                      const project = practicalProjects.find(p => p.id === currentPracticalId);
-                      if (project) {
-                        setUserCode(project.codeTemplate);
-                        setShowAnswer(false);
-                      }
-                    }}
-                    className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors flex items-center gap-2"
+                    onClick={() => setCurrentPracticalId(null)}
+                    className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
                   >
-                    <RefreshCw className="w-4 h-4" />
-                    重置代码
+                    <ChevronLeft className="w-4 h-4" />
+                    返回项目列表
                   </button>
-                  <button
-                    onClick={showAnswerSolution}
-                    className={`px-4 py-2 rounded-lg transition-colors flex items-center gap-2 ${
-                      showAnswer
-                        ? 'bg-green-100 text-green-700'
-                        : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
-                    }`}
-                  >
-                    <Star className="w-4 h-4" />
-                    {showAnswer ? '显示答案中' : '查看答案'}
-                  </button>
+                  <h2 className="text-xl font-bold text-gray-800">{currentPractical?.title}</h2>
                 </div>
-                
-                {/* Python 代码运行器 */}
-                <PythonCodeRunner 
-                  initialCode={userCode}
-                  onCodeChange={setUserCode}
-                  onShowAnswer={showAnswerSolution}
-                />
+                {currentPractical && (
+                  <PythonCodeRunner
+                    initialCode={userCode || currentPractical.codeTemplate}
+                    onCodeChange={setUserCode}
+                    onShowAnswer={showAnswerSolution}
+                  />
+                )}
+
+                {/* 实操数据 */}
+                <div className="bg-white rounded-xl p-4 shadow-sm">
+                  <h3 className="font-bold text-blue-800 mb-2">实操数据</h3>
+                  <div className="bg-gray-50 p-3 rounded-lg overflow-x-auto">
+                    {currentPractical?.data && (() => {
+                      const lines = currentPractical.data.split('\n').filter(line => line.trim());
+                      if (lines.length < 2) {
+                        return <pre className="text-sm text-gray-700 whitespace-pre-wrap">{currentPractical.data}</pre>;
+                      }
+                      const headers = lines[0].split(',').map(h => h.trim());
+                      const rows = lines.slice(1);
+                      return (
+                        <table className="min-w-full text-sm">
+                          <thead>
+                            <tr className="bg-blue-100">
+                              {headers.map((header, index) => (
+                                <th key={index} className="px-3 py-2 text-left text-blue-800 font-medium border-b border-blue-200">
+                                  {header}
+                                </th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {rows.map((row, rowIndex) => {
+                              const cells = row.split(',').map(c => c.trim());
+                              return (
+                                <tr key={rowIndex} className={rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                                  {cells.map((cell, cellIndex) => (
+                                    <td key={cellIndex} className="px-3 py-2 border-b border-gray-100 text-gray-700">
+                                      {cell || '-'}
+                                    </td>
+                                  ))}
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      );
+                    })()}
+                  </div>
+                </div>
+
+                {/* 参考答案 */}
+                {showAnswer && (
+                  <div className="bg-yellow-50 rounded-xl p-4 border border-yellow-200">
+                    <h3 className="font-bold text-yellow-800 mb-2">参考答案</h3>
+                    <div className="bg-white p-4 rounded-lg">
+                      <pre className="text-sm text-gray-700 whitespace-pre-wrap">{currentPractical?.answer}</pre>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           )}

@@ -188,12 +188,12 @@ export default function PracticalTraining() {
   }, []);
 
   const openPractice = (id: number) => {
-    setCurrentPracticalId(id);
+    setShowAnswer(false);
     const project = practicalProjects.find(p => p.id === id);
     if (project) {
       setUserCode(project.codeTemplate);
     }
-    setShowAnswer(false);
+    setCurrentPracticalId(id);
   };
 
   const showAnswerSolution = () => {
